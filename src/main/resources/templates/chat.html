@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Assistente Virtual - Fruki (Desafio GC 2026)</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #efeae2; margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        .chat-container { width: 420px; height: 650px; background: #efeae2; display: flex; flex-direction: column; box-shadow: 0 4px 10px rgba(0,0,0,0.2); border-radius: 8px; overflow: hidden; }
+        .chat-header { background: #00755e; color: white; padding: 15px; display: flex; align-items: center; font-weight: bold; font-size: 16px; gap: 10px; }
+        .chat-messages { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; background-image: radial-gradient(#d1d7db 0.75px, transparent 0.75px); background-size: 15px 15px; }
+        .message { max-width: 80%; padding: 10px 14px; border-radius: 7.5px; font-size: 14px; line-height: 1.4; white-space: pre-wrap; word-wrap: break-word; }
+        .incoming { background: #ffffff; align-self: flex-start; border-top-left-radius: 0; box-shadow: 0 1px 0.5px rgba(0,0,0,0.13); }
+        .outgoing { background: #d9fdd3; align-self: flex-end; border-top-right-radius: 0; box-shadow: 0 1px 0.5px rgba(0,0,0,0.13); }
+        .chat-input-area { background: #f0f2f5; padding: 10px; display: flex; gap: 8px; align-items: center; }
+        .chat-input-area input { flex: 1; padding: 10px 14px; border: none; border-radius: 20px; outline: none; font-size: 14px; }
+        .chat-input-area button { background: #00755e; color: white; border: none; padding: 10px 16px; border-radius: 50%; cursor: pointer; font-weight: bold; }
+        .chat-input-area button:hover { background: #005c4b; }
+    </style>
+</head>
+<body>
+
+<div class="chat-container">
+    <div class="chat-header">
+        <span>🟢 Assistente Virtual Fruki</span>
+    </div>
+
+    <div class="chat-messages" id="chatMessages"></div>
+
+    <div class="chat-input-area">
+        <input type="text" id="userInput" placeholder="Escreve uma mensagem..." onkeypress="handleKeyPress(event)">
+        <button onclick="enviarMensagem()">➤</button>
+    </div>
+</div>
+
+<script>
+    let estadoFluxo = 'AGUARDANDO_ID';
+    let clienteAtual = null;
+
+    const messagesDiv = document.getElementById('chatMessages');
+
+    function adicionarMensagem(texto, tipo) {
+        const msgDiv = document.createElement('div');
+        msgDiv.className = `message ${tipo}`;
+        msgDiv.innerText = texto;
+        messagesDiv.appendChild(msgDiv);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+    // Mensagens iniciais automáticas da assistente
+    window.onload = function() {
+        setTimeout(() => {
+            adicionarMensagem("Olá, eu sou a assistente virtual da Fruki. Posso te ajudar com diversos assuntos!", "incoming");
+        }, 500);
+
+        setTimeout(() => {
+            adicionarMensagem("Para oferecer uma experiência mais rápida e eficiente, por favor informe o **ID do cliente**:", "incoming");
+        }, 1500);
+    };
+
+    async function processarResposta(textoUsuario) {
+        if (estadoFluxo === 'AGUARDANDO_ID') {
+            adicionarMensagem(textoUsuario, "outgoing");
+
+            setTimeout(async () => {
+                try {
+                    // Chama a API de recomendação diretamente com o ID inserido
+                    const response = await fetch(`/api/recomendacao/${textoUsuario.trim()}`);
+                    if (!response.ok) {
+                        adicionarMensagem("❌ ID não encontrado na base de dados. Olha na consola do IntelliJ os exemplos válidos e tenta novamente:", "incoming");
+                        return;
+                    }
+
+                    const data = await response.json();
+                    estadoFluxo = 'CLIENTE_AUTENTICADO';
+
+                    adicionarMensagem(`Já encontrei seu cadastro (Cliente ${data.codCliente}). Como posso ajudar?`, "incoming");
+
+                    // Exibe a recomendação de produtos em formato de mensagem do WhatsApp logo em seguida
+                    setTimeout(() => {
+                        adicionarMensagem(data.mensagemWhatsApp, "incoming");
+                    }, 1000);
+
+                } catch (e) {
+                    adicionarMensagem("Ocorreu um erro ao validar o ID. Tente novamente.", "incoming");
+                }
+            }, 1000);
+        } else {
+            // Conversa livre após já estar conversando com as recomendações
+            adicionarMensagem(textoUsuario, "outgoing");
+            setTimeout(() => {
+                adicionarMensagem("Recebido! O seu pedido foi encaminhado. Há algo mais em que possa ajudar?", "incoming");
+            }, 1000);
+        }
+    }
+
+    function enviarMensagem() {
+        const input = document.getElementById('userInput');
+        const text = input.value.trim();
+        if (!text) return;
+        input.value = '';
+        processarResposta(text);
+    }
+
+    function handleKeyPress(e) {
+        if (e.key === 'Enter') {
+            enviarMensagem();
+        }
+    }
+</script>
+
+</body>
+</html>
