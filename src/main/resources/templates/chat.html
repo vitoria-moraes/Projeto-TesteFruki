@@ -5,92 +5,171 @@
     <title>Assistente Virtual - Fruki (Desafio GC 2026)</title>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #efeae2; margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; height: 100vh; }
-        .chat-container { width: 420px; height: 650px; background: #efeae2; display: flex; flex-direction: column; box-shadow: 0 4px 10px rgba(0,0,0,0.2); border-radius: 8px; overflow: hidden; }
+        .chat-container { width: 450px; height: 700px; background: #efeae2; display: flex; flex-direction: column; box-shadow: 0 4px 15px rgba(0,0,0,0.2); border-radius: 8px; overflow: hidden; }
         .chat-header { background: #00755e; color: white; padding: 15px; display: flex; align-items: center; font-weight: bold; font-size: 16px; gap: 10px; }
         .chat-messages { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; background-image: radial-gradient(#d1d7db 0.75px, transparent 0.75px); background-size: 15px 15px; }
-        .message { max-width: 80%; padding: 10px 14px; border-radius: 7.5px; font-size: 14px; line-height: 1.4; white-space: pre-wrap; word-wrap: break-word; }
+        .message { max-width: 85%; padding: 10px 14px; border-radius: 7.5px; font-size: 14px; line-height: 1.4; white-space: pre-wrap; word-wrap: break-word; }
         .incoming { background: #ffffff; align-self: flex-start; border-top-left-radius: 0; box-shadow: 0 1px 0.5px rgba(0,0,0,0.13); }
         .outgoing { background: #d9fdd3; align-self: flex-end; border-top-right-radius: 0; box-shadow: 0 1px 0.5px rgba(0,0,0,0.13); }
+        .product-card { background: #f9f9f9; border: 1px solid #ddd; padding: 8px; margin-top: 6px; border-radius: 5px; font-size: 13px; display: flex; justify-content: space-between; align-items: center; }
+        .product-card button { background: #00755e; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
+        .product-card button:hover { background: #005c4b; }
         .chat-input-area { background: #f0f2f5; padding: 10px; display: flex; gap: 8px; align-items: center; }
         .chat-input-area input { flex: 1; padding: 10px 14px; border: none; border-radius: 20px; outline: none; font-size: 14px; }
         .chat-input-area button { background: #00755e; color: white; border: none; padding: 10px 16px; border-radius: 50%; cursor: pointer; font-weight: bold; }
-        .chat-input-area button:hover { background: #005c4b; }
     </style>
 </head>
 <body>
 
 <div class="chat-container">
     <div class="chat-header">
-        <span>🟢 Assistente Virtual Fruki</span>
+        <span>🟢 Assistente Virtual Fruki (Scoring & Vendas)</span>
     </div>
 
     <div class="chat-messages" id="chatMessages"></div>
 
     <div class="chat-input-area">
-        <input type="text" id="userInput" placeholder="Escreve uma mensagem..." onkeypress="handleKeyPress(event)">
+        <input type="text" id="userInput" placeholder="Digite sua resposta..." onkeypress="handleKeyPress(event)">
         <button onclick="enviarMensagem()">➤</button>
     </div>
 </div>
 
 <script>
-    let estadoFluxo = 'AGUARDANDO_ID';
-    let clienteAtual = null;
+    let estadoFluxo = 'AGUARDANDO_ID'; // AGUARDANDO_ID, CADASTRO_NOME, ESCOLHENDO_PRODUTO, INFORMANDO_QTD
+    let clienteTempId = null;
+    let produtosCache = [];
+    let produtoSelecionadoAtual = null;
+    let carrinho = [];
 
     const messagesDiv = document.getElementById('chatMessages');
 
-    function adicionarMensagem(texto, tipo) {
+    function adicionarMensagem(texto, tipo, htmlExtra = '') {
         const msgDiv = document.createElement('div');
         msgDiv.className = `message ${tipo}`;
-        msgDiv.innerText = texto;
+        msgDiv.innerHTML = texto.replace(/\n/g, '<br>') + htmlExtra;
         messagesDiv.appendChild(msgDiv);
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
     }
 
-    // Mensagens iniciais automáticas da assistente
     window.onload = function() {
         setTimeout(() => {
-            adicionarMensagem("Olá, eu sou a assistente virtual da Fruki. Posso te ajudar com diversos assuntos!", "incoming");
+            adicionarMensagem("Olá! Sou o assistente de inteligência comercial da Fruki. Para começarmos, por favor informe o **ID do seu cliente**:", "incoming");
         }, 500);
-
-        setTimeout(() => {
-            adicionarMensagem("Para oferecer uma experiência mais rápida e eficiente, por favor informe o **ID do cliente**:", "incoming");
-        }, 1500);
     };
 
     async function processarResposta(textoUsuario) {
+        adicionarMensagem(textoUsuario, "outgoing");
+
         if (estadoFluxo === 'AGUARDANDO_ID') {
-            adicionarMensagem(textoUsuario, "outgoing");
+            const idCliente = textoUsuario.trim();
+            if (isNaN(idCliente)) {
+                setTimeout(() => adicionarMensagem("❌ Por favor, digite um número de ID válido.", "incoming"), 500);
+                return;
+            }
+            clienteTempId = idCliente;
 
             setTimeout(async () => {
                 try {
-                    // Chama a API de recomendação diretamente com o ID inserido
-                    const response = await fetch(`/api/recomendacao/${textoUsuario.trim()}`);
-                    if (!response.ok) {
-                        adicionarMensagem("❌ ID não encontrado na base de dados. Olha na consola do IntelliJ os exemplos válidos e tenta novamente:", "incoming");
-                        return;
-                    }
-
+                    const response = await fetch(`/api/recomendacao/${idCliente}`);
                     const data = await response.json();
-                    estadoFluxo = 'CLIENTE_AUTENTICADO';
 
-                    adicionarMensagem(`Já encontrei seu cadastro (Cliente ${data.codCliente}). Como posso ajudar?`, "incoming");
-
-                    // Exibe a recomendação de produtos em formato de mensagem do WhatsApp logo em seguida
-                    setTimeout(() => {
+                    if (data.cadastrado) {
+                        estadoFluxo = 'MENU_PRINCIPAL';
+                        adicionarMensagem(`✅ Cliente localizado: **${data.nomeCliente}** (ID: ${data.codCliente})`, "incoming");
+                        exibirRecomcomendações(data.produtosRecomendados);
+                    } else {
+                        estadoFluxo = 'CADASTRO_CONFIRMA';
                         adicionarMensagem(data.mensagemWhatsApp, "incoming");
-                    }, 1000);
-
+                    }
                 } catch (e) {
-                    adicionarMensagem("Ocorreu um erro ao validar o ID. Tente novamente.", "incoming");
+                    adicionarMensagem("Ocorreu um erro ao consultar o servidor.", "incoming");
                 }
-            }, 1000);
-        } else {
-            // Conversa livre após já estar conversando com as recomendações
-            adicionarMensagem(textoUsuario, "outgoing");
+            }, 800);
+
+        } else if (estadoFluxo === 'CADASTRO_CONFIRMA') {
+            if (textoUsuario.toLowerCase().includes('sim') || textoUsuario.toLowerCase().includes('s')) {
+                estadoFluxo = 'CADASTRO_NOME';
+                setTimeout(() => adicionarMensagem("Ótimo! Digite o **Nome da sua Empresa / Cliente** para realizarmos o cadastro rápido:", "incoming"), 500);
+            } else {
+                estadoFluxo = 'AGUARDANDO_ID';
+                setTimeout(() => adicionarMensagem("Atendimento encerrado ou ID inválido. Digite outro ID de cliente para tentar novamente:", "incoming"), 500);
+            }
+
+        } else if (estadoFluxo === 'CADASTRO_NOME') {
+            const nomeEmpresa = textoUsuario.trim();
+            setTimeout(async () => {
+                try {
+                    const response = await fetch(`/api/cadastro-rapido?codCliente=${clienteTempId}&nome=${encodeURIComponent(nomeEmpresa)}`, { method: 'POST' });
+                    const data = await response.json();
+                    estadoFluxo = 'MENU_PRINCIPAL';
+                    adicionarMensagem(data.mensagemWhatsApp, "incoming");
+                    exibirRecomcomendações(data.produtosRecomendados);
+                } catch (e) {
+                    adicionarMensagem("Erro ao efetuar cadastro. Tente novamente.", "incoming");
+                }
+            }, 800);
+
+        } else if (estadoFluxo === 'INFORMANDO_QTD') {
+            const qtd = parseInt(textoUsuario);
+            if (isNaN(qtd) || qtd <= 0) {
+                setTimeout(() => adicionarMensagem("❌ Quantidade inválida. Digite um número inteiro maior que 0:", "incoming"), 500);
+                return;
+            }
+
+            carrinho.push({ produto: produtoSelecionadoAtual, quantidade: qtd });
+            estadoFluxo = 'MENU_PRINCIPAL';
+
             setTimeout(() => {
-                adicionarMensagem("Recebido! O seu pedido foi encaminhado. Há algo mais em que possa ajudar?", "incoming");
-            }, 1000);
+                adicionarMensagem(`🛒 **Item adicionado ao carrinho!**\n- ${produtoSelecionadoAtual.descricao} (${qtd} un. - R$ ${(produtoSelecionadoAtual.precoUnitario * qtd).toFixed(2)})`, "incoming");
+                adicionarMensagem("Deseja adicionar mais algum produto recomendado, finalizar o pedido ou encerrar?", "incoming");
+                exibirRecomcomendações(produtosCache);
+            }, 600);
+
+        } else if (estadoFluxo === 'MENU_PRINCIPAL') {
+            const txt = textoUsuario.toLowerCase();
+            if (txt.includes('fim') || txt.includes('sair') || txt.includes('nao') || txt.includes('não')) {
+                estadoFluxo = 'ENCERRADO';
+                setTimeout(() => {
+                    let resumo = `📦 **Resumo Final do Pedido:**\n`;
+                    let total = 0;
+                    carrinho.forEach(item => {
+                        let sub = item.produto.precoUnitario * item.quantidade;
+                        total += sub;
+                        resumo += `• ${item.quantidade}x ${item.produto.descricao} - R$ ${sub.toFixed(2)}\n`;
+                    });
+                    resumo += `\n**Total Geral: R$ ${total.toFixed(2)}**\n\n✨ Pedido gerado com sucesso! Agradecemos a preferência pela Fruki. Até logo!`;
+                    adicionarMensagem(resumo, "incoming");
+                }, 500);
+            } else {
+                setTimeout(() => adicionarMensagem("Por favor, clique no botão **'Adicionar'** do produto desejado na lista acima.", "incoming"), 500);
+            }
         }
+    }
+
+    function exibirRecomcomendações(produtos) {
+        produtosCache = produtos;
+        let htmlCards = '<div style="margin-top: 8px;">';
+        produtos.forEach((p, index) => {
+            htmlCards += `
+                <div class="product-card">
+                    <div>
+                        <strong>${p.descricao}</strong><br>
+                        <small>Score: ⭐️ ${p.score} | R$ ${p.precoUnitario.toFixed(2)}</small>
+                    </div>
+                    <button onclick="selecionarProduto('${p.idProduto}')">Adicionar</button>
+                </div>`;
+        });
+        htmlCards += `</div><div style="margin-top: 10px; font-size: 12px; color: #555;">(Digite **'fim'** a qualquer momento para encerrar e ver o resumo do carrinho)</div>`;
+
+        adicionarMensagem("📋 **Produtos recomendados por Scoring:**", "incoming", htmlCards);
+    }
+
+    function selecionarProduto(idProd) {
+        const prod = produtosCache.find(p => p.idProduto === idProd);
+        if (!prod) return;
+        produtoSelecionadoAtual = prod;
+        estadoFluxo = 'INFORMANDO_QTD';
+        adicionarMensagem(`Você selecionou: **${prod.descricao}**. Qual a **quantidade** desejada?`, "incoming");
     }
 
     function enviarMensagem() {

@@ -1,22 +1,25 @@
 package org.example;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/recomendacao")
+@RequestMapping("/api")
 public class RecomendacaoController {
 
-    private final RecomendacaoService recomendacaoService;
+    @Autowired
+    private RecomendacaoService recomendacaoService;
 
-    public RecomendacaoController(RecomendacaoService recomendacaoService) {
-        this.recomendacaoService = recomendacaoService;
+    @GetMapping("/recomendacao/{id}")
+    public ResponseEntity<RecomendacaoDTO> consultarCliente(@PathVariable Long id) {
+        RecomendacaoDTO dto = recomendacaoService.buscarOuValidarCliente(id);
+        return ResponseEntity.ok(dto);
     }
 
-    @GetMapping("/{codCliente}")
-    public RecomendacaoDTO recomendar(@PathVariable Long codCliente) {
-        return recomendacaoService.gerarRecomendacaoParaCliente(codCliente);
+    @PostMapping("/cadastro-rapido")
+    public ResponseEntity<RecomendacaoDTO> cadastroRapido(@RequestParam Long codCliente, @RequestParam String nome) {
+        RecomendacaoDTO dto = recomendacaoService.cadastrarClienteExpresso(codCliente, nome);
+        return ResponseEntity.ok(dto);
     }
 }
