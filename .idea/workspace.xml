@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="0e72a309-326b-4fe3-8086-35604595f7fb" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Cliente.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Cliente.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/ExcelReaderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/ExcelReaderService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/RecomendacaoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/RecomendacaoController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/RecomendacaoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/RecomendacaoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/chat.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/chat.html" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;vitoria-moraes&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/vitoria-moraes/Projeto-TesteFruki.git&quot;,
+    &quot;accountId&quot;: &quot;f5769b37-4261-4355-a5a7-357d20a4025f&quot;
+  }
+}</component>
+  <component name="NextEditCompletionFeaturesState">
+    <decayedCancelled>
+      <entry key="MS100" value="1.0280987641301413" />
+      <entry key="MS500" value="2.0300645480224793" />
+      <entry key="S2" value="7.675701338228179" />
+      <entry key="S5" value="15.902788933367802" />
+      <entry key="S10" value="22.978517943212925" />
+      <entry key="S30" value="31.596232845209084" />
+      <entry key="S60" value="35.68546733899867" />
+      <entry key="M2" value="38.94681407233108" />
+      <entry key="M5" value="41.68333846468411" />
+      <entry key="M10" value="42.78357089971656" />
+      <entry key="M15" value="43.17845685226255" />
+      <entry key="M30" value="43.92402004600342" />
+      <entry key="H1" value="47.40069288734752" />
+      <entry key="H2" value="55.62512584499407" />
+      <entry key="H4" value="67.2772877123269" />
+      <entry key="D1" value="219.64667267882362" />
+      <entry key="W1" value="369.2147638958773" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="0.0" />
+      <entry key="S2" value="0.0" />
+      <entry key="S5" value="0.0" />
+      <entry key="S10" value="0.0" />
+      <entry key="S30" value="0.0" />
+      <entry key="S60" value="0.0" />
+      <entry key="M2" value="7.765396070206546E-258" />
+      <entry key="M5" value="2.282992891604944E-103" />
+      <entry key="M10" value="7.825181639188289E-52" />
+      <entry key="M15" value="1.2067984301903197E-34" />
+      <entry key="M30" value="1.887730540934738E-17" />
+      <entry key="H1" value="7.50983878476767E-9" />
+      <entry key="H2" value="1.5001902758794965E-4" />
+      <entry key="H4" value="0.02121171903929557" />
+      <entry key="D1" value="1.314283128934868" />
+      <entry key="W1" value="2.6663455912740845" />
+    </decayedSelected>
+    <decayedShown>
+      <entry key="MS100" value="0.05180307643714335" />
+      <entry key="MS500" value="1.491134871318593" />
+      <entry key="S2" value="7.469988809252313" />
+      <entry key="S5" value="15.794984498371583" />
+      <entry key="S10" value="22.913158294966106" />
+      <entry key="S30" value="31.56929487113707" />
+      <entry key="S60" value="35.67043419782876" />
+      <entry key="M2" value="38.93857700509055" />
+      <entry key="M5" value="41.67978422051343" />
+      <entry key="M10" value="42.78174002973996" />
+      <entry key="M15" value="43.17722332175844" />
+      <entry key="M30" value="43.92339272753634" />
+      <entry key="H1" value="47.40035893026586" />
+      <entry key="H2" value="55.625085292923096" />
+      <entry key="H4" value="67.29838395763721" />
+      <entry key="D1" value="220.9608587381177" />
+      <entry key="W1" value="371.8810840195477" />
+    </decayedShown>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3,
+  &quot;fromUser&quot;: false
+}</component>
+  <component name="ProjectId" id="3KQsJQcss3H5zi5gryxTZC7KT14" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.TodoApplication.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;Spring Boot.TodoApplication.executor&quot;: &quot;Run&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;prototipo-projeto-fruki&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/karen/Downloads/Projeto-TesteFruki&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.jshint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.jshint&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/karen/Downloads/Projeto-TesteFruki/src/main/java/org/example/Main.java&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.project.maven.repository.indices&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="org.example" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Spring Boot.TodoApplication">
+    <configuration name="TodoApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="UNNAMED_CLASS_CONFIGURATION" value="true" />
+      <option name="MAIN_CLASS_NAME" value="TodoApplication" />
+      <module name="Projeto-TesteFruki" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TodoApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="Projeto-TesteFruki" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="org.example.TodoApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.TodoApplication" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-a203e0a19954-intellij.indexing.shared.core-IU-262.10315.125" />
+        <option value="bundled-js-predefined-d6986cc7102b-4abd2a77f808-JavaScript-IU-262.10315.125" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="0e72a309-326b-4fe3-8086-35604595f7fb" name="Changes" comment="" />
+      <created>1791501055620</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1791501055620</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>

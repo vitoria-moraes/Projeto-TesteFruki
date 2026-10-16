@@ -16,25 +16,30 @@ public class ExcelReaderService {
             var resource = getClass().getClassLoader().getResourceAsStream("dim_cliente.csv");
             if (resource == null) return clientes;
 
+            // Colunas: 0=id_cliente, 1=COD_CLIENTE, 4=cod_segmento, 10=situacao_cliente
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(resource, StandardCharsets.UTF_8))) {
                 String linha;
                 boolean primeiraLinha = true;
                 while ((linha = reader.readLine()) != null) {
                     if (primeiraLinha) { primeiraLinha = false; continue; }
-                    String[] partes = linha.contains(";") ? linha.split(";") : linha.split(",");
-                    if (partes.length >= 5) {
+                    String[] partes = linha.contains(";") ? linha.split(";", -1) : linha.split(",", -1);
+                    if (partes.length >= 11) {
                         try {
-                            Long codCliente = Long.parseLong(partes[0].trim().replaceAll("\"", ""));
+                            String situacao = partes[10].trim().replaceAll("\"", "");
+                            if (!situacao.equalsIgnoreCase("Ativo")) continue; // só clientes com cadastro ativo
+
+                            Long idCliente = Long.parseLong(partes[0].trim().replaceAll("\"", ""));
+                            Long codCliente = Long.parseLong(partes[1].trim().replaceAll("\"", ""));
                             String codSegmento = partes[4].trim().replaceAll("\"", "");
 
-                            clientes.add(new Cliente(codCliente, "Cliente " + codCliente, codSegmento));
+                            clientes.add(new Cliente(codCliente, idCliente, "Cliente " + codCliente, codSegmento));
                         } catch (Exception e) { /* Ignora erros pontuais */ }
                     }
                 }
-                System.out.println("✅ Total de clientes carregados: " + clientes.size());
+                System.out.println("✅ Total de clientes ATIVOS carregados: " + clientes.size());
                 if (!clientes.isEmpty()) {
-                    System.out.println("💡 Exemplo de IDs de clientes válidos na base: " +
-                            clientes.stream().limit(5).map(c -> c.getCodCliente().toString()).toList());
+                    System.out.println("💡 Exemplos de clientes ativos (COD_CLIENTE / id_cliente): " +
+                            clientes.stream().limit(5).map(c -> c.getCodCliente() + " / " + c.getIdCliente()).toList());
                 }
             }
         } catch (Exception e) {
@@ -44,10 +49,10 @@ public class ExcelReaderService {
     }
 
     public List<Produto> lerProdutosDoCsv() {
-        List<Produto> produtos = new ArrayList<>();
+        List<Produto> lista = new ArrayList<>();
         try {
             var resource = getClass().getClassLoader().getResourceAsStream("dim_item.csv");
-            if (resource == null) return produtos;
+            if (resource == null) return lista;
 
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(resource, StandardCharsets.UTF_8))) {
                 String linha;
@@ -58,15 +63,15 @@ public class ExcelReaderService {
                     if (partes.length >= 2) {
                         String codItem = partes[0].trim().replaceAll("\"", "");
                         String descricao = partes[1].trim().replaceAll("\"", "");
-                        produtos.add(new Produto(codItem, "Geral", descricao));
+                        lista.add(new Produto(codItem, "Geral", descricao));
                     }
                 }
-                System.out.println("✅ Total de produtos carregados: " + produtos.size());
+                System.out.println("✅ Total de produtos carregados: " + lista.size());
             }
         } catch (Exception e) {
             System.out.println("Erro ao ler produtos: " + e.getMessage());
         }
-        return produtos;
+        return lista;
     }
 
     public List<HierarquiaComercial> lerHierarquiaDoCsv() {

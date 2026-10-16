@@ -2,187 +2,746 @@
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
-    <title>Assistente Virtual - Fruki (Desafio GC 2026)</title>
+    <title>Pede Fruki - WhatsApp Business B2B</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #efeae2; margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; height: 100vh; }
-        .chat-container { width: 450px; height: 700px; background: #efeae2; display: flex; flex-direction: column; box-shadow: 0 4px 15px rgba(0,0,0,0.2); border-radius: 8px; overflow: hidden; }
-        .chat-header { background: #00755e; color: white; padding: 15px; display: flex; align-items: center; font-weight: bold; font-size: 16px; gap: 10px; }
-        .chat-messages { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; background-image: radial-gradient(#d1d7db 0.75px, transparent 0.75px); background-size: 15px 15px; }
-        .message { max-width: 85%; padding: 10px 14px; border-radius: 7.5px; font-size: 14px; line-height: 1.4; white-space: pre-wrap; word-wrap: break-word; }
-        .incoming { background: #ffffff; align-self: flex-start; border-top-left-radius: 0; box-shadow: 0 1px 0.5px rgba(0,0,0,0.13); }
-        .outgoing { background: #d9fdd3; align-self: flex-end; border-top-right-radius: 0; box-shadow: 0 1px 0.5px rgba(0,0,0,0.13); }
-        .product-card { background: #f9f9f9; border: 1px solid #ddd; padding: 8px; margin-top: 6px; border-radius: 5px; font-size: 13px; display: flex; justify-content: space-between; align-items: center; }
-        .product-card button { background: #00755e; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
-        .product-card button:hover { background: #005c4b; }
-        .chat-input-area { background: #f0f2f5; padding: 10px; display: flex; gap: 8px; align-items: center; }
-        .chat-input-area input { flex: 1; padding: 10px 14px; border: none; border-radius: 20px; outline: none; font-size: 14px; }
-        .chat-input-area button { background: #00755e; color: white; border: none; padding: 10px 16px; border-radius: 50%; cursor: pointer; font-weight: bold; }
+        * { box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #121212;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .iphone-frame {
+            width: 410px;
+            height: 820px;
+            background: #efeae2;
+            border-radius: 40px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.6);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 6px solid #2a2a2a;
+            position: relative;
+        }
+
+        .ios-status-bar {
+            height: 38px;
+            background: #f6f6f6;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #000;
+            z-index: 10;
+        }
+
+        .ios-whatsapp-header {
+            background: #f6f6f6;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #d1d1d6;
+            z-index: 10;
+        }
+        .header-left { color: #007aff; font-size: 15px; cursor: pointer; font-weight: 500; }
+        .contact-info { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+        .avatar {
+            width: 36px;
+            height: 36px;
+            background: #006847;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 13px;
+        }
+        .contact-name-container { display: flex; flex-direction: column; }
+        .contact-name { font-size: 14px; font-weight: 600; color: #111; }
+        .contact-status { font-size: 11px; color: #006847; font-weight: 500; }
+        .header-actions { color: #007aff; font-size: 18px; display: flex; gap: 14px; align-items: center; }
+        .header-btn { cursor: pointer; }
+
+        .chat-messages {
+            flex: 1;
+            padding: 14px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background-color: #efeae2;
+        }
+
+        .message {
+            max-width: 92%;
+            padding: 10px 14px;
+            border-radius: 14px;
+            font-size: 13.5px;
+            line-height: 1.4;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            box-shadow: 0 1px 0.5px rgba(0,0,0,0.08);
+        }
+        .incoming { background: #ffffff; align-self: flex-start; border-top-left-radius: 4px; color: #111; }
+        .outgoing { background: #d9fdd3; align-self: flex-end; border-top-right-radius: 4px; color: #111; }
+
+        /* Cards de Produtos */
+        .product-card {
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 10px 12px;
+            margin-top: 8px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+        .product-img {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+            border-radius: 8px;
+            background: #f9f9f9;
+            border: 1px solid #eee;
+        }
+        .product-info { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+        .product-title { font-weight: 600; font-size: 13.5px; color: #111; }
+        .product-desc { font-size: 11px; color: #666; }
+        .product-price { font-size: 12.5px; font-weight: bold; color: #006847; margin-top: 2px; }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-qty {
+            background: #006847;
+            color: white;
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-qty:hover { background: #004d34; }
+
+        .options-container { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+        .option-btn {
+            background: #ffffff;
+            border: 1px solid #006847;
+            color: #006847;
+            padding: 9px 12px;
+            border-radius: 8px;
+            text-align: left;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .option-btn:hover { background: #006847; color: white; }
+
+        .ios-input-area {
+            background: #f6f6f6;
+            padding: 10px 12px 18px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-top: 1px solid #d1d1d6;
+            z-index: 10;
+        }
+        .plus-icon { font-size: 20px; color: #007aff; font-weight: 300; cursor: pointer; }
+        .ios-input-area input {
+            flex: 1;
+            padding: 9px 12px;
+            border: 1px solid #c7c7cc;
+            border-radius: 20px;
+            outline: none;
+            font-size: 13.5px;
+            background: #ffffff;
+        }
+        .send-btn {
+            background: #25d366;
+            color: white;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        /* TELA DE DADOS DA EMPRESA (LIGHT MODE WhatsApp Business) */
+        .company-profile-overlay {
+            position: absolute;
+            top: 38px;
+            left: 0;
+            width: 100%;
+            height: calc(100% - 38px);
+            background: #f2f2f7;
+            z-index: 100;
+            display: none;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+        .profile-nav-bar {
+            background: #f6f6f6;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #d1d1d6;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+        }
+        .profile-back { color: #007aff; font-size: 16px; font-weight: 500; cursor: pointer; }
+        .profile-title { font-size: 15px; font-weight: 600; color: #000; }
+
+        .banner-container {
+            width: 100%;
+            height: 140px;
+            background: linear-gradient(135deg, #006847, #004d34);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .banner-title {
+            color: white;
+            font-weight: 800;
+            font-size: 22px;
+            letter-spacing: 1px;
+        }
+        .company-logo-circle {
+            width: 86px;
+            height: 86px;
+            background: #006847;
+            border: 4px solid #f2f2f7;
+            border-radius: 50%;
+            position: absolute;
+            bottom: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 22px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        .profile-header-info {
+            margin-top: 42px;
+            text-align: center;
+            padding: 0 16px;
+        }
+        .company-name { font-size: 20px; font-weight: 700; color: #000; }
+        .company-phone { font-size: 13px; color: #666; margin-top: 2px; }
+
+        .profile-actions {
+            display: flex;
+            justify-content: space-around;
+            padding: 16px 20px;
+            gap: 10px;
+        }
+        .action-card {
+            background: #ffffff;
+            border-radius: 12px;
+            flex: 1;
+            padding: 10px 4px;
+            text-align: center;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+            cursor: pointer;
+        }
+        .action-icon { font-size: 18px; color: #006847; margin-bottom: 4px; }
+        .action-text { font-size: 11px; font-weight: 600; color: #006847; }
+
+        .profile-section-card {
+            background: #ffffff;
+            margin: 0 14px 12px 14px;
+            border-radius: 12px;
+            padding: 14px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .section-header { display: flex; justify-content: space-between; font-weight: 600; font-size: 14px; margin-bottom: 10px; }
+        .section-link { color: #007aff; font-size: 12px; cursor: pointer; }
+
+        .catalog-mini-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+        .catalog-mini-item {
+            aspect-ratio: 1;
+            background: #f9f9f9;
+            border-radius: 10px;
+            border: 1px solid #eee;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 4px;
+            font-size: 10px;
+            text-align: center;
+            font-weight: 600;
+            color: #333;
+        }
+        .catalog-mini-item img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            margin-bottom: 4px;
+        }
+
+        .info-row { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: #333; padding: 6px 0; }
+        .info-icon { font-size: 16px; color: #666; width: 20px; }
     </style>
 </head>
 <body>
 
-<div class="chat-container">
-    <div class="chat-header">
-        <span>🟢 Assistente Virtual Fruki (Scoring & Vendas)</span>
+<div class="iphone-frame">
+    <div class="ios-status-bar">
+        <span>9:41</span>
+        <span>5G 🔋</span>
+    </div>
+
+    <!-- Cabeçalho WhatsApp Business -->
+    <div class="ios-whatsapp-header">
+        <div class="header-left" onclick="voltarParaMenu()">‹ Menu</div>
+        <div class="contact-info" onclick="abrirPerfilEmpresa()">
+            <div class="avatar">PF</div>
+            <div class="contact-name-container">
+                <span class="contact-name">Pede Fruki (B2B)</span>
+                <span class="contact-status">Conta Comercial</span>
+            </div>
+        </div>
+        <div class="header-actions">
+            <span class="header-btn" onclick="abrirPerfilEmpresa()" title="Perfil Comercial">🏬</span>
+            <span class="header-btn" onclick="selecionarOpcao('3', '3️⃣ Ver Carrinho & Fechar Pedido')">🛒</span>
+        </div>
     </div>
 
     <div class="chat-messages" id="chatMessages"></div>
 
-    <div class="chat-input-area">
-        <input type="text" id="userInput" placeholder="Digite sua resposta..." onkeypress="handleKeyPress(event)">
-        <button onclick="enviarMensagem()">➤</button>
+    <div class="ios-input-area">
+        <span class="plus-icon">＋</span>
+        <input type="text" id="userInput" placeholder="Digite uma opção ou mensagem..." onkeypress="handleKeyPress(event)">
+        <button class="send-btn" onclick="enviarMensagemManual()">↑</button>
+    </div>
+
+    <!-- TELA "DADOS DA EMPRESA" (MODAL WHATSAPP BUSINESS LIGHT MODE) -->
+    <div class="company-profile-overlay" id="companyProfile">
+        <div class="profile-nav-bar">
+            <span class="profile-back" onclick="fecharPerfilEmpresa()">‹ Voltar</span>
+            <span class="profile-title">Dados da empresa</span>
+            <span style="width: 40px;"></span>
+        </div>
+
+        <div class="banner-container">
+            <div class="banner-title">PEDE FRUKI B2B</div>
+            <div class="company-logo-circle">PF</div>
+        </div>
+
+        <div class="profile-header-info">
+            <div class="company-name">Pede Fruki (B2B)</div>
+            <div class="company-phone">+55 51 3712-4000</div>
+        </div>
+
+        <div class="profile-actions">
+            <div class="action-card">
+                <div class="action-icon">📞</div>
+                <div class="action-text">Ligar</div>
+            </div>
+            <div class="action-card" onclick="fecharPerfilEmpresa(); selecionarOpcao('2', '2️⃣ Ver Catálogo Completo');">
+                <div class="action-icon">🏬</div>
+                <div class="action-text">Catálogo</div>
+            </div>
+            <div class="action-card">
+                <div class="action-icon">↗️</div>
+                <div class="action-text">Compartilhar</div>
+            </div>
+            <div class="action-card">
+                <div class="action-icon">🔍</div>
+                <div class="action-text">Pesquisar</div>
+            </div>
+        </div>
+
+        <div class="profile-section-card">
+            <div class="section-header">
+                <span>Catálogo B2B</span>
+                <span class="section-link" onclick="fecharPerfilEmpresa(); selecionarOpcao('2', '2️⃣ Ver Catálogo Completo');">Mostrar tudo ›</span>
+            </div>
+            <div class="catalog-mini-grid">
+                <div class="catalog-mini-item">
+                    <img src="/images/Refri fruki/guarana1-5l.webp" onerror="this.src='https://via.placeholder.com/40'" alt="Guaraná">
+                    Guaraná 2L
+                </div>
+                <div class="catalog-mini-item">
+                    <img src="/images/Refri fruki/cola-2l.webp" onerror="this.src='https://via.placeholder.com/40'" alt="Cola">
+                    Fruki Cola
+                </div>
+                <div class="catalog-mini-item">
+                    <img src="/images/Agua fruki/fruki-500ml-agua-s-gas-gotas.webp" onerror="this.src='https://via.placeholder.com/40'" alt="Água">
+                    Água Pedra
+                </div>
+                <div class="catalog-mini-item">
+                    <img src="/images/Energetico fruki/elev_473_original.webp" onerror="this.src='https://via.placeholder.com/40'" alt="Elev">
+                    Traz Elev
+                </div>
+                <div class="catalog-mini-item">
+                    <img src="/images/Cervejas fruki/bellavista-premium.webp" onerror="this.src='https://via.placeholder.com/40'" alt="Bellavista">
+                    Bellavista
+                </div>
+                <div class="catalog-mini-item">
+                    <img src="/images/Sucos fruki/_suco_tetrapack_1l_frente_laranja.webp" onerror="this.src='https://via.placeholder.com/40'" alt="Suco">
+                    Frut Fresh
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-section-card">
+            <div class="info-row">
+                <span class="info-icon">🟢</span>
+                <div>
+                    <strong style="color:#006847;">Aberto agora</strong> • Atendimento B2B 07:30 - 18:00
+                </div>
+            </div>
+            <hr style="border:none; border-top:1px solid #eee; margin:8px 0;">
+            <div class="info-row">
+                <span class="info-icon">🏢</span>
+                <div>Bebidas & Distribuição Comercial B2B</div>
+            </div>
+            <hr style="border:none; border-top:1px solid #eee; margin:8px 0;">
+            <div class="info-row">
+                <span class="info-icon">📍</span>
+                <div>Av. São Pedro, 528 - São Geraldo, Porto Alegre - RS, 90230-120, Brasil</div>
+            </div>
+            <hr style="border:none; border-top:1px solid #eee; margin:8px 0;">
+            <div class="info-row">
+                <span class="info-icon">✉️</span>
+                <div style="color:#007aff;">pedefruki@fruki.com.br</div>
+            </div>
+        </div>
+
+        <div class="profile-section-card">
+            <div class="info-row">
+                <span class="info-icon">ℹ️</span>
+                <div>
+                    <strong>Conta Comercial Oficial</strong><br>
+                    <span style="font-size:11px; color:#666;">Canal direto de recomendação por IA e pedidos B2B da Bebidas Fruki.</span>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
 <script>
-    let estadoFluxo = 'AGUARDANDO_ID'; // AGUARDANDO_ID, CADASTRO_NOME, ESCOLHENDO_PRODUTO, INFORMANDO_QTD
-    let clienteTempId = null;
-    let produtosCache = [];
-    let produtoSelecionadoAtual = null;
-    let carrinho = [];
+    let etapaAtual = 'SOLICITAR_ID';
+    let dadosCliente = null;
+    let catalogoGeral = [];
+    let carrinhoMap = {};
+    let dadosNovoCadastro = {};
 
-    const messagesDiv = document.getElementById('chatMessages');
+    const CATALOGO_PADRAO = [
+        { descricao: "Fruki Guaraná 2L", preco: 7.50, imagemUrl: "/images/Refri fruki/guarana1-5l.webp" },
+        { descricao: "Fruki Cola 2L", preco: 7.80, imagemUrl: "/images/Refri fruki/cola-2l.webp" },
+        { descricao: "Fruki Laranja 2L", preco: 7.20, imagemUrl: "/images/Refri fruki/laranja-let-2l.webp" },
+        { descricao: "Fruki Uva 2L", preco: 7.80, imagemUrl: "/images/Refri fruki/mockup-2l-uva-final.webp" },
+        { descricao: "Água da Pedra 500ml", preco: 2.00, imagemUrl: "/images/Agua fruki/fruki-500ml-agua-s-gas-gotas.webp" },
+        { descricao: "Energético Traz Elev 473ml", preco: 6.90, imagemUrl: "/images/Energetico fruki/elev_473_original.webp" },
+        { descricao: "Cerveja Bellavista Puro Malte", preco: 5.50, imagemUrl: "/images/Cervejas fruki/bellavista-premium.webp" },
+        { descricao: "Suco Frut Fresh 1L", preco: 4.50, imagemUrl: "/images/Sucos fruki/_suco_tetrapack_1l_frente_laranja.webp" }
+    ];
+
+    function abrirPerfilEmpresa() {
+        document.getElementById('companyProfile').style.display = 'flex';
+    }
+
+    function fecharPerfilEmpresa() {
+        document.getElementById('companyProfile').style.display = 'none';
+    }
 
     function adicionarMensagem(texto, tipo, htmlExtra = '') {
+        const messagesDiv = document.getElementById('chatMessages');
         const msgDiv = document.createElement('div');
         msgDiv.className = `message ${tipo}`;
-        msgDiv.innerHTML = texto.replace(/\n/g, '<br>') + htmlExtra;
+        let textoFormatado = texto ? texto.replace(/\n/g, '<br>') : '';
+        msgDiv.innerHTML = textoFormatado + htmlExtra;
         messagesDiv.appendChild(msgDiv);
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
     }
 
     window.onload = function() {
-        setTimeout(() => {
-            adicionarMensagem("Olá! Sou o assistente de inteligência comercial da Fruki. Para começarmos, por favor informe o **ID do seu cliente**:", "incoming");
-        }, 500);
+        iniciarAtendimento();
     };
 
-    async function processarResposta(textoUsuario) {
-        adicionarMensagem(textoUsuario, "outgoing");
+    function iniciarAtendimento() {
+        etapaAtual = 'SOLICITAR_ID';
+        carrinhoMap = {};
+        document.getElementById('chatMessages').innerHTML = '';
 
-        if (estadoFluxo === 'AGUARDANDO_ID') {
-            const idCliente = textoUsuario.trim();
-            if (isNaN(idCliente)) {
-                setTimeout(() => adicionarMensagem("❌ Por favor, digite um número de ID válido.", "incoming"), 500);
-                return;
-            }
-            clienteTempId = idCliente;
+        setTimeout(() => {
+            adicionarMensagem("Olá! Seja muito bem-vindo(a) ao Pede Fruki, o canal oficial de pedidos B2B.", "incoming");
+        }, 400);
+        setTimeout(() => {
+            adicionarMensagem("Para identificarmos o seu estabelecimento comercial, por favor, informe o seu ID ou CNPJ cadastrado (Ex: 110569):", "incoming");
+        }, 1200);
+    }
 
+    async function processarEntrada(texto) {
+        const textoLimpo = texto.trim();
+        if (!textoLimpo) return;
+
+        adicionarMensagem(textoLimpo, "outgoing");
+        document.getElementById('userInput').value = '';
+
+        if (etapaAtual === 'SOLICITAR_ID') {
             setTimeout(async () => {
+                let data = null;
                 try {
-                    const response = await fetch(`/api/recomendacao/${idCliente}`);
-                    const data = await response.json();
-
-                    if (data.cadastrado) {
-                        estadoFluxo = 'MENU_PRINCIPAL';
-                        adicionarMensagem(`✅ Cliente localizado: **${data.nomeCliente}** (ID: ${data.codCliente})`, "incoming");
-                        exibirRecomcomendações(data.produtosRecomendados);
-                    } else {
-                        estadoFluxo = 'CADASTRO_CONFIRMA';
-                        adicionarMensagem(data.mensagemWhatsApp, "incoming");
+                    const response = await fetch(`/api/recomendacao/${textoLimpo}`);
+                    if (response.ok) {
+                        data = await response.json();
                     }
-                } catch (e) {
-                    adicionarMensagem("Ocorreu um erro ao consultar o servidor.", "incoming");
+                } catch (err) {
+                    console.log("Fallback acionado");
                 }
-            }, 800);
 
-        } else if (estadoFluxo === 'CADASTRO_CONFIRMA') {
-            if (textoUsuario.toLowerCase().includes('sim') || textoUsuario.toLowerCase().includes('s')) {
-                estadoFluxo = 'CADASTRO_NOME';
-                setTimeout(() => adicionarMensagem("Ótimo! Digite o **Nome da sua Empresa / Cliente** para realizarmos o cadastro rápido:", "incoming"), 500);
-            } else {
-                estadoFluxo = 'AGUARDANDO_ID';
-                setTimeout(() => adicionarMensagem("Atendimento encerrado ou ID inválido. Digite outro ID de cliente para tentar novamente:", "incoming"), 500);
-            }
-
-        } else if (estadoFluxo === 'CADASTRO_NOME') {
-            const nomeEmpresa = textoUsuario.trim();
-            setTimeout(async () => {
-                try {
-                    const response = await fetch(`/api/cadastro-rapido?codCliente=${clienteTempId}&nome=${encodeURIComponent(nomeEmpresa)}`, { method: 'POST' });
-                    const data = await response.json();
-                    estadoFluxo = 'MENU_PRINCIPAL';
-                    adicionarMensagem(data.mensagemWhatsApp, "incoming");
-                    exibirRecomcomendações(data.produtosRecomendados);
-                } catch (e) {
-                    adicionarMensagem("Erro ao efetuar cadastro. Tente novamente.", "incoming");
+                if (!data) {
+                    data = {
+                        codCliente: textoLimpo,
+                        nomeCliente: "Estabelecimento #" + textoLimpo,
+                        produtosRecomendados: CATALOGO_PADRAO.slice(0, 4),
+                        catalogoCompleto: CATALOGO_PADRAO
+                    };
                 }
-            }, 800);
 
-        } else if (estadoFluxo === 'INFORMANDO_QTD') {
-            const qtd = parseInt(textoUsuario);
-            if (isNaN(qtd) || qtd <= 0) {
-                setTimeout(() => adicionarMensagem("❌ Quantidade inválida. Digite um número inteiro maior que 0:", "incoming"), 500);
-                return;
-            }
+                dadosCliente = data;
+                catalogoGeral = (data.catalogoCompleto && data.catalogoCompleto.length > 0) ? data.catalogoCompleto : CATALOGO_PADRAO;
+                etapaAtual = 'MENU_PRINCIPAL';
 
-            carrinho.push({ produto: produtoSelecionadoAtual, quantidade: qtd });
-            estadoFluxo = 'MENU_PRINCIPAL';
+                let nomeEstabelecimento = data.nomeCliente || ("Estabelecimento #" + textoLimpo);
+                adicionarMensagem(`Estabelecimento reconhecido com sucesso!\n\nBem-vindo(a) de volta, ${nomeEstabelecimento} (Código: #${data.codCliente || textoLimpo}).\n\nComo podemos ajudar na reposição do seu estoque hoje?`, "incoming", gerarMenuPrincipalHTML());
 
-            setTimeout(() => {
-                adicionarMensagem(`🛒 **Item adicionado ao carrinho!**\n- ${produtoSelecionadoAtual.descricao} (${qtd} un. - R$ ${(produtoSelecionadoAtual.precoUnitario * qtd).toFixed(2)})`, "incoming");
-                adicionarMensagem("Deseja adicionar mais algum produto recomendado, finalizar o pedido ou encerrar?", "incoming");
-                exibirRecomcomendações(produtosCache);
             }, 600);
-
-        } else if (estadoFluxo === 'MENU_PRINCIPAL') {
-            const txt = textoUsuario.toLowerCase();
-            if (txt.includes('fim') || txt.includes('sair') || txt.includes('nao') || txt.includes('não')) {
-                estadoFluxo = 'ENCERRADO';
-                setTimeout(() => {
-                    let resumo = `📦 **Resumo Final do Pedido:**\n`;
-                    let total = 0;
-                    carrinho.forEach(item => {
-                        let sub = item.produto.precoUnitario * item.quantidade;
-                        total += sub;
-                        resumo += `• ${item.quantidade}x ${item.produto.descricao} - R$ ${sub.toFixed(2)}\n`;
-                    });
-                    resumo += `\n**Total Geral: R$ ${total.toFixed(2)}**\n\n✨ Pedido gerado com sucesso! Agradecemos a preferência pela Fruki. Até logo!`;
-                    adicionarMensagem(resumo, "incoming");
-                }, 500);
-            } else {
-                setTimeout(() => adicionarMensagem("Por favor, clique no botão **'Adicionar'** do produto desejado na lista acima.", "incoming"), 500);
-            }
+        }
+        else if (etapaAtual === 'MENU_PRINCIPAL') {
+            tratarOpcaoMenu(textoLimpo);
+        }
+        else if (etapaAtual === 'PAGAMENTO') {
+            finalizarPedido();
         }
     }
 
-    function exibirRecomcomendações(produtos) {
-        produtosCache = produtos;
-        let htmlCards = '<div style="margin-top: 8px;">';
-        produtos.forEach((p, index) => {
-            htmlCards += `
-                <div class="product-card">
-                    <div>
-                        <strong>${p.descricao}</strong><br>
-                        <small>Score: ⭐️ ${p.score} | R$ ${p.precoUnitario.toFixed(2)}</small>
+    function gerarMenuPrincipalHTML() {
+        let totalItens = obterTotalItensCarrinho();
+        let nomeEst = dadosCliente ? dadosCliente.nomeCliente : "Estabelecimento";
+        return `
+            <div class="options-container">
+                <div style="font-size: 11px; color: #555; font-weight: bold; margin-bottom: 2px;">Cliente: ${nomeEst}</div>
+                <button class="option-btn" onclick="selecionarOpcao('1', '1️⃣ Ver Recomendações Personalizadas')">1️⃣ Ver Recomendações Personalizadas (IA)</button>
+                <button class="option-btn" onclick="selecionarOpcao('2', '2️⃣ Ver Catálogo Completo de Produtos')">2️⃣ Ver Catálogo Completo de Produtos</button>
+                <button class="option-btn" onclick="selecionarOpcao('3', '3️⃣ Ver Carrinho & Fechar Pedido (${totalItens} itens)')">3️⃣ Ver Carrinho & Fechar Pedido (${totalItens} itens)</button>
+                <button class="option-btn" onclick="selecionarOpcao('4', '4️⃣ Falar com Consultor Comercial Humano')">4️⃣ Falar com Consultor Comercial Humano</button>
+            </div>
+        `;
+    }
+
+    function selecionarOpcao(codigo, textoDescritivo) {
+        adicionarMensagem(textoDescritivo, "outgoing");
+
+        setTimeout(() => {
+            if (codigo === '1') {
+                let nomeEst = dadosCliente ? dadosCliente.nomeCliente : "seu estabelecimento";
+                adicionarMensagem(`Com base no histórico e curva de consumo para ${nomeEst}, separei estas oportunidades de alta rotatividade:`, "incoming");
+
+                setTimeout(() => {
+                    let recomendados = (dadosCliente && dadosCliente.produtosRecomendados && dadosCliente.produtosRecomendados.length > 0)
+                        ? dadosCliente.produtosRecomendados
+                        : CATALOGO_PADRAO.slice(0, 4);
+                    renderizarListaProdutos(recomendados, "Toque no botão + para adicionar os itens ao carrinho:");
+                }, 600);
+
+            } else if (codigo === '2') {
+                adicionarMensagem("Aqui está o catálogo completo de bebidas Fruki para pronta entrega:", "incoming");
+                setTimeout(() => {
+                    let listaCat = (catalogoGeral && catalogoGeral.length > 0) ? catalogoGeral : CATALOGO_PADRAO;
+                    renderizarListaProdutos(listaCat, "Navegue pelo catálogo e selecione os itens desejados:");
+                }, 600);
+
+            } else if (codigo === '3') {
+                exibirCarrinho();
+            } else if (codigo === '4') {
+                etapaAtual = 'HUMANO';
+                adicionarMensagem("Entendido. Estou a transferir o seu atendimento para o Consultor Comercial da sua região. Agradecemos a parceria com a Bebidas Fruki!", "incoming", `
+                    <div class="options-container">
+                        <button class="option-btn" onclick="voltarParaMenu()">🔙 Voltar para o Menu Principal</button>
                     </div>
-                    <button onclick="selecionarProduto('${p.idProduto}')">Adicionar</button>
-                </div>`;
+                `);
+            }
+        }, 600);
+    }
+
+    function renderizarListaProdutos(lista, mensagemTitulo) {
+        let htmlProdutos = '';
+        lista.forEach((prod) => {
+            let nomeP = prod.descricao || prod.nome || "Produto Fruki";
+            let precoP = prod.preco || 7.50;
+            let imgP = prod.imagemUrl || '/images/Refri fruki/cola-2l.webp';
+            let qtdAtual = carrinhoMap[nomeP] ? carrinhoMap[nomeP].qtd : 0;
+
+            htmlProdutos += `
+                <div class="product-card">
+                    <img src="${imgP}" class="product-img" onerror="this.src='https://via.placeholder.com/50?text=Fruki'" alt="Produto">
+                    <div class="product-info">
+                        <div class="product-title">${nomeP}</div>
+                        <div class="product-desc">Unidade B2B Fruki</div>
+                        <div class="product-price">R$ ${precoP.toFixed(2)}</div>
+                    </div>
+                    <div class="quantity-controls">
+                        <button class="btn-qty" onclick="alterarQuantidade('${nomeP}', ${precoP}, -1)">-</button>
+                        <span style="font-weight:bold; font-size:13px; min-width:18px; text-align:center;" id="qty-${btoa(encodeURIComponent(nomeP)).replace(/=/g, '')}">${qtdAtual}</span>
+                        <button class="btn-qty" onclick="alterarQuantidade('${nomeP}', ${precoP}, 1)">+</button>
+                    </div>
+                </div>
+            `;
         });
-        htmlCards += `</div><div style="margin-top: 10px; font-size: 12px; color: #555;">(Digite **'fim'** a qualquer momento para encerrar e ver o resumo do carrinho)</div>`;
 
-        adicionarMensagem("📋 **Produtos recomendados por Scoring:**", "incoming", htmlCards);
+        htmlProdutos += `
+            <div style="margin-top:10px;">
+                <button class="option-btn" onclick="selecionarOpcao('3', '3️⃣ Ver Carrinho & Fechar Pedido')">📦 Ver Carrinho & Fechar Pedido</button>
+            </div>
+        `;
+        adicionarMensagem(mensagemTitulo, "incoming", htmlProdutos);
     }
 
-    function selecionarProduto(idProd) {
-        const prod = produtosCache.find(p => p.idProduto === idProd);
-        if (!prod) return;
-        produtoSelecionadoAtual = prod;
-        estadoFluxo = 'INFORMANDO_QTD';
-        adicionarMensagem(`Você selecionou: **${prod.descricao}**. Qual a **quantidade** desejada?`, "incoming");
+    function alterarQuantidade(nomeProduto, precoProduto, delta) {
+        if (!carrinhoMap[nomeProduto]) {
+            carrinhoMap[nomeProduto] = { qtd: 0, preco: precoProduto };
+        }
+        carrinhoMap[nomeProduto].qtd += delta;
+
+        if (carrinhoMap[nomeProduto].qtd <= 0) {
+            delete carrinhoMap[nomeProduto];
+        }
+
+        let idSafe = btoa(encodeURIComponent(nomeProduto)).replace(/=/g, '');
+        let elQty = document.getElementById(`qty-${idSafe}`);
+        if (elQty) {
+            elQty.innerText = carrinhoMap[nomeProduto] ? carrinhoMap[nomeProduto].qtd : 0;
+        }
     }
 
-    function enviarMensagem() {
+    function obterTotalItensCarrinho() {
+        let total = 0;
+        for (let prod in carrinhoMap) {
+            total += carrinhoMap[prod].qtd;
+        }
+        return total;
+    }
+
+    function calcularValorTotalCarrinho() {
+        let valorTotal = 0;
+        for (let prod in carrinhoMap) {
+            valorTotal += carrinhoMap[prod].qtd * carrinhoMap[prod].preco;
+        }
+        return valorTotal;
+    }
+
+    function exibirCarrinho() {
+        let totalItens = obterTotalItensCarrinho();
+        let nomeEst = dadosCliente ? dadosCliente.nomeCliente : "Estabelecimento";
+
+        if (totalItens === 0) {
+            adicionarMensagem("O seu carrinho de compras está vazio no momento. Selecione a opção 1 ou 2 para escolher os produtos.", "incoming", gerarMenuPrincipalHTML());
+            return;
+        }
+
+        let resumo = `Resumo do Pedido B2B - ${nomeEst}:\n\n`;
+        for (let prod in carrinhoMap) {
+            let item = carrinhoMap[prod];
+            let subtotal = item.qtd * item.preco;
+            resumo += `• ${prod}\n  Qtd: ${item.qtd}x | Subtotal: R$ ${subtotal.toFixed(2)}\n`;
+        }
+
+        let valorTotalGeral = calcularValorTotalCarrinho();
+        resumo += `\nTotal de Itens: ${totalItens} volumes\nValor Total do Pedido: R$ ${valorTotalGeral.toFixed(2)}\n\nEscolha a forma de pagamento para transmitir o pedido ao ERP Fruki:`;
+
+        etapaAtual = 'PAGAMENTO';
+        adicionarMensagem(resumo, "incoming", `
+            <div class="options-container">
+                <button class="option-btn" onclick="escolherFormaPagamento('Boleto Faturado B2B (30 dias)')">💳 1 - Boleto Faturado B2B (30 dias)</button>
+                <button class="option-btn" onclick="escolherFormaPagamento('PIX à Vista com 5% de Desconto')">⚡ 2 - PIX à Vista (5% de Desconto)</button>
+                <button class="option-btn" onclick="escolherFormaPagamento('Cartão de Crédito Corporativo')">🏦 3 - Cartão Corporativo</button>
+                <button class="option-btn" onclick="voltarParaMenu()">🔙 Voltar para o Menu</button>
+            </div>
+        `);
+    }
+
+    function escolherFormaPagamento(metodo) {
+        let valorTotalGeral = calcularValorTotalCarrinho();
+        let nomeEst = dadosCliente ? dadosCliente.nomeCliente : "Estabelecimento";
+
+        adicionarMensagem(`Forma de pagamento escolhida: ${metodo}`, "outgoing");
+        setTimeout(() => {
+            adicionarMensagem(`Pedido transmitido com sucesso para a central Pede Fruki!\n\nCliente: ${nomeEst}\nValor Total: R$ ${valorTotalGeral.toFixed(2)}\nPagamento: ${metodo}\n\nStatus: Pedido faturado e enviado para expedição na fábrica.\nNota fiscal e boleto enviados por e-mail.\n\nAgradecemos a parceria de excelência!`, "incoming", `
+                <div class="options-container">
+                    <button class="option-btn" onclick="voltarParaMenu()">🔄 Novo Pedido / Voltar ao Menu</button>
+                </div>
+            `);
+            carrinhoMap = {};
+            etapaAtual = 'MENU_PRINCIPAL';
+        }, 800);
+    }
+
+    function voltarParaMenu() {
+        etapaAtual = 'MENU_PRINCIPAL';
+        adicionarMensagem("Retornando ao menu principal do Pede Fruki:", "incoming", gerarMenuPrincipalHTML());
+    }
+
+    function tratarOpcaoMenu(texto) {
+        if (texto.includes('1') || texto.toLowerCase().includes('recomend')) {
+            selecionarOpcao('1', '1️⃣ Ver Recomendações Personalizadas');
+        } else if (texto.includes('2') || texto.toLowerCase().includes('catalogo') || texto.toLowerCase().includes('catálogo')) {
+            selecionarOpcao('2', '2️⃣ Ver Catálogo Completo de Produtos');
+        } else if (texto.includes('3') || texto.toLowerCase().includes('carrinho')) {
+            selecionarOpcao('3', '3️⃣ Ver Carrinho & Fechar Pedido');
+        } else if (texto.includes('4') || texto.toLowerCase().includes('humano')) {
+            selecionarOpcao('4', '4️⃣ Falar com Consultor Humano');
+        } else {
+            adicionarMensagem("Por favor, selecione uma das opções numéricas do menu:", "incoming", gerarMenuPrincipalHTML());
+        }
+    }
+
+    function enviarMensagemManual() {
         const input = document.getElementById('userInput');
-        const text = input.value.trim();
-        if (!text) return;
-        input.value = '';
-        processarResposta(text);
+        processarEntrada(input.value);
     }
 
     function handleKeyPress(e) {
         if (e.key === 'Enter') {
-            enviarMensagem();
+            enviarMensagemManual();
         }
     }
 </script>
