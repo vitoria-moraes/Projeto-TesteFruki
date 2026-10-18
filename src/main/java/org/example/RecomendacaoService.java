@@ -76,6 +76,19 @@ public class RecomendacaoService {
         return buscarDadosCompletos(codCliente, null, null);
     }
 
+    /**
+     * Busca o cliente pelo código ERP ou pelo id interno, sem criar cliente fictício.
+     * Usado pelo controller para distinguir "existe" de "não existe" (404 real).
+     */
+    public Cliente buscarCliente(Long codCliente) {
+        if (codCliente == null) return null;
+        return carregarClientes().stream()
+                .filter(Objects::nonNull)
+                .filter(c -> codCliente.equals(c.getCodCliente()) || codCliente.equals(c.getIdCliente()))
+                .findFirst()
+                .orElse(null);
+    }
+
     public Map<String, Object> buscarDadosCompletos(Long codCliente, Double temperaturaSimulada, Integer diasFeriadoSimulado) {
         List<Cliente> clientes = new ArrayList<>();
         try {
@@ -246,7 +259,7 @@ public class RecomendacaoService {
             porNome.putIfAbsent("Fruki Guaraná 2L", new ItemCatalogo("901", "Fruki Guaraná 2L", REFRI, 7.50, "/images/Refri fruki/guarana1-5l.webp"));
             porNome.putIfAbsent("Fruki Cola 2L", new ItemCatalogo("902", "Fruki Cola 2L", REFRI, 7.80, "/images/Refri fruki/cola-2l.webp"));
             porNome.putIfAbsent("Água da Pedra 500ml", new ItemCatalogo("903", "Água da Pedra 500ml", AGUA, 2.00, "/images/Agua fruki/fruki-500ml-agua-s-gas-gotas.webp"));
-            porNome.putIfAbsent("Energético Traz Elev 473ml", new ItemCatalogo("904", "Energético Traz Elev 473ml", ENERGETICO, 6.90, "/images/Energetico fruki/elev_473_original.webp"));
+            porNome.putIfAbsent("Energético Traz Elev 473ml", new ItemCatalogo("904", "Energético Traz Elev 473ml", ENERGETICO, 6.90, "/images/Energetico fruki/eleve_473_original.webp"));
             porNome.putIfAbsent("Cerveja Bellavista Puro Malte", new ItemCatalogo("905", "Cerveja Bellavista Puro Malte", CERVEJA, 5.50, "/images/Cervejas fruki/bellavista-premium.webp"));
             porNome.putIfAbsent("Suco Frut Fresh 1L", new ItemCatalogo("906", "Suco Frut Fresh 1L", SUCO, 4.80, "/images/Sucos fruki/_suco_tetrapack_1l_frente_laranja.webp"));
         }
@@ -308,7 +321,7 @@ public class RecomendacaoService {
             if (descOriginal.contains("UVA")) return "/images/Refri fruki/mockup-2l-uva-final.webp";
             return "/images/Refri fruki/guarana1-5l.webp";
         } else if (descOriginal.contains("ENERGETICO") || descOriginal.contains("ENERGÉTICO")) {
-            return "/images/Energetico fruki/elev_473_original.webp";
+            return "/images/Energetico fruki/eleve_473_original.webp";
         } else if (descOriginal.contains("AGUA") || descOriginal.contains("ÁGUA")) {
             return "/images/Agua fruki/fruki-500ml-agua-s-gas-gotas.webp";
         } else if (descOriginal.contains("CERVEJA")) {

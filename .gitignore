@@ -37,3 +37,9 @@ build/
 
 ### Mac OS ###
 .DS_Store
+### Ambiente local (build do agente)
+.m2repo/
+.mvn-settings.xml
+.build-*.log
+.mvn-debug.log
+

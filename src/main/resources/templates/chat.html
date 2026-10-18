@@ -2,6 +2,7 @@
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Pede Fruki - WhatsApp Business B2B</title>
     <style>
         * { box-sizing: border-box; }
@@ -64,6 +65,8 @@
             color: white;
             font-weight: bold;
             font-size: 13px;
+            object-fit: cover;
+            flex-shrink: 0;
         }
         .contact-name-container { display: flex; flex-direction: column; }
         .contact-name { font-size: 14px; font-weight: 600; color: #111; }
@@ -87,7 +90,7 @@
             border-radius: 14px;
             font-size: 13.5px;
             line-height: 1.4;
-            white-space: pre-wrap;
+            white-space: normal;
             word-wrap: break-word;
             box-shadow: 0 1px 0.5px rgba(0,0,0,0.08);
         }
@@ -119,6 +122,22 @@
         .product-title { font-weight: 600; font-size: 13.5px; color: #111; }
         .product-desc { font-size: 11px; color: #666; }
         .product-price { font-size: 12.5px; font-weight: bold; color: #006847; margin-top: 2px; }
+        .product-card.recomendado { border-color: #25d366; background: #f3fff7; }
+        .ia-badge {
+            display: inline-block;
+            background: #25d366;
+            color: #ffffff;
+            font-size: 9px;
+            font-weight: 700;
+            border-radius: 5px;
+            padding: 1px 4px;
+            margin-left: 4px;
+            vertical-align: middle;
+        }
+        .rec-group { margin: 12px 0 2px 0; }
+        .rec-group-title { font-size: 13px; font-weight: 700; color: #006847; margin-bottom: 2px; }
+        .rec-group-reason { font-size: 11.5px; color: #555; line-height: 1.35; margin-bottom: 6px; }
+        .qty-value { font-weight: bold; font-size: 13px; min-width: 18px; text-align: center; }
 
         .quantity-controls {
             display: flex;
@@ -249,6 +268,9 @@
             font-weight: bold;
             font-size: 22px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            object-fit: cover;
+            background: #ffffff;
+            overflow: hidden;
         }
 
         .profile-header-info {
@@ -330,7 +352,7 @@
     <div class="ios-whatsapp-header">
         <div class="header-left" onclick="voltarParaMenu()">‹ Menu</div>
         <div class="contact-info" onclick="abrirPerfilEmpresa()">
-            <div class="avatar">PF</div>
+            <img class="avatar" src="/images/brand/logo-fruki.svg" alt="Pede Fruki">
             <div class="contact-name-container">
                 <span class="contact-name">Pede Fruki (B2B)</span>
                 <span class="contact-status">Conta Comercial</span>
@@ -360,7 +382,7 @@
 
         <div class="banner-container">
             <div class="banner-title">PEDE FRUKI B2B</div>
-            <div class="company-logo-circle">PF</div>
+            <img class="company-logo-circle" src="/images/brand/logo-fruki.svg" alt="Pede Fruki">
         </div>
 
         <div class="profile-header-info">
@@ -394,27 +416,27 @@
             </div>
             <div class="catalog-mini-grid">
                 <div class="catalog-mini-item">
-                    <img src="/images/Refri fruki/guarana1-5l.webp" onerror="this.src='https://via.placeholder.com/40'" alt="Guaraná">
+                    <img src="/images/Refri fruki/guarana1-5l.webp" onerror="this.onerror=null;this.src='/images/brand/produto-placeholder.svg'" alt="Guaraná">
                     Guaraná 2L
                 </div>
                 <div class="catalog-mini-item">
-                    <img src="/images/Refri fruki/cola-2l.webp" onerror="this.src='https://via.placeholder.com/40'" alt="Cola">
+                    <img src="/images/Refri fruki/cola-2l.webp" onerror="this.onerror=null;this.src='/images/brand/produto-placeholder.svg'" alt="Cola">
                     Fruki Cola
                 </div>
                 <div class="catalog-mini-item">
-                    <img src="/images/Agua fruki/fruki-500ml-agua-s-gas-gotas.webp" onerror="this.src='https://via.placeholder.com/40'" alt="Água">
+                    <img src="/images/Agua fruki/fruki-500ml-agua-s-gas-gotas.webp" onerror="this.onerror=null;this.src='/images/brand/produto-placeholder.svg'" alt="Água">
                     Água Pedra
                 </div>
                 <div class="catalog-mini-item">
-                    <img src="/images/Energetico fruki/elev_473_original.webp" onerror="this.src='https://via.placeholder.com/40'" alt="Elev">
+                    <img src="/images/Energetico fruki/eleve_473_original.webp" onerror="this.onerror=null;this.src='/images/brand/produto-placeholder.svg'" alt="Elev">
                     Traz Elev
                 </div>
                 <div class="catalog-mini-item">
-                    <img src="/images/Cervejas fruki/bellavista-premium.webp" onerror="this.src='https://via.placeholder.com/40'" alt="Bellavista">
+                    <img src="/images/Cervejas fruki/bellavista-premium.webp" onerror="this.onerror=null;this.src='/images/brand/produto-placeholder.svg'" alt="Bellavista">
                     Bellavista
                 </div>
                 <div class="catalog-mini-item">
-                    <img src="/images/Sucos fruki/_suco_tetrapack_1l_frente_laranja.webp" onerror="this.src='https://via.placeholder.com/40'" alt="Suco">
+                    <img src="/images/Sucos fruki/_suco_tetrapack_1l_frente_laranja.webp" onerror="this.onerror=null;this.src='/images/brand/produto-placeholder.svg'" alt="Suco">
                     Frut Fresh
                 </div>
             </div>
@@ -460,18 +482,27 @@
     let etapaAtual = 'SOLICITAR_ID';
     let dadosCliente = null;
     let catalogoGeral = [];
+    let catalogoPromise = null;
     let carrinhoMap = {};
-    let dadosNovoCadastro = {};
+    let recomendadosPorCodigo = {};
+
+    const ORDEM_CATEGORIAS = ['AGUA', 'REFRIGERANTE', 'SUCO', 'ENERGETICO', 'CERVEJA', 'TONICA'];
+    const NOMES_CATEGORIAS = {
+        AGUA: 'Águas', REFRIGERANTE: 'Refrigerantes', SUCO: 'Sucos',
+        ENERGETICO: 'Energéticos', CERVEJA: 'Cervejas', TONICA: 'Tônicas'
+    };
+
+    const CNPJ_DEMO = '12345678000190';
 
     const CATALOGO_PADRAO = [
-        { descricao: "Fruki Guaraná 2L", preco: 7.50, imagemUrl: "/images/Refri fruki/guarana1-5l.webp" },
-        { descricao: "Fruki Cola 2L", preco: 7.80, imagemUrl: "/images/Refri fruki/cola-2l.webp" },
-        { descricao: "Fruki Laranja 2L", preco: 7.20, imagemUrl: "/images/Refri fruki/laranja-let-2l.webp" },
-        { descricao: "Fruki Uva 2L", preco: 7.80, imagemUrl: "/images/Refri fruki/mockup-2l-uva-final.webp" },
-        { descricao: "Água da Pedra 500ml", preco: 2.00, imagemUrl: "/images/Agua fruki/fruki-500ml-agua-s-gas-gotas.webp" },
-        { descricao: "Energético Traz Elev 473ml", preco: 6.90, imagemUrl: "/images/Energetico fruki/elev_473_original.webp" },
-        { descricao: "Cerveja Bellavista Puro Malte", preco: 5.50, imagemUrl: "/images/Cervejas fruki/bellavista-premium.webp" },
-        { descricao: "Suco Frut Fresh 1L", preco: 4.50, imagemUrl: "/images/Sucos fruki/_suco_tetrapack_1l_frente_laranja.webp" }
+        { codigo: 'AGUA-500', descricao: 'Água da Pedra 500ml sem gás', categoria: 'AGUA', preco: 2.00, embalagem: 'Caixa 12un', imagemUrl: '/images/Agua fruki/fruki-500ml-agua-s-gas-gotas.webp' },
+        { codigo: 'REFRI-GUARANA-2L', descricao: 'Fruki Guaraná 2L', categoria: 'REFRIGERANTE', preco: 7.50, embalagem: 'Caixa 6un', imagemUrl: '/images/Refri fruki/guarana1-5l.webp' },
+        { codigo: 'REFRI-COLA-2L', descricao: 'Fruki Cola 2L', categoria: 'REFRIGERANTE', preco: 7.80, embalagem: 'Caixa 6un', imagemUrl: '/images/Refri fruki/cola-2l.webp' },
+        { codigo: 'REFRI-LARANJA-2L', descricao: 'Fruki Laranja 2L', categoria: 'REFRIGERANTE', preco: 7.20, embalagem: 'Caixa 6un', imagemUrl: '/images/Refri fruki/laranja-let-2l.webp' },
+        { codigo: 'REFRI-UVA-2L', descricao: 'Fruki Uva 2L', categoria: 'REFRIGERANTE', preco: 7.20, embalagem: 'Caixa 6un', imagemUrl: '/images/Refri fruki/mockup-2l-uva-final.webp' },
+        { codigo: 'ENERG-ORIGINAL-473', descricao: 'Energético Traz Elev Original 473ml', categoria: 'ENERGETICO', preco: 6.90, embalagem: 'Caixa 12un', imagemUrl: '/images/Energetico fruki/eleve_473_original.webp' },
+        { codigo: 'CERVEJA-PREMIUM', descricao: 'Cerveja Bellavista Premium', categoria: 'CERVEJA', preco: 5.90, embalagem: 'Caixa 12un', imagemUrl: '/images/Cervejas fruki/bellavista-premium.webp' },
+        { codigo: 'SUCO-LARANJA-1L', descricao: 'Suco Frut Fresh Laranja 1L', categoria: 'SUCO', preco: 4.80, embalagem: 'Caixa 12un', imagemUrl: '/images/Sucos fruki/_suco_tetrapack_1l_frente_laranja.webp' }
     ];
 
     function abrirPerfilEmpresa() {
@@ -482,11 +513,17 @@
         document.getElementById('companyProfile').style.display = 'none';
     }
 
+    function escaparHtml(valor) {
+        return String(valor).replace(/[&<>"']/g, (c) => ({
+            '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+        }[c]));
+    }
+
     function adicionarMensagem(texto, tipo, htmlExtra = '') {
         const messagesDiv = document.getElementById('chatMessages');
         const msgDiv = document.createElement('div');
         msgDiv.className = `message ${tipo}`;
-        let textoFormatado = texto ? texto.replace(/\n/g, '<br>') : '';
+        let textoFormatado = texto ? escaparHtml(texto).replace(/\n/g, '<br>') : '';
         msgDiv.innerHTML = textoFormatado + htmlExtra;
         messagesDiv.appendChild(msgDiv);
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
@@ -498,15 +535,31 @@
 
     function iniciarAtendimento() {
         etapaAtual = 'SOLICITAR_ID';
+        dadosCliente = null;
         carrinhoMap = {};
+        recomendadosPorCodigo = {};
+        catalogoGeral = [];
+        catalogoPromise = null;
         document.getElementById('chatMessages').innerHTML = '';
 
         setTimeout(() => {
             adicionarMensagem("Olá! Seja muito bem-vindo(a) ao Pede Fruki, o canal oficial de pedidos B2B.", "incoming");
         }, 400);
         setTimeout(() => {
-            adicionarMensagem("Para identificarmos o seu estabelecimento comercial, por favor, informe o seu ID ou CNPJ cadastrado (Ex: 110569):", "incoming");
+            adicionarMensagem("Para identificarmos o seu estabelecimento comercial, informe o CNPJ (14 dígitos) ou o código do cliente (Ex: 12345678000190 ou 110569):", "incoming");
         }, 1200);
+        setTimeout(() => {
+            adicionarMensagem("Para agilizar a demonstração, use o CNPJ abaixo:", "incoming", `
+                <div class="options-container">
+                    <button class="option-btn" onclick="usarCnpjDemo()">🏬 Usar CNPJ demo 12.345.678/0001-90 (Erechim/RS)</button>
+                </div>
+            `);
+        }, 1900);
+    }
+
+    function usarCnpjDemo() {
+        etapaAtual = 'SOLICITAR_ID';
+        processarEntrada(CNPJ_DEMO);
     }
 
     async function processarEntrada(texto) {
@@ -517,40 +570,59 @@
         document.getElementById('userInput').value = '';
 
         if (etapaAtual === 'SOLICITAR_ID') {
+            const documento = textoLimpo.replace(/\D/g, '');
+            if (!documento) {
+                setTimeout(() => {
+                    adicionarMensagem("Digite apenas números: CNPJ com 14 dígitos ou código do cliente (Ex: 110569).", "incoming");
+                }, 400);
+                return;
+            }
+
             setTimeout(async () => {
-                let data = null;
                 try {
-                    const response = await fetch(`/api/recomendacao/${textoLimpo}`);
-                    if (response.ok) {
-                        data = await response.json();
+                    const response = await fetch(`/api/recomendacao/${documento}`);
+
+                    if (response.status === 404) {
+                        adicionarMensagem("Não encontrei esse cliente na base. Confira o código ou tente um CNPJ de 14 dígitos.", "incoming");
+                        return;
                     }
+
+                    if (!response.ok) {
+                        const erro = await response.json().catch(() => ({}));
+                        throw new Error(erro.erro || "Erro na API");
+                    }
+
+                    const data = await response.json();
+                    dadosCliente = data;
+                    recomendadosPorCodigo = {};
+                    (data.produtosRecomendados || []).forEach((p) => {
+                        if (p.codigo) recomendadosPorCodigo[p.codigo] = p;
+                    });
+                    etapaAtual = 'MENU_PRINCIPAL';
+
+                    // Carrega o catálogo completo em paralelo; a opção 2 não depende da IA.
+                    garantirCatalogo().catch(() => {});
+
+                    let nomeEstabelecimento = data.nomeCliente || ("Estabelecimento #" + documento);
+                    const ctx = data.contexto || {};
+                    const cidade = (ctx.cidade && ctx.cidade !== '—') ? ctx.cidade : 'Região';
+                    const climaTxt = (ctx.temperatura != null)
+                        ? `\n\n📍 ${cidade} • ${Number(ctx.temperatura).toFixed(1)} °C${ctx.descricao ? ' • ' + ctx.descricao : ''}`
+                        : '';
+                    const identificacao = data.cnpj ? `CNPJ ${data.cnpj}` : `Código #${data.codCliente || documento}`;
+
+                    adicionarMensagem(`Estabelecimento reconhecido com sucesso!\n\nBem-vindo(a) de volta, ${nomeEstabelecimento} (${identificacao}).${climaTxt}\n\nComo podemos ajudar na reposição do seu estoque hoje?`, "incoming", gerarMenuPrincipalHTML());
+
                 } catch (err) {
-                    console.log("Fallback acionado");
+                    adicionarMensagem(`Ops, não consegui consultar o servidor agora. ${err.message || ''}`.trim(), "incoming");
                 }
-
-                if (!data) {
-                    data = {
-                        codCliente: textoLimpo,
-                        nomeCliente: "Estabelecimento #" + textoLimpo,
-                        produtosRecomendados: CATALOGO_PADRAO.slice(0, 4),
-                        catalogoCompleto: CATALOGO_PADRAO
-                    };
-                }
-
-                dadosCliente = data;
-                catalogoGeral = (data.catalogoCompleto && data.catalogoCompleto.length > 0) ? data.catalogoCompleto : CATALOGO_PADRAO;
-                etapaAtual = 'MENU_PRINCIPAL';
-
-                let nomeEstabelecimento = data.nomeCliente || ("Estabelecimento #" + textoLimpo);
-                adicionarMensagem(`Estabelecimento reconhecido com sucesso!\n\nBem-vindo(a) de volta, ${nomeEstabelecimento} (Código: #${data.codCliente || textoLimpo}).\n\nComo podemos ajudar na reposição do seu estoque hoje?`, "incoming", gerarMenuPrincipalHTML());
-
             }, 600);
         }
         else if (etapaAtual === 'MENU_PRINCIPAL') {
             tratarOpcaoMenu(textoLimpo);
         }
         else if (etapaAtual === 'PAGAMENTO') {
-            finalizarPedido();
+            adicionarMensagem("Escolha uma das formas de pagamento acima para concluir o pedido.", "incoming");
         }
     }
 
@@ -573,23 +645,9 @@
 
         setTimeout(() => {
             if (codigo === '1') {
-                let nomeEst = dadosCliente ? dadosCliente.nomeCliente : "seu estabelecimento";
-                adicionarMensagem(`Com base no histórico e curva de consumo para ${nomeEst}, separei estas oportunidades de alta rotatividade:`, "incoming");
-
-                setTimeout(() => {
-                    let recomendados = (dadosCliente && dadosCliente.produtosRecomendados && dadosCliente.produtosRecomendados.length > 0)
-                        ? dadosCliente.produtosRecomendados
-                        : CATALOGO_PADRAO.slice(0, 4);
-                    renderizarListaProdutos(recomendados, "Toque no botão + para adicionar os itens ao carrinho:");
-                }, 600);
-
+                mostrarRecomendacoes();
             } else if (codigo === '2') {
-                adicionarMensagem("Aqui está o catálogo completo de bebidas Fruki para pronta entrega:", "incoming");
-                setTimeout(() => {
-                    let listaCat = (catalogoGeral && catalogoGeral.length > 0) ? catalogoGeral : CATALOGO_PADRAO;
-                    renderizarListaProdutos(listaCat, "Navegue pelo catálogo e selecione os itens desejados:");
-                }, 600);
-
+                mostrarCatalogo();
             } else if (codigo === '3') {
                 exibirCarrinho();
             } else if (codigo === '4') {
@@ -600,45 +658,135 @@
                     </div>
                 `);
             }
-        }, 600);
+        }, 500);
     }
 
-    function renderizarListaProdutos(lista, mensagemTitulo) {
-        let htmlProdutos = '';
-        lista.forEach((prod) => {
-            let nomeP = prod.descricao || prod.nome || "Produto Fruki";
-            let precoP = prod.preco || 7.50;
-            let imgP = prod.imagemUrl || '/images/Refri fruki/cola-2l.webp';
-            let qtdAtual = carrinhoMap[nomeP] ? carrinhoMap[nomeP].qtd : 0;
+    function chaveProduto(nomeProduto) {
+        return encodeURIComponent(String(nomeProduto));
+    }
 
-            htmlProdutos += `
-                <div class="product-card">
-                    <img src="${imgP}" class="product-img" onerror="this.src='https://via.placeholder.com/50?text=Fruki'" alt="Produto">
-                    <div class="product-info">
-                        <div class="product-title">${nomeP}</div>
-                        <div class="product-desc">Unidade B2B Fruki</div>
-                        <div class="product-price">R$ ${precoP.toFixed(2)}</div>
-                    </div>
-                    <div class="quantity-controls">
-                        <button class="btn-qty" onclick="alterarQuantidade('${nomeP}', ${precoP}, -1)">-</button>
-                        <span style="font-weight:bold; font-size:13px; min-width:18px; text-align:center;" id="qty-${btoa(encodeURIComponent(nomeP)).replace(/=/g, '')}">${qtdAtual}</span>
-                        <button class="btn-qty" onclick="alterarQuantidade('${nomeP}', ${precoP}, 1)">+</button>
-                    </div>
-                </div>
-            `;
-        });
-
-        htmlProdutos += `
+    function rodapeCarrinho() {
+        return `
             <div style="margin-top:10px;">
                 <button class="option-btn" onclick="selecionarOpcao('3', '3️⃣ Ver Carrinho & Fechar Pedido')">📦 Ver Carrinho & Fechar Pedido</button>
             </div>
         `;
-        adicionarMensagem(mensagemTitulo, "incoming", htmlProdutos);
+    }
+
+    function montarCard(prod, opts = {}) {
+        const nomeP = prod.descricao || prod.nome || "Produto Fruki";
+        const precoP = Number(prod.preco ?? 0);
+        const imgP = prod.imagemUrl || '/images/brand/produto-placeholder.svg';
+        const nomeJs = String(nomeP).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+        const qtdAtual = carrinhoMap[nomeP] ? carrinhoMap[nomeP].qtd : 0;
+        const recInfo = recomendadosPorCodigo[prod.codigo];
+        const qtdSugerida = Number(prod.quantidadeSugerida || (recInfo && recInfo.quantidadeSugerida) || 0);
+        const recomendado = opts.recomendado || !!recInfo;
+        const descricao = qtdSugerida > 0
+            ? `Sugestão IA: ${qtdSugerida} ${qtdSugerida === 1 ? 'caixa' : 'caixas'}`
+            : (prod.embalagem || 'Caixa fechada');
+        const badge = recomendado ? '<span class="ia-badge">IA</span>' : '';
+
+        return `
+            <div class="product-card ${recomendado ? 'recomendado' : ''}">
+                <img src="${imgP}" class="product-img" onerror="this.onerror=null;this.src='/images/brand/produto-placeholder.svg'" alt="Produto">
+                <div class="product-info">
+                    <div class="product-title">${escaparHtml(nomeP)} ${badge}</div>
+                    <div class="product-desc">${escaparHtml(descricao)}</div>
+                    <div class="product-price">R$ ${precoP.toFixed(2)}</div>
+                </div>
+                <div class="quantity-controls">
+                    <button class="btn-qty" onclick="alterarQuantidade('${nomeJs}', ${precoP}, -1)">-</button>
+                    <span class="qty-value" data-qty-key="${chaveProduto(nomeP)}">${qtdAtual}</span>
+                    <button class="btn-qty" onclick="alterarQuantidade('${nomeJs}', ${precoP}, 1)">+</button>
+                </div>
+            </div>
+        `;
+    }
+
+    function cardsHtml(lista, opts = {}) {
+        return (lista || []).map((prod) => montarCard(prod, opts)).join('');
+    }
+
+    async function garantirCatalogo() {
+        if (catalogoGeral.length > 0) return catalogoGeral;
+        if (!catalogoPromise) {
+            catalogoPromise = fetch('/api/catalogo')
+                .then((r) => {
+                    if (!r.ok) throw new Error('Catálogo indisponível');
+                    return r.json();
+                })
+                .then((data) => {
+                    catalogoGeral = (data.itens && data.itens.length > 0) ? data.itens : CATALOGO_PADRAO;
+                    return catalogoGeral;
+                })
+                .catch((err) => {
+                    catalogoPromise = null;
+                    throw err;
+                });
+        }
+        return catalogoPromise;
+    }
+
+    function mostrarRecomendacoes() {
+        if (!dadosCliente) {
+            adicionarMensagem("Primeiro informe o CNPJ ou o código do cliente para eu montar a recomendação.", "incoming");
+            return;
+        }
+
+        const grupos = dadosCliente.gruposRecomendacao || [];
+        const resumo = dadosCliente.resumoIa
+            || "Separei as melhores oportunidades para o seu estabelecimento com base no contexto e no perfil de consumo.";
+
+        adicionarMensagem(resumo, "incoming");
+
+        if (grupos.length > 0) {
+            const blocos = grupos.map((grupo) => `
+                <div class="rec-group">
+                    <div class="rec-group-title">${escaparHtml(grupo.titulo || 'Recomendação')}</div>
+                    <div class="rec-group-reason">${escaparHtml(grupo.motivo || '')}</div>
+                    ${cardsHtml(grupo.itens, { recomendado: true })}
+                </div>
+            `).join('');
+
+            adicionarMensagem("Toque no + para adicionar. A quantidade sugerida já aparece em cada item:", "incoming", blocos + rodapeCarrinho());
+        } else {
+            const recomendados = (dadosCliente.produtosRecomendados && dadosCliente.produtosRecomendados.length > 0)
+                ? dadosCliente.produtosRecomendados
+                : CATALOGO_PADRAO.slice(0, 4);
+            adicionarMensagem("Toque no + para adicionar os itens ao carrinho:", "incoming", cardsHtml(recomendados, { recomendado: true }) + rodapeCarrinho());
+        }
+
+        const totalTxt = catalogoGeral.length > 0 ? ` (${catalogoGeral.length} SKUs)` : '';
+        adicionarMensagem("Quer ver o catálogo completo?", "incoming", `
+            <div class="options-container">
+                <button class="option-btn" onclick="selecionarOpcao('2', '2️⃣ Ver Catálogo Completo de Produtos')">🏬 Ver catálogo completo${totalTxt}</button>
+            </div>
+        `);
+    }
+
+    async function mostrarCatalogo() {
+        try {
+            await garantirCatalogo();
+        } catch (err) {
+            catalogoGeral = CATALOGO_PADRAO;
+            adicionarMensagem("Não consegui carregar o catálogo completo; mostrando uma seleção de produtos.", "incoming");
+        }
+
+        adicionarMensagem(`Catálogo completo — ${catalogoGeral.length} SKUs`, "incoming");
+
+        ORDEM_CATEGORIAS.forEach((categoria) => {
+            const itens = catalogoGeral.filter((p) => p.categoria === categoria);
+            if (itens.length === 0) return;
+            adicionarMensagem(`${NOMES_CATEGORIAS[categoria] || categoria} (${itens.length})`, "incoming", cardsHtml(itens));
+        });
+
+        adicionarMensagem("Fim do catálogo. Use o + para montar o pedido:", "incoming", rodapeCarrinho());
     }
 
     function alterarQuantidade(nomeProduto, precoProduto, delta) {
         if (!carrinhoMap[nomeProduto]) {
-            carrinhoMap[nomeProduto] = { qtd: 0, preco: precoProduto };
+            carrinhoMap[nomeProduto] = { qtd: 0, preco: Number(precoProduto) };
         }
         carrinhoMap[nomeProduto].qtd += delta;
 
@@ -646,11 +794,11 @@
             delete carrinhoMap[nomeProduto];
         }
 
-        let idSafe = btoa(encodeURIComponent(nomeProduto)).replace(/=/g, '');
-        let elQty = document.getElementById(`qty-${idSafe}`);
-        if (elQty) {
-            elQty.innerText = carrinhoMap[nomeProduto] ? carrinhoMap[nomeProduto].qtd : 0;
-        }
+        const qtd = carrinhoMap[nomeProduto] ? carrinhoMap[nomeProduto].qtd : 0;
+        const chave = chaveProduto(nomeProduto);
+        document.querySelectorAll(`[data-qty-key="${chave}"]`).forEach((el) => {
+            el.innerText = qtd;
+        });
     }
 
     function obterTotalItensCarrinho() {
@@ -721,13 +869,14 @@
     }
 
     function tratarOpcaoMenu(texto) {
-        if (texto.includes('1') || texto.toLowerCase().includes('recomend')) {
+        const t = texto.trim().toLowerCase();
+        if (t === '1' || t.includes('recomend')) {
             selecionarOpcao('1', '1️⃣ Ver Recomendações Personalizadas');
-        } else if (texto.includes('2') || texto.toLowerCase().includes('catalogo') || texto.toLowerCase().includes('catálogo')) {
+        } else if (t === '2' || t.includes('catalogo') || t.includes('catálogo')) {
             selecionarOpcao('2', '2️⃣ Ver Catálogo Completo de Produtos');
-        } else if (texto.includes('3') || texto.toLowerCase().includes('carrinho')) {
+        } else if (t === '3' || t.includes('carrinho')) {
             selecionarOpcao('3', '3️⃣ Ver Carrinho & Fechar Pedido');
-        } else if (texto.includes('4') || texto.toLowerCase().includes('humano')) {
+        } else if (t === '4' || t.includes('humano')) {
             selecionarOpcao('4', '4️⃣ Falar com Consultor Humano');
         } else {
             adicionarMensagem("Por favor, selecione uma das opções numéricas do menu:", "incoming", gerarMenuPrincipalHTML());
