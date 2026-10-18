@@ -42,4 +42,6 @@ build/
 .mvn-settings.xml
 .build-*.log
 .mvn-debug.log
+.tmp-api/
+.ai/
 

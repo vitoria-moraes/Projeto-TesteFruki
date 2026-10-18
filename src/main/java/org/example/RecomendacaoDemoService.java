@@ -2,6 +2,7 @@ package org.example;
 
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -18,7 +19,9 @@ import java.util.Optional;
  * recebe a seleção fixa de 3 produtos, que é o comportamento pedido pelo PO.</p>
  *
  * <p>O catálogo completo vai junto na resposta para o chat conseguir montar a
- * opção "ver catálogo inteiro" sem depender da recomendação.</p>
+ * opção "ver catálogo inteiro" sem depender da recomendação. A resposta também
+ * inclui os campos que a UI nova (login/cadastro) espera — porte, resumo do
+ * contexto e quantidade em caixas.</p>
  */
 @Service
 public class RecomendacaoDemoService {
@@ -38,13 +41,26 @@ public class RecomendacaoDemoService {
     }
 
     public Map<String, Object> recomendarPorCnpj(String cnpj) {
-        Optional<DemoCnpjDirectory.PerfilDemo> perfil = directory.buscar(cnpj);
-        return perfil.map(p -> montarPerfil(cnpj, p)).orElseGet(() -> montarPadrao(cnpj));
+        return recomendarPorCnpj(cnpj, null, null);
     }
 
-    private Map<String, Object> montarPerfil(String cnpj, DemoCnpjDirectory.PerfilDemo perfil) {
-        ClimaService.Clima clima = climaService.paraCoordenada(
-                perfil.latitude(), perfil.longitude(), perfil.cidade());
+    /**
+     * @param temperatura   opcional: força a temperatura (cenários do chat)
+     * @param diasFeriado   opcional: força um feriado daqui a N dias (demonstração)
+     */
+    public Map<String, Object> recomendarPorCnpj(String cnpj, Double temperatura, Integer diasFeriado) {
+        Optional<DemoCnpjDirectory.PerfilDemo> perfil = directory.buscar(cnpj);
+        return perfil
+                .map(p -> montarPerfil(cnpj, p, temperatura, diasFeriado))
+                .orElseGet(() -> montarPadrao(cnpj, temperatura));
+    }
+
+    private Map<String, Object> montarPerfil(String cnpj, DemoCnpjDirectory.PerfilDemo perfil,
+                                             Double temperatura, Integer diasFeriado) {
+        ClimaService.Clima clima = temperatura != null
+                ? new ClimaService.Clima(temperatura, "simulado (demonstração)",
+                        perfil.cidade(), "simulado")
+                : climaService.paraCoordenada(perfil.latitude(), perfil.longitude(), perfil.cidade());
 
         List<Map<String, Object>> grupos = new ArrayList<>();
         List<Map<String, Object>> recomendados = new ArrayList<>();
@@ -78,14 +94,16 @@ public class RecomendacaoDemoService {
             indiceGrupo++;
         }
 
-        String resumo = montarResumo(clima, perfil.cidade(), perfil.eventos(), grupos.size());
+        String resumo = montarResumo(clima, perfil.cidade(), perfil.eventos(), grupos.size(), diasFeriado);
         return montarResposta(cnpj, perfil.idCliente(), perfil.codCliente(), perfil.nome(),
                 perfil.perfilMercado(), clima, perfil.eventos(), "mock-perfil",
                 resumo, grupos, recomendados);
     }
 
-    private Map<String, Object> montarPadrao(String cnpj) {
-        ClimaService.Clima clima = climaService.paraDemo();
+    private Map<String, Object> montarPadrao(String cnpj, Double temperatura) {
+        ClimaService.Clima clima = temperatura != null
+                ? new ClimaService.Clima(temperatura, "simulado (demonstração)", "Erechim", "simulado")
+                : climaService.paraDemo();
         String motivo = "Seleção rápida do pitch: 3 produtos fixos, sem contexto de evento.";
 
         List<Map<String, Object>> itens = new ArrayList<>();
@@ -116,10 +134,12 @@ public class RecomendacaoDemoService {
                                                  int quantidade, int score) {
         Map<String, Object> item = catalogoService.paraMap(produto);
         item.put("quantidadeSugerida", quantidade);
+        item.put("qtdSugeridaCaixas", quantidade);
         item.put("grupo", grupo);
         item.put("motivo", motivo);
         item.put("motivos", List.of(motivo));
         item.put("score", score);
+        item.put("justificativaVolume", "Volume sugerido para a demonstração do pitch");
         return item;
     }
 
@@ -135,7 +155,7 @@ public class RecomendacaoDemoService {
     }
 
     private String montarResumo(ClimaService.Clima clima, String cidade,
-                                List<String> eventos, int totalGrupos) {
+                                List<String> eventos, int totalGrupos, Integer diasFeriado) {
         String temperatura = String.format(Locale.forLanguageTag("pt-BR"), "%.1f", clima.temperatura());
         StringBuilder resumo = new StringBuilder();
         resumo.append("Contexto: ").append(temperatura).append(" °C em ").append(cidade).append(".");
@@ -149,6 +169,9 @@ public class RecomendacaoDemoService {
         if (!eventos.isEmpty()) {
             resumo.append(" ").append(String.join("; ", eventos)).append(".");
         }
+        if (diasFeriado != null) {
+            resumo.append(" Feriado simulado em ").append(diasFeriado).append(" dia(s).");
+        }
         resumo.append(" Montei ").append(totalGrupos)
                 .append(" grupos com 3 opções cada; a quantidade sugerida aparece em cada item.");
         return resumo.toString();
@@ -161,6 +184,9 @@ public class RecomendacaoDemoService {
                                                List<Map<String, Object>> grupos,
                                                List<Map<String, Object>> recomendados) {
         String cidade = "—".equals(clima.cidade()) ? "Erechim" : clima.cidade();
+        String porte = porteDoPerfil(perfilMercado);
+        String porteLabel = rotuloPorte(porte);
+        String temperatura = String.format(Locale.forLanguageTag("pt-BR"), "%.1f", clima.temperatura());
 
         Map<String, Object> contexto = new LinkedHashMap<>();
         contexto.put("temperatura", clima.temperatura());
@@ -170,6 +196,9 @@ public class RecomendacaoDemoService {
         contexto.put("eventos", eventos);
         contexto.put("modo", modo);
         contexto.put("dadosFicticios", true);
+        contexto.put("resumo", perfilMercado + ", " + cidade + ", " + temperatura + " °C");
+        contexto.put("estacao", estacaoAtual());
+        contexto.put("fimDeSemana", false);
 
         Map<String, Object> resposta = new LinkedHashMap<>();
         resposta.put("cnpj", cnpj);
@@ -177,6 +206,9 @@ public class RecomendacaoDemoService {
         resposta.put("codCliente", codCliente);
         resposta.put("nomeCliente", nomeCliente);
         resposta.put("perfilMercado", perfilMercado);
+        resposta.put("porte", porte);
+        resposta.put("porteLabel", porteLabel);
+        resposta.put("novoCliente", false);
         resposta.put("modo", modo);
         resposta.put("contexto", contexto);
         resposta.put("resumoIa", resumo);
@@ -187,5 +219,30 @@ public class RecomendacaoDemoService {
         resposta.put("aviso", "Dados de demonstração: eventos simulados; clima via OpenWeatherMap "
                 + "com fallback local. O catálogo tem 31 SKUs comerciais representativos.");
         return resposta;
+    }
+
+    private String porteDoPerfil(String perfilMercado) {
+        return switch (perfilMercado) {
+            case "Supermercado" -> "GRANDE_DISTRIBUIDOR";
+            case "Adega", "Restaurante" -> "BAR_RESTAURANTE";
+            default -> "MINIMERCADO";
+        };
+    }
+
+    private String rotuloPorte(String porte) {
+        return switch (porte) {
+            case "GRANDE_DISTRIBUIDOR" -> "Grande Distribuidor";
+            case "BAR_RESTAURANTE" -> "Bar / Restaurante";
+            default -> "Minimercado";
+        };
+    }
+
+    private String estacaoAtual() {
+        LocalDate hoje = LocalDate.now();
+        int mmdd = hoje.getMonthValue() * 100 + hoje.getDayOfMonth();
+        if (mmdd >= 1221 || mmdd < 321) return "Verão";
+        if (mmdd < 621) return "Outono";
+        if (mmdd < 923) return "Inverno";
+        return "Primavera";
     }
 }

@@ -5,17 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f552ecb8-9138-4385-a59b-86c5bce519f3" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/PedidoController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/PedidoService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/pede-fruki-logo.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Cliente.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Cliente.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/ExcelReaderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/ExcelReaderService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/RecomendacaoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/RecomendacaoController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/RecomendacaoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/RecomendacaoService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/WebController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/WebController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/chat.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/chat.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -140,7 +136,7 @@
     "Spring Boot.TodoApplication.executor": "Run",
     "codeWithMe.voiceChat.enabledByDefault": "false",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "prototipo-projeto-fruki",
+    "git-widget-placeholder": "Merging prototipo-projeto-fruki",
     "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/Riordan Lucas/IdeaProjects/Projeto-TesteFruki",

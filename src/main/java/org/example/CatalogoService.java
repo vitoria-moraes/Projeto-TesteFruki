@@ -23,6 +23,18 @@ public class CatalogoService {
 
     public record ProdutoDemo(String codigo, String descricao, String categoria,
                               double preco, String imagemUrl, String embalagem) {
+
+        /** Unidades por caixa deduzidas da embalagem ("Caixa 12un" -> 12). */
+        public int unidadesPorCaixa() {
+            if (embalagem == null || embalagem.isBlank()) return 1;
+            java.util.regex.Matcher m = java.util.regex.Pattern.compile("(\\d+)").matcher(embalagem);
+            return m.find() ? Integer.parseInt(m.group(1)) : 1;
+        }
+
+        /** Preço da caixa: é assim que o B2B vende. */
+        public double precoCaixa() {
+            return Math.round(preco * unidadesPorCaixa() * 100.0) / 100.0;
+        }
     }
 
     private static final List<String> ORDEM_CATEGORIAS = List.of(
@@ -131,7 +143,10 @@ public class CatalogoService {
         item.put("codigo", produto.codigo());
         item.put("descricao", produto.descricao());
         item.put("categoria", produto.categoria());
-        item.put("preco", produto.preco());
+        // No B2B o preço exibido/cobrado é o da caixa fechada.
+        item.put("preco", produto.precoCaixa());
+        item.put("precoUnitario", produto.preco());
+        item.put("unidadesPorCaixa", produto.unidadesPorCaixa());
         item.put("imagemUrl", produto.imagemUrl());
         item.put("embalagem", produto.embalagem());
         return item;

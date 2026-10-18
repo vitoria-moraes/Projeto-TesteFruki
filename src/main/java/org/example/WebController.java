@@ -16,4 +16,9 @@ public class WebController {
     public String abrirChat() {
         return "chat"; // Procura por chat.html em resources/templates/
     }
+
+    @GetMapping("/chat-remoto")
+    public String abrirChatRemoto() {
+        return "chat-remoto"; // UI nova (login/cadastro/pedidos) integrada no merge
+    }
 }

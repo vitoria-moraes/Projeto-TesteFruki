@@ -5,8 +5,9 @@
 **Objetivo:** registrar o que mudou no protótipo desde o estado inicial, com foco no
 que foi entregue para o pitch e no que ainda é mock.
 
-> **Importante:** nenhuma alteração foi commitada. O último commit continua em
-> `46e5b94 Implementando catalogo`.
+> **Importante:** este trabalho foi commitado e integrado ao commit remoto
+> `5b556b5` (sazonalidades no motor + pedidos) por meio de um merge local. O
+> último commit antes desta entrega era `46e5b94 Implementando catalogo`.
 
 ---
 

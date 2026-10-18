@@ -22,6 +22,19 @@ Aplicação: <http://localhost:8081/chat>
 > No terminal desta máquina o `java` do PATH é o Java 8. No IntelliJ, aponte o
 > projeto para `C:\Users\Riordan Lucas\.jdks\ms-21.0.12.1` (ou outro JDK 21).
 
+## Duas interfaces
+
+Depois da integração com o commit de sazonalidades/pedidos, o projeto tem duas
+telas servidas pelo mesmo backend:
+
+- `/chat` — interface do pitch: 3 grupos × 3 opções, catálogo de 31 SKUs,
+  atalho de CNPJ demo e clima real.
+- `/chat-remoto` — interface nova (login por ID/CNPJ, cadastro expresso,
+  carrinho, cenários de clima e fechamento de pedido via `POST /api/pedidos`).
+
+As duas usam o mesmo catálogo e os mesmos endpoints; a diferença é a
+apresentação.
+
 ## Fluxo do chat
 
 1. Informe um **CNPJ de 14 dígitos** (ex.: `12345678000190`) ou clique no botão
@@ -112,6 +125,20 @@ Ex.: `GET /api/recomendacao/110569`. Continua usando o motor de scoring atual,
 devolve `404` para cliente inexistente e usa o clima real quando o cliente tem
 latitude/longitude em `dim_cliente`.
 
+### Cadastro expresso e pedidos (integrados do commit remoto)
+
+```http
+POST /api/cadastro
+POST /api/pedidos
+```
+
+- `POST /api/cadastro` cria um cliente em memória (`identificador`, `nome`,
+  `porte`) e passa a aceitá-lo na consulta por CNPJ/código.
+- `POST /api/pedidos` valida o cliente e os itens, calcula o total por **caixa**
+  no servidor e devolve o número do pedido e a previsão de entrega. Aceita
+  `BOLETO`, `PIX` (5% de desconto) e `CARTAO`.
+- Nenhum dos dois persiste em banco: é demonstração.
+
 ## Clima (OpenWeatherMap)
 
 - Chave em `application.properties` via `OPENWEATHER_API_KEY` (padrão de protótipo).
@@ -130,19 +157,22 @@ do repositório. A lista completa pode ser trocada por um de-para oficial depois
 
 ```
 src/main/java/org/example/
-  RecomendacaoController.java     -> rotas de recomendação
+  RecomendacaoController.java     -> recomendação (CNPJ/código) + cadastro
   CatalogoController.java         -> GET /api/catalogo
   DemoController.java             -> GET /api/demo/cnpjs
-  RecomendacaoDemoService.java    -> montagem da recomendação por CNPJ
+  PedidoController.java           -> POST /api/pedidos
+  PedidoService.java              -> fechamento de pedido em memória
+  RecomendacaoDemoService.java    -> montagem da recomendação por CNPJ (3x3)
   DemoCnpjDirectory.java          -> CNPJs, cidades, eventos e grupos
-  CatalogoService.java            -> catálogo de 31 SKUs
+  CatalogoService.java            -> catálogo de 31 SKUs (fonte única)
   ClimaService.java               -> OpenWeatherMap + cache + fallback
   Cliente.java                    -> mapeamento de dim_cliente (sem JPA ainda)
   ExcelReaderService.java         -> leitura dos CSVs
-  RecomendacaoService.java        -> scoring atual (rota legada)
+  RecomendacaoService.java        -> scoring + sazonalidade (rota legada)
 src/main/resources/
   dim_*.csv                       -> bases originais
-  templates/chat.html             -> interface do chat
+  templates/chat.html             -> interface do pitch (3 grupos x 3)
+  templates/chat-remoto.html      -> interface com login/cadastro/pedidos
   static/images/                  -> fotos de produto e marca
 ```
 
