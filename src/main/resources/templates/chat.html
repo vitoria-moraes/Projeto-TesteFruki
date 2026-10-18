@@ -1,36 +1,140 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Pede Fruki - WhatsApp Business B2B</title>
     <style>
+        /* =====================================================================
+            PEDE FRUKI | Protótipo WhatsApp B2B | Desenvolvido por EquiTech
+            ===================================================================== */
+        :root {
+            --verde: #006847;
+            --verde-esc: #004d30;
+            --verde-vivo: #0a9d62;
+            --lima: #b7e34a;
+            --laranja: #ff9f1c;
+            --azul-ios: #007aff;
+        }
         * { box-sizing: border-box; }
+        html, body { height: 100%; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #121212;
             margin: 0;
-            padding: 0;
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            background:
+                    radial-gradient(1100px 700px at 12% 8%, rgba(46, 204, 138, .55) 0%, rgba(46, 204, 138, 0) 60%),
+                    radial-gradient(900px 600px at 92% 92%, rgba(183, 227, 74, .30) 0%, rgba(183, 227, 74, 0) 60%),
+                    linear-gradient(135deg, #0a8f5c 0%, #006847 45%, #004d30 100%);
+        }
+
+        /* ---------- Elementos de frescor e bolhas ---------- */
+        .bubble {
+            position: fixed;
+            bottom: -60px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.55), rgba(255,255,255,.08));
+            border: 1px solid rgba(255,255,255,.25);
+            animation: subir linear infinite;
+            pointer-events: none;
+        }
+        @keyframes subir {
+            0%   { transform: translateY(0) translateX(0); opacity: 0; }
+            10%  { opacity: 1; }
+            100% { transform: translateY(-115vh) translateX(30px); opacity: 0; }
+        }
+        .deco {
+            position: fixed;
+            pointer-events: none;
+            filter: drop-shadow(0 8px 10px rgba(0,0,0,.25));
+            animation: flutuar 6s ease-in-out infinite;
+            user-select: none;
+        }
+        @keyframes flutuar {
+            0%, 100% { transform: translateY(0) rotate(var(--rot, 0deg)); }
+            50%      { transform: translateY(-14px) rotate(calc(var(--rot, 0deg) + 6deg)); }
+        }
+
+        /* ---------- Painel de cenários ---------- */
+        .scenario-panel {
+            position: fixed;
+            left: 24px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 235px;
+            background: rgba(0, 40, 26, .55);
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(255,255,255,.18);
+            border-radius: 16px;
+            padding: 14px;
+            color: #fff;
+            z-index: 5;
+        }
+        .scenario-panel h3 { margin: 0 0 4px; font-size: 14px; }
+        .scenario-panel p { margin: 0 0 10px; font-size: 11px; opacity: .8; line-height: 1.35; }
+        .chip {
+            display: block;
+            width: 100%;
+            text-align: left;
+            background: rgba(255,255,255,.10);
+            border: 1px solid rgba(255,255,255,.25);
+            color: #fff;
+            padding: 8px 10px;
+            border-radius: 10px;
+            font-size: 12px;
+            cursor: pointer;
+            margin-bottom: 6px;
+            transition: all .2s;
+        }
+        .chip:hover { background: rgba(255,255,255,.2); }
+        .chip.ativo { background: var(--lima); color: #123; border-color: var(--lima); font-weight: 700; }
+        .test-ids { font-size: 11px; margin-top: 8px; opacity: .9; line-height: 1.5; }
+        .test-ids code { background: rgba(255,255,255,.18); padding: 1px 6px; border-radius: 6px; }
+
+        .team-badge {
+            position: fixed;
+            right: 18px;
+            bottom: 12px;
+            background: rgba(0, 40, 26, .55);
+            border: 1px solid rgba(255,255,255,.2);
+            color: #fff;
+            font-size: 12px;
+            padding: 6px 12px;
+            border-radius: 999px;
+            backdrop-filter: blur(4px);
+            letter-spacing: .3px;
+            z-index: 5;
+        }
+
+        /* ---------- Palco do Celular Centralizado ---------- */
+        .stage {
+            position: relative;
+            width: 410px;
+            height: 820px;
+            transform-origin: 50% 50%;
+            flex: none;
         }
 
         .iphone-frame {
+            position: relative;
+            z-index: 1;
             width: 410px;
             height: 820px;
             background: #efeae2;
             border-radius: 40px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.6);
+            box-shadow: 0 25px 50px rgba(0,0,0,.55), inset 0 0 0 2px rgba(255,255,255,.06);
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            border: 6px solid #2a2a2a;
-            position: relative;
+            border: 6px solid #1f1f1f;
         }
 
         .ios-status-bar {
             height: 38px;
+            flex: none;
             background: #f6f6f6;
             display: flex;
             justify-content: space-between;
@@ -43,6 +147,7 @@
         }
 
         .ios-whatsapp-header {
+            flex: none;
             background: #f6f6f6;
             padding: 8px 12px;
             display: flex;
@@ -51,26 +156,40 @@
             border-bottom: 1px solid #d1d1d6;
             z-index: 10;
         }
-        .header-left { color: #007aff; font-size: 15px; cursor: pointer; font-weight: 500; }
+        .header-left { color: var(--azul-ios); font-size: 15px; cursor: pointer; font-weight: 500; }
         .contact-info { display: flex; align-items: center; gap: 8px; cursor: pointer; }
-        .avatar {
-            width: 36px;
-            height: 36px;
-            background: #006847;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 13px;
+        .avatar-img {
+            width: 36px; height: 36px; border-radius: 50%;
+            object-fit: contain; border: 1px solid #005a36; background: #004d30; padding: 2px;
         }
         .contact-name-container { display: flex; flex-direction: column; }
         .contact-name { font-size: 14px; font-weight: 600; color: #111; }
-        .contact-status { font-size: 11px; color: #006847; font-weight: 500; }
-        .header-actions { color: #007aff; font-size: 18px; display: flex; gap: 14px; align-items: center; }
-        .header-btn { cursor: pointer; }
+        .contact-status { font-size: 11px; color: var(--verde); font-weight: 500; }
+        .header-actions { display: flex; gap: 16px; align-items: center; font-size: 19px; }
+        .header-btn { cursor: pointer; position: relative; transition: transform .15s, opacity .2s; }
+        .header-btn:active { transform: scale(.9); }
+        .bloqueado { opacity: .35; cursor: not-allowed !important; filter: grayscale(1); }
+        .badge {
+            position: absolute;
+            top: -7px; right: -9px;
+            min-width: 18px; height: 18px;
+            padding: 0 5px;
+            border-radius: 9px;
+            background: #e53935;
+            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #f6f6f6;
+        }
+        .badge.bump { animation: bump .35s ease; }
+        @keyframes bump { 0% { transform: scale(1); } 50% { transform: scale(1.5); } 100% { transform: scale(1); } }
+        .shake { animation: shake .4s; }
+        @keyframes shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
 
+        /* ---------- Conversa ---------- */
         .chat-messages {
             flex: 1;
             padding: 14px;
@@ -79,84 +198,104 @@
             flex-direction: column;
             gap: 10px;
             background-color: #efeae2;
+            background-image: radial-gradient(rgba(0,104,71,.06) 1.2px, transparent 1.2px);
+            background-size: 18px 18px;
+            scroll-behavior: smooth;
         }
-
         .message {
             max-width: 92%;
-            padding: 10px 14px;
+            padding: 8px 12px 6px;
             border-radius: 14px;
             font-size: 13.5px;
-            line-height: 1.4;
-            white-space: pre-wrap;
+            line-height: 1.42;
             word-wrap: break-word;
-            box-shadow: 0 1px 0.5px rgba(0,0,0,0.08);
+            box-shadow: 0 1px 0.5px rgba(0,0,0,.1);
+            animation: entrar .25s ease-out;
         }
-        .incoming { background: #ffffff; align-self: flex-start; border-top-left-radius: 4px; color: #111; }
+        @keyframes entrar { from { opacity: 0; transform: translateY(8px) scale(.98); } to { opacity: 1; transform: none; } }
+        .incoming { background: #fff; align-self: flex-start; border-top-left-radius: 4px; color: #111; }
         .outgoing { background: #d9fdd3; align-self: flex-end; border-top-right-radius: 4px; color: #111; }
+        .msg-meta { text-align: right; font-size: 10px; color: #8696a0; margin-top: 3px; }
+        .ticks { color: #53bdeb; letter-spacing: -2px; }
 
-        /* Cards de Produtos */
-        .product-card {
-            background: #ffffff;
-            border: 1px solid #e0e0e0;
-            border-radius: 12px;
-            padding: 10px 12px;
-            margin-top: 8px;
-            display: flex;
-            gap: 12px;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-        }
-        .product-img {
-            width: 48px;
-            height: 48px;
-            object-fit: contain;
-            border-radius: 8px;
-            background: #f9f9f9;
-            border: 1px solid #eee;
-        }
-        .product-info { flex: 1; display: flex; flex-direction: column; gap: 2px; }
-        .product-title { font-weight: 600; font-size: 13.5px; color: #111; }
-        .product-desc { font-size: 11px; color: #666; }
-        .product-price { font-size: 12.5px; font-weight: bold; color: #006847; margin-top: 2px; }
+        .typing { display: flex; gap: 4px; padding: 12px 14px; background: #fff; border-radius: 14px; border-top-left-radius: 4px; align-self: flex-start; box-shadow: 0 1px 0.5px rgba(0,0,0,.1); }
+        .typing span { width: 7px; height: 7px; background: #9aa5ab; border-radius: 50%; animation: pulo 1.1s infinite; }
+        .typing span:nth-child(2) { animation-delay: .15s; }
+        .typing span:nth-child(3) { animation-delay: .3s; }
+        @keyframes pulo { 0%, 60%, 100% { transform: translateY(0); opacity: .5; } 30% { transform: translateY(-4px); opacity: 1; } }
 
-        .quantity-controls {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .btn-qty {
-            background: #006847;
-            color: white;
-            border: none;
-            width: 28px;
-            height: 28px;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .btn-qty:hover { background: #004d34; }
-
+        /* ---------- Botões de opção ---------- */
         .options-container { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
         .option-btn {
-            background: #ffffff;
-            border: 1px solid #006847;
-            color: #006847;
+            background: #fff;
+            border: 1px solid var(--verde);
+            color: var(--verde);
             padding: 9px 12px;
             border-radius: 8px;
             text-align: left;
             font-size: 13px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all .2s;
+            font-family: inherit;
         }
-        .option-btn:hover { background: #006847; color: white; }
+        .option-btn small { font-weight: 500; opacity: .85; }
+        .option-btn:hover { background: var(--verde); color: #fff; }
+        .option-btn.secondary { border-color: #b8c2c8; color: #4a5a63; }
+        .option-btn.secondary:hover { background: #4a5a63; color: #fff; }
+        .option-btn.destaque { background: var(--verde); color: #fff; }
+        .option-btn.destaque:hover { background: var(--verde-esc); }
 
+        /* ---------- Cards de produto ---------- */
+        .product-card {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 10px 12px;
+            margin-top: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,.05);
+        }
+        .product-top { display: flex; gap: 10px; align-items: center; }
+        .product-img { width: 50px; height: 50px; object-fit: contain; border-radius: 8px; background: #f9f9f9; border: 1px solid #eee; flex: none; }
+        .product-info { flex: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+        .product-title { font-weight: 700; font-size: 13.5px; color: #111; }
+        .product-desc { font-size: 11px; color: #666; }
+        .product-price { font-size: 13px; font-weight: 700; color: var(--verde); }
+        .product-reason { font-size: 11px; color: #8a5a00; background: #fff4d6; border-radius: 6px; padding: 3px 6px; margin-top: 2px; }
+        .score-pill { font-size: 10px; font-weight: 700; background: var(--verde); color: #fff; border-radius: 999px; padding: 2px 7px; align-self: flex-start; }
+        .sug-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+        .sug-chip { font-size: 11px; font-weight: 700; color: var(--verde-esc); background: #e3f6ec; border-radius: 8px; padding: 4px 8px; }
+        .sug-why { font-size: 10.5px; color: #6b7a82; margin-top: -4px; }
+        .mini-btn { background: var(--verde); color: #fff; border: none; border-radius: 8px; padding: 5px 10px; font-size: 11.5px; font-weight: 700; cursor: pointer; }
+        .mini-btn:hover { background: var(--verde-esc); }
+        .qty-row { display: flex; justify-content: flex-end; align-items: center; gap: 8px; }
+        .btn-qty {
+            background: var(--verde); color: #fff; border: none;
+            width: 28px; height: 28px; border-radius: 7px;
+            font-size: 15px; font-weight: 700; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .btn-qty:hover { background: var(--verde-esc); }
+        .btn-qty.cinza { background: #e5e9eb; color: #444; }
+        .btn-qty.cinza:hover { background: #d3d9dc; }
+        .qty { font-weight: 700; font-size: 13px; min-width: 22px; text-align: center; }
+
+        /* ---------- Carrinho ---------- */
+        .cart-row { display: grid; grid-template-columns: 1fr auto; gap: 4px 8px; padding: 8px 0; border-bottom: 1px dashed #dfe5e8; }
+        .cart-name { font-weight: 700; font-size: 13px; }
+        .cart-name small { display: block; font-weight: 500; color: #6b7a82; font-size: 11px; }
+        .cart-ctrl { display: flex; align-items: center; gap: 5px; justify-content: flex-end; }
+        .cart-sub { grid-column: 1 / -1; text-align: right; font-size: 12px; color: var(--verde); font-weight: 700; }
+        .cart-total { display: flex; justify-content: space-between; align-items: baseline; padding: 10px 0 2px; font-size: 14px; font-weight: 800; }
+        .cart-total span:last-child { color: var(--verde); font-size: 16px; }
+        .cart-empty { padding: 6px 0; color: #6b7a82; }
+
+        /* ---------- Rodapé de digitação ---------- */
         .ios-input-area {
+            flex: none;
             background: #f6f6f6;
             padding: 10px 12px 18px 12px;
             display: flex;
@@ -165,585 +304,842 @@
             border-top: 1px solid #d1d1d6;
             z-index: 10;
         }
-        .plus-icon { font-size: 20px; color: #007aff; font-weight: 300; cursor: pointer; }
+        .plus-icon { font-size: 20px; color: var(--azul-ios); font-weight: 300; cursor: pointer; }
         .ios-input-area input {
-            flex: 1;
-            padding: 9px 12px;
-            border: 1px solid #c7c7cc;
-            border-radius: 20px;
-            outline: none;
-            font-size: 13.5px;
-            background: #ffffff;
+            flex: 1; padding: 9px 12px;
+            border: 1px solid #c7c7cc; border-radius: 20px;
+            outline: none; font-size: 13.5px; background: #fff; font-family: inherit;
         }
+        .ios-input-area input:focus { border-color: var(--verde-vivo); }
         .send-btn {
-            background: #25d366;
-            color: white;
-            border: none;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 13px;
-            font-weight: bold;
+            background: #25d366; color: #fff; border: none;
+            width: 32px; height: 32px; border-radius: 50%;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            font-size: 13px; font-weight: 700;
         }
 
-        /* TELA DE DADOS DA EMPRESA (LIGHT MODE WhatsApp Business) */
-        .company-profile-overlay {
+        .toast {
             position: absolute;
-            top: 38px;
-            left: 0;
-            width: 100%;
-            height: calc(100% - 38px);
-            background: #f2f2f7;
-            z-index: 100;
-            display: none;
-            flex-direction: column;
-            overflow-y: auto;
+            left: 50%;
+            bottom: 82px;
+            transform: translateX(-50%) translateY(10px);
+            background: rgba(20, 30, 26, .92);
+            color: #fff;
+            font-size: 12px;
+            padding: 7px 14px;
+            border-radius: 999px;
+            opacity: 0;
+            pointer-events: none;
+            transition: all .25s;
+            z-index: 50;
+            white-space: nowrap;
+            max-width: 92%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        /* ---------- Tela Dados da empresa ---------- */
+        .company-profile-overlay {
+            position: absolute; top: 38px; left: 0; width: 100%; height: calc(100% - 38px);
+            background: #f2f2f7; z-index: 100; display: none; flex-direction: column; overflow-y: auto;
         }
         .profile-nav-bar {
-            background: #f6f6f6;
-            padding: 12px 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px solid #d1d1d6;
-            position: sticky;
-            top: 0;
-            z-index: 2;
+            background: #f6f6f6; padding: 12px 16px;
+            display: flex; align-items: center; justify-content: space-between;
+            border-bottom: 1px solid #d1d1d6; position: sticky; top: 0; z-index: 2;
         }
-        .profile-back { color: #007aff; font-size: 16px; font-weight: 500; cursor: pointer; }
+        .profile-back { color: var(--azul-ios); font-size: 16px; font-weight: 500; cursor: pointer; }
         .profile-title { font-size: 15px; font-weight: 600; color: #000; }
-
-        .banner-container {
-            width: 100%;
-            height: 140px;
-            background: linear-gradient(135deg, #006847, #004d34);
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .banner-title {
-            color: white;
-            font-weight: 800;
-            font-size: 22px;
-            letter-spacing: 1px;
-        }
+        .banner-container { width: 100%; height: 140px; background: #004d30; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; flex: none; }
+        .banner-bg-img { width: 100%; height: 100%; object-fit: cover; opacity: .95; }
         .company-logo-circle {
-            width: 86px;
-            height: 86px;
-            background: #006847;
-            border: 4px solid #f2f2f7;
-            border-radius: 50%;
-            position: absolute;
-            bottom: -35px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 22px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            width: 80px; height: 80px; border: 3px solid #f2f2f7; border-radius: 50%;
+            position: absolute; bottom: -35px; left: 50%; transform: translateX(-50%);
+            object-fit: contain; background: #004d30; padding: 4px; box-shadow: 0 4px 12px rgba(0,0,0,.15);
         }
-
-        .profile-header-info {
-            margin-top: 42px;
-            text-align: center;
-            padding: 0 16px;
-        }
+        .profile-header-info { margin-top: 42px; text-align: center; padding: 0 16px; }
         .company-name { font-size: 20px; font-weight: 700; color: #000; }
-        .company-phone { font-size: 13px; color: #666; margin-top: 2px; }
-
-        .profile-actions {
-            display: flex;
-            justify-content: space-around;
-            padding: 16px 20px;
-            gap: 10px;
-        }
-        .action-card {
-            background: #ffffff;
-            border-radius: 12px;
-            flex: 1;
-            padding: 10px 4px;
-            text-align: center;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.06);
-            cursor: pointer;
-        }
-        .action-icon { font-size: 18px; color: #006847; margin-bottom: 4px; }
-        .action-text { font-size: 11px; font-weight: 600; color: #006847; }
-
-        .profile-section-card {
-            background: #ffffff;
-            margin: 0 14px 12px 14px;
-            border-radius: 12px;
-            padding: 14px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
+        .company-subtitle { font-size: 12px; color: var(--verde); font-weight: 600; margin-top: 2px; }
+        .profile-actions { display: flex; justify-content: space-around; padding: 16px 20px; gap: 10px; }
+        .action-card { background: #fff; border-radius: 12px; flex: 1; padding: 10px 4px; text-align: center; box-shadow: 0 1px 2px rgba(0,0,0,.06); cursor: pointer; }
+        .action-icon { font-size: 18px; color: var(--verde); margin-bottom: 4px; }
+        .action-text { font-size: 11px; font-weight: 600; color: var(--verde); }
+        .profile-section-card { background: #fff; margin: 0 14px 12px 14px; border-radius: 12px; padding: 14px; box-shadow: 0 1px 3px rgba(0,0,0,.05); }
         .section-header { display: flex; justify-content: space-between; font-weight: 600; font-size: 14px; margin-bottom: 10px; }
-        .section-link { color: #007aff; font-size: 12px; cursor: pointer; }
-
-        .catalog-mini-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-        }
-        .catalog-mini-item {
-            aspect-ratio: 1;
-            background: #f9f9f9;
-            border-radius: 10px;
-            border: 1px solid #eee;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 4px;
-            font-size: 10px;
-            text-align: center;
-            font-weight: 600;
-            color: #333;
-        }
-        .catalog-mini-item img {
-            width: 40px;
-            height: 40px;
-            object-fit: contain;
-            margin-bottom: 4px;
-        }
-
+        .section-link { color: var(--azul-ios); font-size: 12px; cursor: pointer; }
+        .catalog-mini-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+        .catalog-mini-item { aspect-ratio: 1; background: #f9f9f9; border-radius: 10px; border: 1px solid #eee; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px; font-size: 10px; text-align: center; font-weight: 600; color: #333; }
+        .catalog-mini-item img { width: 40px; height: 40px; object-fit: contain; margin-bottom: 4px; }
         .info-row { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: #333; padding: 6px 0; }
         .info-icon { font-size: 16px; color: #666; width: 20px; }
+
+        @media (max-width: 1000px) { .scenario-panel { display: none; } }
     </style>
 </head>
 <body>
 
-<div class="iphone-frame">
-    <div class="ios-status-bar">
-        <span>9:41</span>
-        <span>5G 🔋</span>
+<!-- Elementos de frescor -->
+<div id="decor"></div>
+
+<!-- Painel de cenários da demonstração -->
+<aside class="scenario-panel">
+    <h3>🎛️ Cenário da demonstração</h3>
+    <p>Muda o clima e a época usados pelo motor de recomendação. Vale na próxima consulta da opção 1️⃣.</p>
+    <div id="chips"></div>
+    <div class="test-ids">
+        <strong>IDs para testar (clientes ativos):</strong><br>
+        <code>194643</code> <code>38072</code> <code>157086</code>
     </div>
+</aside>
 
-    <!-- Cabeçalho WhatsApp Business -->
-    <div class="ios-whatsapp-header">
-        <div class="header-left" onclick="voltarParaMenu()">‹ Menu</div>
-        <div class="contact-info" onclick="abrirPerfilEmpresa()">
-            <div class="avatar">PF</div>
-            <div class="contact-name-container">
-                <span class="contact-name">Pede Fruki (B2B)</span>
-                <span class="contact-status">Conta Comercial</span>
+<div class="stage" id="stage">
+    <!-- iPhone -->
+    <div class="iphone-frame" id="iphone">
+        <div class="ios-status-bar">
+            <span>9:41</span>
+            <span>5G 🔋</span>
+        </div>
+
+        <!-- Cabeçalho WhatsApp Business -->
+        <div class="ios-whatsapp-header">
+            <div class="header-left bloqueado" id="btnMenu" onclick="acaoMenu()">‹ Menu</div>
+            <div class="contact-info bloqueado" id="btnContato" onclick="abrirPerfilEmpresa()">
+                <img src="/pede-fruki-logo.png" class="avatar-img" onerror="this.onerror=null;this.src=FALLBACK_IMG" alt="Logo Pede Fruki">
+                <div class="contact-name-container">
+                    <span class="contact-name">Pede Fruki (B2B)</span>
+                    <span class="contact-status" id="statusConta">🔒 Aguardando identificação</span>
+                </div>
             </div>
-        </div>
-        <div class="header-actions">
-            <span class="header-btn" onclick="abrirPerfilEmpresa()" title="Perfil Comercial">🏬</span>
-            <span class="header-btn" onclick="selecionarOpcao('3', '3️⃣ Ver Carrinho & Fechar Pedido')">🛒</span>
-        </div>
-    </div>
-
-    <div class="chat-messages" id="chatMessages"></div>
-
-    <div class="ios-input-area">
-        <span class="plus-icon">＋</span>
-        <input type="text" id="userInput" placeholder="Digite uma opção ou mensagem..." onkeypress="handleKeyPress(event)">
-        <button class="send-btn" onclick="enviarMensagemManual()">↑</button>
-    </div>
-
-    <!-- TELA "DADOS DA EMPRESA" (MODAL WHATSAPP BUSINESS LIGHT MODE) -->
-    <div class="company-profile-overlay" id="companyProfile">
-        <div class="profile-nav-bar">
-            <span class="profile-back" onclick="fecharPerfilEmpresa()">‹ Voltar</span>
-            <span class="profile-title">Dados da empresa</span>
-            <span style="width: 40px;"></span>
-        </div>
-
-        <div class="banner-container">
-            <div class="banner-title">PEDE FRUKI B2B</div>
-            <div class="company-logo-circle">PF</div>
-        </div>
-
-        <div class="profile-header-info">
-            <div class="company-name">Pede Fruki (B2B)</div>
-            <div class="company-phone">+55 51 3712-4000</div>
-        </div>
-
-        <div class="profile-actions">
-            <div class="action-card">
-                <div class="action-icon">📞</div>
-                <div class="action-text">Ligar</div>
-            </div>
-            <div class="action-card" onclick="fecharPerfilEmpresa(); selecionarOpcao('2', '2️⃣ Ver Catálogo Completo');">
-                <div class="action-icon">🏬</div>
-                <div class="action-text">Catálogo</div>
-            </div>
-            <div class="action-card">
-                <div class="action-icon">↗️</div>
-                <div class="action-text">Compartilhar</div>
-            </div>
-            <div class="action-card">
-                <div class="action-icon">🔍</div>
-                <div class="action-text">Pesquisar</div>
+            <div class="header-actions">
+                <span class="header-btn bloqueado" id="btnPerfil" onclick="abrirPerfilEmpresa()" title="Perfil comercial">🏬</span>
+                <span class="header-btn bloqueado" id="btnCarrinho" onclick="selecionarOpcao('3', '🛒 Ver carrinho & fechar pedido')" title="Carrinho">🛒<span class="badge" id="badgeCarrinho">0</span></span>
             </div>
         </div>
 
-        <div class="profile-section-card">
-            <div class="section-header">
-                <span>Catálogo B2B</span>
-                <span class="section-link" onclick="fecharPerfilEmpresa(); selecionarOpcao('2', '2️⃣ Ver Catálogo Completo');">Mostrar tudo ›</span>
-            </div>
-            <div class="catalog-mini-grid">
-                <div class="catalog-mini-item">
-                    <img src="/images/Refri fruki/guarana1-5l.webp" onerror="this.src='https://via.placeholder.com/40'" alt="Guaraná">
-                    Guaraná 2L
-                </div>
-                <div class="catalog-mini-item">
-                    <img src="/images/Refri fruki/cola-2l.webp" onerror="this.src='https://via.placeholder.com/40'" alt="Cola">
-                    Fruki Cola
-                </div>
-                <div class="catalog-mini-item">
-                    <img src="/images/Agua fruki/fruki-500ml-agua-s-gas-gotas.webp" onerror="this.src='https://via.placeholder.com/40'" alt="Água">
-                    Água Pedra
-                </div>
-                <div class="catalog-mini-item">
-                    <img src="/images/Energetico fruki/elev_473_original.webp" onerror="this.src='https://via.placeholder.com/40'" alt="Elev">
-                    Traz Elev
-                </div>
-                <div class="catalog-mini-item">
-                    <img src="/images/Cervejas fruki/bellavista-premium.webp" onerror="this.src='https://via.placeholder.com/40'" alt="Bellavista">
-                    Bellavista
-                </div>
-                <div class="catalog-mini-item">
-                    <img src="/images/Sucos fruki/_suco_tetrapack_1l_frente_laranja.webp" onerror="this.src='https://via.placeholder.com/40'" alt="Suco">
-                    Frut Fresh
-                </div>
-            </div>
+        <div class="chat-messages" id="chatMessages"></div>
+
+        <div class="toast" id="toast"></div>
+
+        <div class="ios-input-area">
+            <span class="plus-icon">＋</span>
+            <input type="text" id="userInput" placeholder="Digite seu ID ou CNPJ..." autocomplete="off" onkeypress="handleKeyPress(event)">
+            <button class="send-btn" onclick="enviarMensagemManual()">↑</button>
         </div>
 
-        <div class="profile-section-card">
-            <div class="info-row">
-                <span class="info-icon">🟢</span>
-                <div>
-                    <strong style="color:#006847;">Aberto agora</strong> • Atendimento B2B 07:30 - 18:00
-                </div>
+        <!-- Tela Dados da empresa (Pede Fruki) -->
+        <div class="company-profile-overlay" id="companyProfile">
+            <div class="profile-nav-bar">
+                <span class="profile-back" onclick="fecharPerfilEmpresa()">‹ Voltar</span>
+                <span class="profile-title">Dados da empresa</span>
+                <span style="width: 40px;"></span>
             </div>
-            <hr style="border:none; border-top:1px solid #eee; margin:8px 0;">
-            <div class="info-row">
-                <span class="info-icon">🏢</span>
-                <div>Bebidas & Distribuição Comercial B2B</div>
-            </div>
-            <hr style="border:none; border-top:1px solid #eee; margin:8px 0;">
-            <div class="info-row">
-                <span class="info-icon">📍</span>
-                <div>Av. São Pedro, 528 - São Geraldo, Porto Alegre - RS, 90230-120, Brasil</div>
-            </div>
-            <hr style="border:none; border-top:1px solid #eee; margin:8px 0;">
-            <div class="info-row">
-                <span class="info-icon">✉️</span>
-                <div style="color:#007aff;">pedefruki@fruki.com.br</div>
-            </div>
-        </div>
 
-        <div class="profile-section-card">
-            <div class="info-row">
-                <span class="info-icon">ℹ️</span>
-                <div>
-                    <strong>Conta Comercial Oficial</strong><br>
-                    <span style="font-size:11px; color:#666;">Canal direto de recomendação por IA e pedidos B2B da Bebidas Fruki.</span>
+            <div class="banner-container">
+                <img src="/pede-fruki-logo.png" class="banner-bg-img" onerror="this.onerror=null;this.src=FALLBACK_IMG" alt="Banner Pede Fruki">
+                <img src="/pede-fruki-logo.png" class="company-logo-circle" onerror="this.onerror=null;this.src=FALLBACK_IMG" alt="Logo Pede Fruki">
+            </div>
+
+            <div class="profile-header-info">
+                <div class="company-name">Pede Fruki (B2B)</div>
+                <div class="company-subtitle">Exclusivo para CNPJ (Bares, Mercados e Pontos de Venda)</div>
+            </div>
+
+            <div class="profile-actions">
+                <div class="action-card"><div class="action-icon">📞</div><div class="action-text">Ligar</div></div>
+                <div class="action-card" onclick="fecharPerfilEmpresa(); selecionarOpcao('2', '🏬 Ver catálogo completo');">
+                    <div class="action-icon">🏬</div><div class="action-text">Catálogo</div>
                 </div>
+                <div class="action-card"><div class="action-icon">↗️</div><div class="action-text">Compartilhar</div></div>
+                <div class="action-card"><div class="action-icon">🔍</div><div class="action-text">Pesquisar</div></div>
+            </div>
+
+            <div class="profile-section-card">
+                <div class="info-row">
+                    <span class="info-icon">🟢</span>
+                    <div><strong style="color:#006847;">Disponível 24 horas por dia via WhatsApp</strong></div>
+                </div>
+                <hr style="border:none; border-top:1px solid #eee; margin:8px 0;">
+                <div class="info-row">
+                    <span class="info-icon">💬</span>
+                    <div>
+                        <strong>Como pedir:</strong> Envie mensagem por texto, áudio ou foto, ou acesse o
+                        <a href="https://pedefruki.com.br" target="_blank" style="color:#007aff; text-decoration:none;">Portal Pede Fruki</a>.
+                    </div>
+                </div>
+                <hr style="border:none; border-top:1px solid #eee; margin:8px 0;">
+                <div class="info-row">
+                    <span class="info-icon">🌎</span>
+                    <div>Paixão por oferecer o melhor sabor, construindo conexões verdadeiras e fazendo a diferença na vida das pessoas e do planeta.</div>
+                </div>
+            </div>
+
+            <div class="profile-section-card">
+                <div class="section-header">
+                    <span>Portfólio de Bebidas Fruki</span>
+                    <span class="section-link" onclick="fecharPerfilEmpresa(); selecionarOpcao('2', '🏬 Ver catálogo completo');">Ver tudo ›</span>
+                </div>
+                <div class="catalog-mini-grid">
+                    <div class="catalog-mini-item"><img src="/images/Refri fruki/guarana1-5l.webp" onerror="this.onerror=null;this.src=FALLBACK_IMG" alt="Guaraná">Fruki Guaraná</div>
+                    <div class="catalog-mini-item"><img src="/images/Refri fruki/cola-2l.webp" onerror="this.onerror=null;this.src=FALLBACK_IMG" alt="Cola">Fruki Cola</div>
+                    <div class="catalog-mini-item"><img src="/images/Agua fruki/fruki-500ml-agua-s-gas-gotas.webp" onerror="this.onerror=null;this.src=FALLBACK_IMG" alt="Água">Água da Pedra</div>
+                    <div class="catalog-mini-item"><img src="/images/Energetico fruki/elev_473_original.webp" onerror="this.onerror=null;this.src=FALLBACK_IMG" alt="Elev">Energético Elev</div>
+                    <div class="catalog-mini-item"><img src="/images/Cervejas fruki/bellavista-premium.webp" onerror="this.onerror=null;this.src=FALLBACK_IMG" alt="Bellavista">Cerveja Bellavista</div>
+                    <div class="catalog-mini-item"><img src="/images/Sucos fruki/_suco_tetrapack_1l_frente_laranja.webp" onerror="this.onerror=null;this.src=FALLBACK_IMG" alt="Suco">Suco Frut Fresh</div>
+                </div>
+            </div>
+
+            <div class="profile-section-card">
+                <div class="info-row"><span class="info-icon">📍</span><div>Rodovia BR 386, KM 346 S/N - Hidráulica, Lajeado - RS, 95900-000</div></div>
+                <hr style="border:none; border-top:1px solid #eee; margin:8px 0;">
+                <div class="info-row"><span class="info-icon">🌐</span><div style="color:#007aff;">fruki.com.br</div></div>
             </div>
         </div>
     </div>
 </div>
 
+<div class="team-badge">Desenvolvido por EquiTech 🚀</div>
+
 <script>
-    let etapaAtual = 'SOLICITAR_ID';
-    let dadosCliente = null;
-    let catalogoGeral = [];
-    let carrinhoMap = {};
-    let dadosNovoCadastro = {};
+    // =====================================================================
+    //  PEDE FRUKI | chat B2B  |  Desenvolvido por EquiTech
+    // =====================================================================
+    const API = '/api';
+    const FALLBACK_IMG = 'data:image/svg+xml;utf8,' + encodeURIComponent(
+        '<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60"><rect width="60" height="60" rx="10" fill="#e8f5ee"/><text x="30" y="39" font-size="26" text-anchor="middle">🥤</text></svg>');
 
-    const CATALOGO_PADRAO = [
-        { descricao: "Fruki Guaraná 2L", preco: 7.50, imagemUrl: "/images/Refri fruki/guarana1-5l.webp" },
-        { descricao: "Fruki Cola 2L", preco: 7.80, imagemUrl: "/images/Refri fruki/cola-2l.webp" },
-        { descricao: "Fruki Laranja 2L", preco: 7.20, imagemUrl: "/images/Refri fruki/laranja-let-2l.webp" },
-        { descricao: "Fruki Uva 2L", preco: 7.80, imagemUrl: "/images/Refri fruki/mockup-2l-uva-final.webp" },
-        { descricao: "Água da Pedra 500ml", preco: 2.00, imagemUrl: "/images/Agua fruki/fruki-500ml-agua-s-gas-gotas.webp" },
-        { descricao: "Energético Traz Elev 473ml", preco: 6.90, imagemUrl: "/images/Energetico fruki/elev_473_original.webp" },
-        { descricao: "Cerveja Bellavista Puro Malte", preco: 5.50, imagemUrl: "/images/Cervejas fruki/bellavista-premium.webp" },
-        { descricao: "Suco Frut Fresh 1L", preco: 4.50, imagemUrl: "/images/Sucos fruki/_suco_tetrapack_1l_frente_laranja.webp" }
-    ];
+    let autenticado = false;
+    let etapa = 'AGUARDANDO_ID';
+    let cliente = null;
+    let identificadorTentado = '';
+    let cadastroNome = '';
+    let carrinho = {};
+    let mapaProdutos = {};
+    let cenarioAtual = 'auto';
+    let filaBot = Promise.resolve();
+    let validando = false;
+    let processandoPedido = false;
+    let ultimoAvisoBloqueio = 0;
 
-    function abrirPerfilEmpresa() {
-        document.getElementById('companyProfile').style.display = 'flex';
-    }
-
-    function fecharPerfilEmpresa() {
-        document.getElementById('companyProfile').style.display = 'none';
-    }
-
-    function adicionarMensagem(texto, tipo, htmlExtra = '') {
-        const messagesDiv = document.getElementById('chatMessages');
-        const msgDiv = document.createElement('div');
-        msgDiv.className = `message ${tipo}`;
-        let textoFormatado = texto ? texto.replace(/\n/g, '<br>') : '';
-        msgDiv.innerHTML = textoFormatado + htmlExtra;
-        messagesDiv.appendChild(msgDiv);
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
-    }
-
-    window.onload = function() {
-        iniciarAtendimento();
+    const CENARIOS = {
+        auto: { rotulo: '🗓️ Automático (data de hoje)', params: {} },
+        verao: { rotulo: '☀️ Verão / calor forte (35 °C)', params: { temperatura: 35, fimDeSemana: false } },
+        fds: { rotulo: '🍻 Fim de semana / evento', params: { temperatura: 24, fimDeSemana: true } },
+        frio: { rotulo: '❄️ Frio (12 °C)', params: { temperatura: 12, fimDeSemana: false } }
     };
 
+    const ROTULO_PAGAMENTO = {
+        BOLETO: '📄 Boleto faturado (30 dias)',
+        PIX: '⚡ PIX à vista (5% de desconto)',
+        CARTAO: '🏦 Cartão corporativo'
+    };
+
+    const $ = (id) => document.getElementById(id);
+    const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+    const brl = (v) => Number(v).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    const hora = () => new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+
+    function esc(s) {
+        return String(s == null ? '' : s)
+            .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+
+    function formatar(texto) {
+        return esc(texto).replace(/\*(.+?)\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
+    }
+
+    function rolarFim() {
+        const box = $('chatMessages');
+        box.scrollTop = box.scrollHeight;
+    }
+
+    function qs() {
+        const p = CENARIOS[cenarioAtual].params;
+        const s = new URLSearchParams(p).toString();
+        return s ? '?' + s : '';
+    }
+
+    function addMsg(texto, tipo, htmlExtra) {
+        const m = document.createElement('div');
+        m.className = 'message ' + tipo;
+        const meta = '<div class="msg-meta">' + hora() + (tipo === 'outgoing' ? ' <span class="ticks">✓✓</span>' : '') + '</div>';
+        m.innerHTML = (texto ? '<div class="msg-text">' + formatar(texto) + '</div>' : '') + (htmlExtra || '') + meta;
+        $('chatMessages').appendChild(m);
+        rolarFim();
+        return m;
+    }
+
+    function mostrarDigitando() {
+        const t = document.createElement('div');
+        t.className = 'typing';
+        t.innerHTML = '<span></span><span></span><span></span>';
+        $('chatMessages').appendChild(t);
+        rolarFim();
+        return t;
+    }
+
+    function bot(texto, htmlExtra, ms) {
+        filaBot = filaBot.then(async () => {
+            const t = mostrarDigitando();
+            const atraso = (ms !== undefined) ? ms : Math.min(1500, 450 + (texto || '').length * 9 + (htmlExtra ? 200 : 0));
+            await sleep(atraso);
+            t.remove();
+            addMsg(texto, 'incoming', htmlExtra);
+        });
+        return filaBot;
+    }
+
+    function toast(texto) {
+        const t = $('toast');
+        t.textContent = texto;
+        t.classList.add('show');
+        clearTimeout(toast._t);
+        toast._t = setTimeout(() => t.classList.remove('show'), 1700);
+    }
+
+    function tremer(el) {
+        el.classList.remove('shake');
+        void el.offsetWidth;
+        el.classList.add('shake');
+    }
+
+    // ---------- Bloqueio de acesso ----------
+    function aplicarBloqueio(bloquear) {
+        ['btnMenu', 'btnContato', 'btnPerfil', 'btnCarrinho'].forEach((id) => {
+            $(id).classList.toggle('bloqueado', bloquear);
+        });
+        $('statusConta').textContent = bloquear ? '🔒 Aguardando identificação' : 'Conta Comercial Oficial';
+        atualizarPlaceholder();
+    }
+
+    function atualizarPlaceholder() {
+        const ph = { AGUARDANDO_ID: 'Digite seu ID ou CNPJ...', CADASTRO_NOME: 'Digite a razão social...', CADASTRO_PORTE: 'Escolha o porte nos botões acima' };
+        $('userInput').placeholder = autenticado ? 'Digite uma opção (1 a 5) ou mensagem...' : (ph[etapa] || 'Digite seu ID ou CNPJ...');
+    }
+
+    function exigirLogin() {
+        if (autenticado) return true;
+        tremer($('userInput'));
+        toast('🔒 Valide seu ID/CNPJ para liberar o acesso');
+        const agora = Date.now();
+        if (agora - ultimoAvisoBloqueio > 5000) {
+            ultimoAvisoBloqueio = agora;
+            if (etapa === 'AGUARDANDO_ID' || etapa === 'CADASTRO_NOME' || etapa === 'CADASTRO_PORTE') {
+                bot('🔒 *Acesso bloqueado.* O catálogo, as recomendações e o carrinho só são liberados depois que o seu ID ou CNPJ for validado.');
+            }
+        }
+        return false;
+    }
+
+    // ---------- Início do atendimento ----------
     function iniciarAtendimento() {
-        etapaAtual = 'SOLICITAR_ID';
-        carrinhoMap = {};
-        document.getElementById('chatMessages').innerHTML = '';
-
-        setTimeout(() => {
-            adicionarMensagem("Olá! Seja muito bem-vindo(a) ao Pede Fruki, o canal oficial de pedidos B2B.", "incoming");
-        }, 400);
-        setTimeout(() => {
-            adicionarMensagem("Para identificarmos o seu estabelecimento comercial, por favor, informe o seu ID ou CNPJ cadastrado (Ex: 110569):", "incoming");
-        }, 1200);
+        autenticado = false;
+        cliente = null;
+        carrinho = {};
+        mapaProdutos = {};
+        etapa = 'AGUARDANDO_ID';
+        filaBot = Promise.resolve();
+        $('chatMessages').innerHTML = '';
+        fecharPerfilEmpresa();
+        aplicarBloqueio(true);
+        atualizarCarrinhoUI();
+        bot('Olá! Seja muito bem-vindo(a) ao *Pede Fruki*, o canal oficial de pedidos B2B direto para o seu negócio. 🥤');
+        bot('🔒 Para liberar o catálogo, as recomendações e o carrinho, primeiro informe o *ID* ou o *CNPJ* do seu estabelecimento (somente números).');
     }
 
+    // ---------- Entrada do usuário ----------
     async function processarEntrada(texto) {
-        const textoLimpo = texto.trim();
-        if (!textoLimpo) return;
+        const t = texto.trim();
+        if (!t) return;
+        addMsg(t, 'outgoing');
+        $('userInput').value = '';
 
-        adicionarMensagem(textoLimpo, "outgoing");
-        document.getElementById('userInput').value = '';
-
-        if (etapaAtual === 'SOLICITAR_ID') {
-            setTimeout(async () => {
-                let data = null;
-                try {
-                    const response = await fetch(`/api/recomendacao/${textoLimpo}`);
-                    if (response.ok) {
-                        data = await response.json();
-                    }
-                } catch (err) {
-                    console.log("Fallback acionado");
-                }
-
-                if (!data) {
-                    data = {
-                        codCliente: textoLimpo,
-                        nomeCliente: "Estabelecimento #" + textoLimpo,
-                        produtosRecomendados: CATALOGO_PADRAO.slice(0, 4),
-                        catalogoCompleto: CATALOGO_PADRAO
-                    };
-                }
-
-                dadosCliente = data;
-                catalogoGeral = (data.catalogoCompleto && data.catalogoCompleto.length > 0) ? data.catalogoCompleto : CATALOGO_PADRAO;
-                etapaAtual = 'MENU_PRINCIPAL';
-
-                let nomeEstabelecimento = data.nomeCliente || ("Estabelecimento #" + textoLimpo);
-                adicionarMensagem(`Estabelecimento reconhecido com sucesso!\n\nBem-vindo(a) de volta, ${nomeEstabelecimento} (Código: #${data.codCliente || textoLimpo}).\n\nComo podemos ajudar na reposição do seu estoque hoje?`, "incoming", gerarMenuPrincipalHTML());
-
-            }, 600);
+        if (etapa === 'AGUARDANDO_ID') return validarIdentificador(t);
+        if (etapa === 'CADASTRO_NOME') return receberNomeCadastro(t);
+        if (etapa === 'CADASTRO_PORTE') {
+            return bot('Toque em uma das opções de porte acima para concluir o cadastro. 👆');
         }
-        else if (etapaAtual === 'MENU_PRINCIPAL') {
-            tratarOpcaoMenu(textoLimpo);
+        if (!autenticado) { exigirLogin(); return; }
+        tratarComando(t);
+    }
+
+    function enviarMensagemManual() { processarEntrada($('userInput').value); }
+    function handleKeyPress(e) { if (e.key === 'Enter') enviarMensagemManual(); }
+
+    // ---------- Validação do ID / CNPJ ----------
+    async function validarIdentificador(entrada, aposCadastro) {
+        if (validando) return;
+        const digitos = entrada.replace(/\D/g, '');
+        if (!digitos) {
+            return bot('Não consegui identificar números nessa mensagem. 😅 Digite o *ID* ou o *CNPJ* do estabelecimento (somente números).');
         }
-        else if (etapaAtual === 'PAGAMENTO') {
-            finalizarPedido();
+        identificadorTentado = digitos;
+        validando = true;
+        try {
+            await bot(aposCadastro ? 'Cadastro criado! Liberando o seu acesso... ✅' : 'Validando o seu cadastro... 🔎', '', 800);
+            const r = await fetch(API + '/recomendacao/' + digitos + qs());
+            const corpo = await r.json().catch(() => ({}));
+            if (r.ok) return entrarComo(corpo);
+            if (r.status === 404) return naoEncontrado();
+            if (r.status === 400) {
+                return bot((corpo.erro || 'Formato inválido.') + '\n\nDigite novamente o *ID* ou o *CNPJ* (14 dígitos).');
+            }
+            throw new Error(corpo.erro || ('HTTP ' + r.status));
+        } catch (e) {
+            await bot('⚠️ Não consegui consultar o cadastro agora (serviço indisponível). Confira a conexão e envie o ID/CNPJ novamente em instantes.');
+        } finally {
+            validando = false;
         }
     }
 
-    function gerarMenuPrincipalHTML() {
-        let totalItens = obterTotalItensCarrinho();
-        let nomeEst = dadosCliente ? dadosCliente.nomeCliente : "Estabelecimento";
+    function naoEncontrado() {
+        return bot('Não encontramos um cadastro *ativo* para *' + identificadorTentado + '*. 😕\n\nConfira o número e tente de novo, ou faça o seu cadastro expresso por aqui.', `
+            <div class="options-container">
+                <button class="option-btn" onclick="tentarNovamente()">🔁 Tentar novamente</button>
+                <button class="option-btn destaque" onclick="iniciarCadastro()">📝 Fazer cadastro expresso</button>
+            </div>`);
+    }
+
+    function tentarNovamente() {
+        if (autenticado) return;
+        etapa = 'AGUARDANDO_ID';
+        atualizarPlaceholder();
+        addMsg('🔁 Tentar novamente', 'outgoing');
+        bot('Sem problemas! Digite o *ID* ou o *CNPJ* do seu estabelecimento (somente números).');
+        $('userInput').focus();
+    }
+
+    function entrarComo(data) {
+        autenticado = true;
+        cliente = data;
+        indexarProdutos(data);
+        etapa = 'MENU_PRINCIPAL';
+        aplicarBloqueio(false);
+        const novo = data.novoCliente ? '\nComo este é o seu primeiro acesso, as sugestões usam o perfil do negócio e a época do ano.' : '';
+        return bot('✅ *Estabelecimento reconhecido!*\n\nBem-vindo(a), *' + data.nomeCliente + '* (código #' + data.codCliente + ').\nPorte identificado: *' + (data.porteLabel || 'Minimercado') + '*.' + novo + '\n\nComo podemos ajudar na reposição do seu estoque hoje?', menuHTML());
+    }
+
+    // ---------- Cadastro expresso ----------
+    function iniciarCadastro() {
+        if (autenticado) return;
+        etapa = 'CADASTRO_NOME';
+        atualizarPlaceholder();
+        addMsg('📝 Fazer cadastro expresso', 'outgoing');
+        bot('Vamos cadastrar o identificador *' + identificadorTentado + '*.\n\nInforme a *razão social* do seu estabelecimento:');
+        $('userInput').focus();
+    }
+
+    function receberNomeCadastro(nome) {
+        if (nome.length < 3) {
+            return bot('A razão social precisa ter pelo menos 3 caracteres. Pode digitar novamente?');
+        }
+        cadastroNome = nome;
+        etapa = 'CADASTRO_PORTE';
+        atualizarPlaceholder();
+        return bot('Perfeito, *' + nome + '*! Qual é o *porte* do seu estabelecimento? Isso ajusta o volume de caixas que vamos sugerir.', `
+            <div class="options-container">
+                <button class="option-btn" onclick="escolherPorte('MINIMERCADO', '🏪 Minimercado / Padaria')">🏪 Minimercado / Padaria</button>
+                <button class="option-btn" onclick="escolherPorte('BAR_RESTAURANTE', '🍻 Bar / Restaurante')">🍻 Bar / Restaurante</button>
+                <button class="option-btn" onclick="escolherPorte('GRANDE_DISTRIBUIDOR', '🏭 Grande distribuidor / Atacado')">🏭 Grande distribuidor / Atacado</button>
+            </div>`);
+    }
+
+    async function escolherPorte(porte, rotulo) {
+        if (etapa !== 'CADASTRO_PORTE' || validando) return;
+        addMsg(rotulo, 'outgoing');
+        try {
+            const r = await fetch(API + '/cadastro', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ identificador: identificadorTentado, nome: cadastroNome, porte: porte })
+            });
+            const corpo = await r.json().catch(() => ({}));
+            if (r.status === 201) {
+                etapa = 'AGUARDANDO_ID';
+                return validarIdentificador(identificadorTentado, true);
+            }
+            etapa = 'AGUARDANDO_ID';
+            atualizarPlaceholder();
+            return bot('Não foi possível concluir o cadastro: ' + (corpo.erro || 'tente novamente.') + '\n\nDigite o *ID* ou o *CNPJ* para tentar de novo.');
+        } catch (e) {
+            etapa = 'AGUARDANDO_ID';
+            atualizarPlaceholder();
+            return bot('⚠️ Serviço indisponível no momento. Envie o ID/CNPJ novamente em instantes.');
+        }
+    }
+
+    // ---------- Menu principal ----------
+    function totalCaixas() {
+        return Object.values(carrinho).reduce((s, i) => s + i.qtd, 0);
+    }
+
+    function menuHTML() {
+        const n = totalCaixas();
         return `
             <div class="options-container">
-                <div style="font-size: 11px; color: #555; font-weight: bold; margin-bottom: 2px;">Cliente: ${nomeEst}</div>
-                <button class="option-btn" onclick="selecionarOpcao('1', '1️⃣ Ver Recomendações Personalizadas')">1️⃣ Ver Recomendações Personalizadas (IA)</button>
-                <button class="option-btn" onclick="selecionarOpcao('2', '2️⃣ Ver Catálogo Completo de Produtos')">2️⃣ Ver Catálogo Completo de Produtos</button>
-                <button class="option-btn" onclick="selecionarOpcao('3', '3️⃣ Ver Carrinho & Fechar Pedido (${totalItens} itens)')">3️⃣ Ver Carrinho & Fechar Pedido (${totalItens} itens)</button>
-                <button class="option-btn" onclick="selecionarOpcao('4', '4️⃣ Falar com Consultor Comercial Humano')">4️⃣ Falar com Consultor Comercial Humano</button>
-            </div>
-        `;
+                <div style="font-size:11px;color:#555;font-weight:700;margin-bottom:2px;">Cliente CNPJ: ${esc(cliente ? cliente.nomeCliente : '')}</div>
+                <button class="option-btn" onclick="selecionarOpcao('1', '1️⃣ Ver recomendações personalizadas')">1️⃣ Ver recomendações personalizadas (IA)</button>
+                <button class="option-btn" onclick="selecionarOpcao('2', '2️⃣ Ver catálogo completo')">2️⃣ Ver catálogo completo de produtos</button>
+                <button class="option-btn" onclick="selecionarOpcao('3', '3️⃣ Ver carrinho & fechar pedido')">3️⃣ Ver carrinho & fechar pedido${n ? ' (' + n + ' cx)' : ''}</button>
+                <button class="option-btn" onclick="selecionarOpcao('4', '4️⃣ Falar com consultor comercial')">4️⃣ Falar com consultor comercial</button>
+                <button class="option-btn secondary" onclick="selecionarOpcao('5', '5️⃣ Trocar de estabelecimento')">5️⃣ Trocar de estabelecimento</button>
+            </div>`;
     }
 
-    function selecionarOpcao(codigo, textoDescritivo) {
-        adicionarMensagem(textoDescritivo, "outgoing");
-
-        setTimeout(() => {
-            if (codigo === '1') {
-                let nomeEst = dadosCliente ? dadosCliente.nomeCliente : "seu estabelecimento";
-                adicionarMensagem(`Com base no histórico e curva de consumo para ${nomeEst}, separei estas oportunidades de alta rotatividade:`, "incoming");
-
-                setTimeout(() => {
-                    let recomendados = (dadosCliente && dadosCliente.produtosRecomendados && dadosCliente.produtosRecomendados.length > 0)
-                        ? dadosCliente.produtosRecomendados
-                        : CATALOGO_PADRAO.slice(0, 4);
-                    renderizarListaProdutos(recomendados, "Toque no botão + para adicionar os itens ao carrinho:");
-                }, 600);
-
-            } else if (codigo === '2') {
-                adicionarMensagem("Aqui está o catálogo completo de bebidas Fruki para pronta entrega:", "incoming");
-                setTimeout(() => {
-                    let listaCat = (catalogoGeral && catalogoGeral.length > 0) ? catalogoGeral : CATALOGO_PADRAO;
-                    renderizarListaProdutos(listaCat, "Navegue pelo catálogo e selecione os itens desejados:");
-                }, 600);
-
-            } else if (codigo === '3') {
-                exibirCarrinho();
-            } else if (codigo === '4') {
-                etapaAtual = 'HUMANO';
-                adicionarMensagem("Entendido. Estou a transferir o seu atendimento para o Consultor Comercial da sua região. Agradecemos a parceria com a Bebidas Fruki!", "incoming", `
-                    <div class="options-container">
-                        <button class="option-btn" onclick="voltarParaMenu()">🔙 Voltar para o Menu Principal</button>
-                    </div>
-                `);
-            }
-        }, 600);
-    }
-
-    function renderizarListaProdutos(lista, mensagemTitulo) {
-        let htmlProdutos = '';
-        lista.forEach((prod) => {
-            let nomeP = prod.descricao || prod.nome || "Produto Fruki";
-            let precoP = prod.preco || 7.50;
-            let imgP = prod.imagemUrl || '/images/Refri fruki/cola-2l.webp';
-            let qtdAtual = carrinhoMap[nomeP] ? carrinhoMap[nomeP].qtd : 0;
-
-            htmlProdutos += `
-                <div class="product-card">
-                    <img src="${imgP}" class="product-img" onerror="this.src='https://via.placeholder.com/50?text=Fruki'" alt="Produto">
-                    <div class="product-info">
-                        <div class="product-title">${nomeP}</div>
-                        <div class="product-desc">Unidade B2B Fruki</div>
-                        <div class="product-price">R$ ${precoP.toFixed(2)}</div>
-                    </div>
-                    <div class="quantity-controls">
-                        <button class="btn-qty" onclick="alterarQuantidade('${nomeP}', ${precoP}, -1)">-</button>
-                        <span style="font-weight:bold; font-size:13px; min-width:18px; text-align:center;" id="qty-${btoa(encodeURIComponent(nomeP)).replace(/=/g, '')}">${qtdAtual}</span>
-                        <button class="btn-qty" onclick="alterarQuantidade('${nomeP}', ${precoP}, 1)">+</button>
-                    </div>
-                </div>
-            `;
-        });
-
-        htmlProdutos += `
-            <div style="margin-top:10px;">
-                <button class="option-btn" onclick="selecionarOpcao('3', '3️⃣ Ver Carrinho & Fechar Pedido')">📦 Ver Carrinho & Fechar Pedido</button>
-            </div>
-        `;
-        adicionarMensagem(mensagemTitulo, "incoming", htmlProdutos);
-    }
-
-    function alterarQuantidade(nomeProduto, precoProduto, delta) {
-        if (!carrinhoMap[nomeProduto]) {
-            carrinhoMap[nomeProduto] = { qtd: 0, preco: precoProduto };
-        }
-        carrinhoMap[nomeProduto].qtd += delta;
-
-        if (carrinhoMap[nomeProduto].qtd <= 0) {
-            delete carrinhoMap[nomeProduto];
-        }
-
-        let idSafe = btoa(encodeURIComponent(nomeProduto)).replace(/=/g, '');
-        let elQty = document.getElementById(`qty-${idSafe}`);
-        if (elQty) {
-            elQty.innerText = carrinhoMap[nomeProduto] ? carrinhoMap[nomeProduto].qtd : 0;
-        }
-    }
-
-    function obterTotalItensCarrinho() {
-        let total = 0;
-        for (let prod in carrinhoMap) {
-            total += carrinhoMap[prod].qtd;
-        }
-        return total;
-    }
-
-    function calcularValorTotalCarrinho() {
-        let valorTotal = 0;
-        for (let prod in carrinhoMap) {
-            valorTotal += carrinhoMap[prod].qtd * carrinhoMap[prod].preco;
-        }
-        return valorTotal;
-    }
-
-    function exibirCarrinho() {
-        let totalItens = obterTotalItensCarrinho();
-        let nomeEst = dadosCliente ? dadosCliente.nomeCliente : "Estabelecimento";
-
-        if (totalItens === 0) {
-            adicionarMensagem("O seu carrinho de compras está vazio no momento. Selecione a opção 1 ou 2 para escolher os produtos.", "incoming", gerarMenuPrincipalHTML());
-            return;
-        }
-
-        let resumo = `Resumo do Pedido B2B - ${nomeEst}:\n\n`;
-        for (let prod in carrinhoMap) {
-            let item = carrinhoMap[prod];
-            let subtotal = item.qtd * item.preco;
-            resumo += `• ${prod}\n  Qtd: ${item.qtd}x | Subtotal: R$ ${subtotal.toFixed(2)}\n`;
-        }
-
-        let valorTotalGeral = calcularValorTotalCarrinho();
-        resumo += `\nTotal de Itens: ${totalItens} volumes\nValor Total do Pedido: R$ ${valorTotalGeral.toFixed(2)}\n\nEscolha a forma de pagamento para transmitir o pedido ao ERP Fruki:`;
-
-        etapaAtual = 'PAGAMENTO';
-        adicionarMensagem(resumo, "incoming", `
-            <div class="options-container">
-                <button class="option-btn" onclick="escolherFormaPagamento('Boleto Faturado B2B (30 dias)')">💳 1 - Boleto Faturado B2B (30 dias)</button>
-                <button class="option-btn" onclick="escolherFormaPagamento('PIX à Vista com 5% de Desconto')">⚡ 2 - PIX à Vista (5% de Desconto)</button>
-                <button class="option-btn" onclick="escolherFormaPagamento('Cartão de Crédito Corporativo')">🏦 3 - Cartão Corporativo</button>
-                <button class="option-btn" onclick="voltarParaMenu()">🔙 Voltar para o Menu</button>
-            </div>
-        `);
-    }
-
-    function escolherFormaPagamento(metodo) {
-        let valorTotalGeral = calcularValorTotalCarrinho();
-        let nomeEst = dadosCliente ? dadosCliente.nomeCliente : "Estabelecimento";
-
-        adicionarMensagem(`Forma de pagamento escolhida: ${metodo}`, "outgoing");
-        setTimeout(() => {
-            adicionarMensagem(`Pedido transmitido com sucesso para a central Pede Fruki!\n\nCliente: ${nomeEst}\nValor Total: R$ ${valorTotalGeral.toFixed(2)}\nPagamento: ${metodo}\n\nStatus: Pedido faturado e enviado para expedição na fábrica.\nNota fiscal e boleto enviados por e-mail.\n\nAgradecemos a parceria de excelência!`, "incoming", `
-                <div class="options-container">
-                    <button class="option-btn" onclick="voltarParaMenu()">🔄 Novo Pedido / Voltar ao Menu</button>
-                </div>
-            `);
-            carrinhoMap = {};
-            etapaAtual = 'MENU_PRINCIPAL';
-        }, 800);
+    function acaoMenu() {
+        if (!exigirLogin()) return;
+        voltarParaMenu();
     }
 
     function voltarParaMenu() {
-        etapaAtual = 'MENU_PRINCIPAL';
-        adicionarMensagem("Retornando ao menu principal do Pede Fruki:", "incoming", gerarMenuPrincipalHTML());
+        if (!exigirLogin()) return;
+        etapa = 'MENU_PRINCIPAL';
+        bot('Retornando ao menu principal do Pede Fruki:', menuHTML());
     }
 
-    function tratarOpcaoMenu(texto) {
-        if (texto.includes('1') || texto.toLowerCase().includes('recomend')) {
-            selecionarOpcao('1', '1️⃣ Ver Recomendações Personalizadas');
-        } else if (texto.includes('2') || texto.toLowerCase().includes('catalogo') || texto.toLowerCase().includes('catálogo')) {
-            selecionarOpcao('2', '2️⃣ Ver Catálogo Completo de Produtos');
-        } else if (texto.includes('3') || texto.toLowerCase().includes('carrinho')) {
-            selecionarOpcao('3', '3️⃣ Ver Carrinho & Fechar Pedido');
-        } else if (texto.includes('4') || texto.toLowerCase().includes('humano')) {
-            selecionarOpcao('4', '4️⃣ Falar com Consultor Humano');
+    function selecionarOpcao(codigo, rotulo) {
+        if (!exigirLogin()) return;
+        addMsg(rotulo, 'outgoing');
+        executarOpcao(codigo);
+    }
+
+    function executarOpcao(codigo) {
+        switch (codigo) {
+            case '1': return mostrarRecomendacoes();
+            case '2': return mostrarCatalogo();
+            case '3': return mostrarCarrinho();
+            case '4': return falarComConsultor();
+            case '5': return trocarEstabelecimento();
+        }
+    }
+
+    function tratarComando(texto) {
+        const t = texto.toLowerCase().trim();
+        const num = t.match(/^([1-5])$/);
+        if (num) return executarOpcao(num[1]);
+        if (/recomend/.test(t)) return executarOpcao('1');
+        if (/cat[aá]logo/.test(t)) return executarOpcao('2');
+        if (/carrinho|fechar|pedido/.test(t)) return executarOpcao('3');
+        if (/consultor|humano|atendente/.test(t)) return executarOpcao('4');
+        if (/trocar|sair/.test(t)) return executarOpcao('5');
+        return bot('Não entendi essa opção. 🤔 Toque em um botão ou digite um número de 1 a 5:', menuHTML());
+    }
+
+    // ---------- 1) Recomendações ----------
+    async function mostrarRecomendacoes() {
+        await bot('Analisando o seu histórico, o porte do negócio e a época do ano... 🧠', '', 900);
+        try {
+            const r = await fetch(API + '/recomendacao/' + cliente.codCliente + qs());
+            if (!r.ok) throw new Error('HTTP ' + r.status);
+            cliente = await r.json();
+            indexarProdutos(cliente);
+        } catch (e) {
+            if (!cliente || !cliente.produtosRecomendados || !cliente.produtosRecomendados.length) {
+                return bot('⚠️ Não consegui carregar as recomendações agora. Tente novamente em instantes.', menuHTML());
+            }
+        }
+        const lista = cliente.produtosRecomendados || [];
+        const ctx = cliente.contexto || {};
+        const resumo = ctx.resumo ? ' e no momento atual (*' + ctx.resumo + '*)' : '';
+        const aviso = cliente.novoCliente ? '\nComo você é novo por aqui, priorizei o perfil e a época do ano.' : '';
+        let cards = lista.map((p) => cardProduto(p, true)).join('');
+        cards += `
+            <div class="options-container" style="margin-top:10px;">
+                <button class="option-btn destaque" onclick="adicionarTodasSugestoes()">➕ Adicionar todas as sugestões ao carrinho</button>
+                <button class="option-btn" onclick="selecionarOpcao('3', '🛒 Ver carrinho & fechar pedido')">📦 Ver carrinho & fechar pedido</button>
+            </div>`;
+        return bot('Com base no histórico, no porte do seu negócio (*' + (cliente.porteLabel || '') + '*)' + resumo + ', separei estas oportunidades:' + aviso, cards);
+    }
+
+    function adicionarTodasSugestoes() {
+        if (!exigirLogin()) return;
+        const lista = (cliente && cliente.produtosRecomendados) || [];
+        lista.forEach((p) => {
+            const sug = p.qtdSugeridaCaixas || 1;
+            const atual = carrinho[p.codigo] ? carrinho[p.codigo].qtd : 0;
+            definirQtd(p.codigo, Math.max(atual, sug), true);
+        });
+        toast('✅ ' + lista.length + ' sugestões adicionadas ao carrinho');
+    }
+
+    // ---------- 2) Catálogo ----------
+    async function mostrarCatalogo() {
+        const lista = (cliente && cliente.catalogoCompleto) || [];
+        if (!lista.length) return bot('Catálogo indisponível no momento. Tente novamente em instantes.', menuHTML());
+        const cards = lista.map((p) => cardProduto(p, false)).join('') + `
+            <div class="options-container" style="margin-top:10px;">
+                <button class="option-btn" onclick="selecionarOpcao('3', '🛒 Ver carrinho & fechar pedido')">📦 Ver carrinho & fechar pedido</button>
+            </div>`;
+        return bot('Aqui está o catálogo completo de bebidas Fruki para pronta entrega. A venda é por *caixa*:', cards);
+    }
+
+    function cardProduto(p, comSugestao) {
+        const cod = esc(p.codigo);
+        const qtd = carrinho[p.codigo] ? carrinho[p.codigo].qtd : 0;
+        const motivo = (comSugestao && p.motivo) ? '<div class="product-reason">💡 ' + esc(p.motivo) + '</div>' : '';
+        const score = (comSugestao && p.score != null) ? '<span class="score-pill">' + esc(p.score) + ' pts</span>' : '';
+        const sug = (comSugestao && p.qtdSugeridaCaixas)
+            ? '<div class="sug-row"><span class="sug-chip">📦 Sugestão: ' + p.qtdSugeridaCaixas + ' cx</span>' +
+            '<button class="mini-btn" onclick="definirQtd(\'' + cod + '\', ' + p.qtdSugeridaCaixas + ')">Adicionar</button></div>' +
+            '<div class="sug-why">' + esc(p.justificativaVolume || '') + '</div>'
+            : '';
+        return `
+            <div class="product-card">
+                <div class="product-top">
+                    <img src="${esc(p.imagemUrl)}" class="product-img" onerror="this.onerror=null;this.src=FALLBACK_IMG" alt="${esc(p.descricao)}">
+                    <div class="product-info">
+                        <div class="product-title">${esc(p.descricao)}</div>
+                        <div class="product-desc">${esc(p.embalagem || '')} • ${brl(p.precoUnitario || 0)}/un</div>
+                        <div class="product-price">${brl(p.preco)} / caixa</div>
+                    </div>
+                    ${score}
+                </div>
+                ${motivo}
+                ${sug}
+                <div class="qty-row">
+                    <button class="btn-qty" onclick="alterarQtd('${cod}', -1)" title="Remover 1 caixa">−</button>
+                    <span class="qty" data-qty="${cod}">${qtd}</span>
+                    <button class="btn-qty" onclick="alterarQtd('${cod}', 1)" title="Adicionar 1 caixa">+</button>
+                </div>
+            </div>`;
+    }
+
+    function indexarProdutos(d) {
+        mapaProdutos = {};
+        ((d.catalogoCompleto || []).concat(d.produtosRecomendados || [])).forEach((p) => {
+            mapaProdutos[p.codigo] = Object.assign({}, mapaProdutos[p.codigo] || {}, p);
+        });
+    }
+
+    // ---------- Carrinho dinâmico ----------
+    function alterarQtd(cod, delta) {
+        if (!exigirLogin()) return;
+        const atual = carrinho[cod] ? carrinho[cod].qtd : 0;
+        definirQtd(cod, atual + delta, false);
+    }
+
+    function definirQtd(cod, qtd, silencioso) {
+        if (!exigirLogin()) return;
+        const p = mapaProdutos[cod];
+        if (!p) return;
+        qtd = Math.min(999, qtd);
+        if (qtd <= 0) {
+            if (carrinho[cod]) {
+                delete carrinho[cod];
+                if (!silencioso) toast('🗑️ ' + p.descricao + ' removido');
+            }
         } else {
-            adicionarMensagem("Por favor, selecione uma das opções numéricas do menu:", "incoming", gerarMenuPrincipalHTML());
+            carrinho[cod] = { codigo: cod, nome: p.descricao, preco: p.preco, embalagem: p.embalagem, qtd: qtd };
+            if (!silencioso) toast('✅ ' + p.descricao + ': ' + qtd + ' cx');
+        }
+        atualizarCarrinhoUI();
+    }
+
+    function removerItem(cod) { definirQtd(cod, 0, false); }
+    function limparCarrinho() {
+        if (!exigirLogin()) return;
+        carrinho = {};
+        atualizarCarrinhoUI();
+        toast('🧹 Carrinho esvaziado');
+    }
+
+    function totalCentavos() {
+        return Object.values(carrinho).reduce((s, i) => s + Math.round(i.preco * 100) * i.qtd, 0);
+    }
+
+    function atualizarCarrinhoUI() {
+        document.querySelectorAll('[data-qty]').forEach((el) => {
+            const c = carrinho[el.getAttribute('data-qty')];
+            el.textContent = c ? c.qtd : 0;
+        });
+        const n = totalCaixas();
+        const badge = $('badgeCarrinho');
+        badge.textContent = n > 99 ? '99+' : n;
+        badge.style.display = n > 0 ? 'flex' : 'none';
+        badge.classList.remove('bump');
+        void badge.offsetWidth;
+        badge.classList.add('bump');
+        document.querySelectorAll('.cart-block').forEach((el) => { el.innerHTML = carrinhoHTML(); });
+    }
+
+    function carrinhoHTML() {
+        const itens = Object.values(carrinho);
+        if (!itens.length) {
+            return `
+                <div class="cart-empty">🛒 Seu carrinho está vazio no momento.</div>
+                <div class="options-container">
+                    <button class="option-btn" onclick="selecionarOpcao('1', '1️⃣ Ver recomendações personalizadas')">1️⃣ Ver recomendações</button>
+                    <button class="option-btn" onclick="selecionarOpcao('2', '2️⃣ Ver catálogo completo')">2️⃣ Ver catálogo</button>
+                </div>`;
+        }
+        const linhas = itens.map((i) => {
+            const cod = esc(i.codigo);
+            const sub = Math.round(i.preco * 100) * i.qtd;
+            return `
+                <div class="cart-row">
+                    <div class="cart-name">${esc(i.nome)}<small>${esc(i.embalagem || '')} • ${brl(i.preco)} por caixa</small></div>
+                    <div class="cart-ctrl">
+                        <button class="btn-qty" onclick="alterarQtd('${cod}', -1)">−</button>
+                        <span class="qty">${i.qtd}</span>
+                        <button class="btn-qty" onclick="alterarQtd('${cod}', 1)">+</button>
+                        <button class="btn-qty cinza" onclick="removerItem('${cod}')" title="Remover item">🗑️</button>
+                    </div>
+                    <div class="cart-sub">${i.qtd} × ${brl(i.preco)} = ${brl(sub / 100)}</div>
+                </div>`;
+        }).join('');
+        return `
+            ${linhas}
+            <div class="cart-total"><span>Total (${totalCaixas()} caixas)</span><span>${brl(totalCentavos() / 100)}</span></div>
+            <div class="options-container">
+                <button class="option-btn destaque" onclick="fecharPedido()">✅ Fechar pedido</button>
+                <button class="option-btn secondary" onclick="voltarParaMenu()">🛍️ Continuar comprando</button>
+                <button class="option-btn secondary" onclick="limparCarrinho()">🧹 Esvaziar carrinho</button>
+            </div>`;
+    }
+
+    function mostrarCarrinho() {
+        etapa = 'MENU_PRINCIPAL';
+        const vazio = totalCaixas() === 0;
+        return bot(vazio ? 'Carrinho de compras:' : 'Resumo do seu pedido B2B — *' + (cliente ? cliente.nomeCliente : '') + '*:',
+            '<div class="cart-block">' + carrinhoHTML() + '</div>');
+    }
+
+    // ---------- Finalização do pedido ----------
+    function fecharPedido() {
+        if (!exigirLogin()) return;
+        if (totalCaixas() === 0) { toast('🛒 Carrinho vazio'); return; }
+        etapa = 'PAGAMENTO';
+        const total = totalCentavos();
+        const pix = Math.round(total * 0.95);
+        addMsg('✅ Fechar pedido', 'outgoing');
+        bot('Pedido com *' + totalCaixas() + ' caixas* — total de *' + brl(total / 100) + '*.\n\nEscolha a condição de pagamento:', `
+            <div class="options-container">
+                <button class="option-btn" onclick="confirmarPagamento('BOLETO')">📄 Boleto faturado — 30 dias<br><small>${brl(total / 100)}</small></button>
+                <button class="option-btn" onclick="confirmarPagamento('PIX')">⚡ PIX à vista — 5% de desconto<br><small>${brl(pix / 100)} (economia de ${brl((total - pix) / 100)})</small></button>
+                <button class="option-btn" onclick="confirmarPagamento('CARTAO')">🏦 Cartão corporativo<br><small>${brl(total / 100)}</small></button>
+                <button class="option-btn secondary" onclick="selecionarOpcao('3', '🛒 Voltar ao carrinho')">🔙 Voltar ao carrinho</button>
+            </div>`);
+    }
+
+    async function confirmarPagamento(tipo) {
+        if (!exigirLogin() || processandoPedido) return;
+        if (totalCaixas() === 0) { toast('🛒 Carrinho vazio'); return; }
+        processandoPedido = true;
+        addMsg(ROTULO_PAGAMENTO[tipo], 'outgoing');
+        try {
+            await bot('Transmitindo o seu pedido para a central Pede Fruki... ⏳', '', 1000);
+            const r = await fetch(API + '/pedidos', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    codCliente: cliente.codCliente,
+                    pagamento: tipo,
+                    itens: Object.values(carrinho).map((i) => ({ codigo: i.codigo, quantidade: i.qtd }))
+                })
+            });
+            const ped = await r.json().catch(() => ({}));
+            if (!r.ok) throw new Error(ped.erro || ('HTTP ' + r.status));
+
+            const linhas = (ped.itens || []).map((i) =>
+                '• ' + i.descricao + '\n   ' + i.quantidade + ' cx × ' + brl(i.precoCaixa) + ' = ' + brl(i.subtotal)).join('\n');
+            const desconto = Number(ped.desconto) > 0 ? '\nDesconto PIX (5%): − ' + brl(ped.desconto) : '';
+            carrinho = {};
+            atualizarCarrinhoUI();
+            etapa = 'MENU_PRINCIPAL';
+            await bot('✅ *Pedido confirmado!*\nNº do pedido: *' + ped.numeroPedido + '*\n\n' + linhas +
+                '\n\nSubtotal: ' + brl(ped.subtotal) + desconto + '\n*Total: ' + brl(ped.total) + '*\nPagamento: ' + ped.condicaoPagamento +
+                '\nEntrega prevista: *' + ped.previsaoEntrega + '*\n\nAgradecemos pela parceria! 💚', `
+                <div class="options-container">
+                    <button class="option-btn destaque" onclick="selecionarOpcao('1', '1️⃣ Ver recomendações personalizadas')">🔄 Novo pedido</button>
+                    <button class="option-btn secondary" onclick="voltarParaMenu()">🔙 Voltar ao menu</button>
+                </div>`);
+        } catch (e) {
+            etapa = 'MENU_PRINCIPAL';
+            await bot('⚠️ Não consegui concluir o pedido: ' + e.message + '\n\nSeu carrinho foi mantido. Tente novamente:', `
+                <div class="options-container">
+                    <button class="option-btn destaque" onclick="fecharPedido()">🔁 Tentar de novo</button>
+                    <button class="option-btn secondary" onclick="voltarParaMenu()">🔙 Voltar ao menu</button>
+                </div>`);
+        } finally {
+            processandoPedido = false;
         }
     }
 
-    function enviarMensagemManual() {
-        const input = document.getElementById('userInput');
-        processarEntrada(input.value);
+    // ---------- Consultor e Trocar de estabelecimento ----------
+    function falarComConsultor() {
+        etapa = 'HUMANO';
+        return bot('Entendido. Estou transferindo o seu atendimento para o *Consultor Comercial* da sua região. Agradecemos a parceria com a Bebidas Fruki!', `
+            <div class="options-container">
+                <button class="option-btn" onclick="voltarParaMenu()">🔙 Voltar para o menu principal</button>
+            </div>`);
     }
 
-    function handleKeyPress(e) {
-        if (e.key === 'Enter') {
-            enviarMensagemManual();
+    function trocarEstabelecimento() {
+        toast('🔁 Trocando de estabelecimento...');
+        setTimeout(iniciarAtendimento, 500);
+    }
+
+    function abrirPerfilEmpresa() {
+        if (!exigirLogin()) return;
+        $('companyProfile').style.display = 'flex';
+    }
+    function fecharPerfilEmpresa() { $('companyProfile').style.display = 'none'; }
+
+    function montarChips() {
+        $('chips').innerHTML = Object.keys(CENARIOS).map((k) =>
+            '<button class="chip' + (k === cenarioAtual ? ' ativo' : '') + '" onclick="definirCenario(\'' + k + '\')">' + CENARIOS[k].rotulo + '</button>').join('');
+    }
+    function definirCenario(chave) {
+        cenarioAtual = chave;
+        montarChips();
+        toast('Cenário aplicado na próxima consulta (opção 1)');
+    }
+
+    function montarDecoracao() {
+        const d = $('decor');
+        const emojis = [
+            ['🍊', '4%', '12%', 64, -12], ['🍋', '90%', '10%', 58, 14], ['🍇', '6%', '78%', 60, 10],
+            ['🥤', '92%', '70%', 70, -8], ['💧', '16%', '44%', 44, 0], ['🧊', '84%', '40%', 48, 18],
+            ['🍺', '75%', '88%', 52, -10], ['⚡', '24%', '90%', 40, 8], ['🍃', '30%', '6%', 46, -20]
+        ];
+        emojis.forEach((e, i) => {
+            const s = document.createElement('div');
+            s.className = 'deco';
+            s.textContent = e[0];
+            s.style.left = e[1];
+            s.style.top = e[2];
+            s.style.fontSize = e[3] + 'px';
+            s.style.setProperty('--rot', e[4] + 'deg');
+            s.style.animationDelay = (i * 0.6) + 's';
+            d.appendChild(s);
+        });
+        for (let i = 0; i < 16; i++) {
+            const b = document.createElement('span');
+            b.className = 'bubble';
+            const tam = 10 + Math.random() * 34;
+            b.style.width = b.style.height = tam + 'px';
+            b.style.left = Math.random() * 100 + '%';
+            b.style.animationDuration = (9 + Math.random() * 12) + 's';
+            b.style.animationDelay = (-Math.random() * 15) + 's';
+            d.appendChild(b);
         }
     }
+
+    function ajustarEscala() {
+        const alvoAltura = 820;
+        const alvoLargura = 410;
+        const s = Math.min(1, (window.innerHeight - 24) / alvoAltura, (window.innerWidth - 16) / alvoLargura);
+        $('stage').style.transform = 'scale(' + s + ')';
+    }
+
+    window.addEventListener('resize', ajustarEscala);
+    window.onload = function () {
+        montarDecoracao();
+        montarChips();
+        ajustarEscala();
+        iniciarAtendimento();
+    };
 </script>
 
 </body>

@@ -5,14 +5,122 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0e72a309-326b-4fe3-8086-35604595f7fb" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Cliente.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Cliente.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/ExcelReaderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/ExcelReaderService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/PedidoController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/PedidoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/RecomendacaoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/RecomendacaoController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/RecomendacaoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/RecomendacaoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Agua fruki/fruki-2l-agua-c-gas-gotas.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Agua fruki/fruki-350ml-agua-c-gas-gotas.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Agua fruki/fruki-350ml-agua-s-gas-gotas.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Agua fruki/fruki-500ml-agua-c-gas-gotas.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Agua fruki/fruki-500ml-agua-s-gas-gotas.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Agua fruki/fruki-5l-agua-s-gas-gotas.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Agua fruki/fruki_pet_1-5l_regular_frontal.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Agua fruki/fruki_pet_2l_regular_frontal.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Agua fruki/lata-350ml_blueberry-limão_siciliano_seco-1-.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Agua fruki/lata269_350_abacaxi_e_hortelã.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Agua fruki/lata269_350_comgás_suado_sombra-2-.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Agua fruki/lata269_350_frutasvermelhas_suado.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Agua fruki/lata269_350_limãoealecrim_suado.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Agua fruki/lata269_350_sem_gás_suado_sombra-2-.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Agua fruki/lata_350ml_bergamota-capim_limão_seco-1-.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Agua fruki/lata_350ml_pessego_seco-2-.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Cervejas fruki/bellavista-ipa-350.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Cervejas fruki/bellavista-pilsen-473.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Cervejas fruki/bellavista-premium.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Cervejas fruki/bellavista-session-ipa-350.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Cervejas fruki/bellavista-zero-350.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Cervejas fruki/premium-lager-355.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Energetico fruki/elev-269ml-coco-açaí.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Energetico fruki/elev-269ml-frutas-tropicais.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Energetico fruki/elev-269ml-guaraná-maracujá.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Energetico fruki/elev-269ml-maça-verde.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Energetico fruki/elev-269ml-original.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Energetico fruki/elev-269ml-zero-açucar.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Energetico fruki/elev_frutas-tropicais.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Energetico fruki/elev_morango_melancia_473_jpg-1-3-.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Energetico fruki/elev_pet_morango_melancia.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Energetico fruki/elev_pink-limonade_2l_seca-1-.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Energetico fruki/elev_pink-limonade_473ml_seca-1-.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Energetico fruki/elev_sabor-original.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Energetico fruki/elev_zero-açúcar.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Energetico fruki/eleve_473_frutas-tropicais.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Energetico fruki/eleve_473_guarana_maracuja.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Energetico fruki/eleve_473_maca_verde.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Energetico fruki/eleve_473_original.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Energetico fruki/eleve_473_zero_açucar.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Energetico fruki/fruki_elev_coco_acai_2l.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Energetico fruki/fruki_elev_coco_acai_473.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Energetico fruki/pet_guarana_frontal.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Energetico fruki/pet_maca_verde_frontal.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Refri fruki/alta_fruki_berga_lata350ml-2-7-.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Refri fruki/cola-1-5l.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Refri fruki/cola-2l.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Refri fruki/cola-600.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Refri fruki/cola-zero-2l.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Refri fruki/cola_lata350_wet.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Refri fruki/colazero_lata350_wet.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Refri fruki/fruki_berga-zero_350ml_suada.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Refri fruki/fruki_berga_pet2000_dry-1-.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Refri fruki/fruki_frukaxi-zero_350ml_seca_-1-.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Refri fruki/fruki_frukaxi_350ml_seca_-1-.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Refri fruki/fruki_pet3l_guaraná-zero_seco.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Refri fruki/fruki_pet3l_guaraná_seco-1-.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Refri fruki/fruki_pet3l_laranja_seco-1-.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Refri fruki/fruki_pet_200ml_regular_frontal.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Refri fruki/fruki_pet_200ml_zero_frontal.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Refri fruki/fruki_pet_2l_zero_frontal.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Refri fruki/fruki_pet_600ml__frontal.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Refri fruki/fruki_pet_600ml_zero_frontal.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Refri fruki/fruki_vidro_600ml_zero_frontal-1-.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Refri fruki/guarana1-5l.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Refri fruki/laranja-600.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Refri fruki/laranja-let-2l.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Refri fruki/laranja-pet-600.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Refri fruki/laranja_lata350_wet.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Refri fruki/laranjinha-2l-sem-_novo.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Refri fruki/limao-2l-pet.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Refri fruki/limão-600-vidro.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Refri fruki/limão_lata350_wet.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Refri fruki/limoa-600-pet.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Refri fruki/mockup-2l-uva-final.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Refri fruki/mockup-fruki-berga-zero_pet2000_dry-copiar-1-1-.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Refri fruki/mockup_269ml_-_fruki_guaraná_-sem_fundo-.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Refri fruki/passion-zero-350.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Refri fruki/pet2000_franboesa_seca.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Refri fruki/pet200ml-laranja-suado.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Refri fruki/pet200ml_cola_suado.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Refri fruki/pet200ml_franboesa_seca.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Refri fruki/pet200ml_laranjinha_suado.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Refri fruki/pet200ml_limão_suado.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Refri fruki/pet200ml_uva_suado.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Refri fruki/uva-600-pet.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Sucos citrus fruki/alta_frukito_frutas_citricas_2l_gotas.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Sucos citrus fruki/alta_frukito_frutas_citricas_500ml_gotas.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Sucos citrus fruki/alta_frukito_limao_200ml_gotas.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Sucos citrus fruki/alta_frukito_limao_2l_gotas.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Sucos citrus fruki/alta_frukito_limao_500ml_gotas.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Sucos citrus fruki/alta_frukito_uva_200ml_gotas-1-.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Sucos citrus fruki/alta_frukito_uva_2l_gotas.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Sucos citrus fruki/alta_frukito_uva_500ml_gotas.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Sucos citrus fruki/citricas_200ml.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Sucos fruki/_suco_tetrapack_1l_frente_laranja.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Sucos fruki/_suco_tetrapack_1l_frente_maca.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Sucos fruki/_suco_tetrapack_200ml_frente_laranja.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Sucos fruki/_suco_tetrapack_200ml_frente_uva.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Sucos fruki/_suco_vidro_1l_frente_laranja.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Sucos fruki/_suco_vidro_1l_frente_uva.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Sucos fruki/_suco_vidro_1l_frente_verde.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Tonicas fruki/citrus_1500ml-1-.webp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/image/Tonicas fruki/citrus_1500ml-1-.webp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Tonicas fruki/citrus_350ml.png2.webp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/image/Tonicas fruki/citrus_350ml.png2.webp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Tonicas fruki/tonica_1500ml.webp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/image/Tonicas fruki/tonica_1500ml.webp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Tonicas fruki/tonica__350ml.webp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/image/Tonicas fruki/tonica__350ml.webp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Tonicas fruki/tonica_zero_garrafa-1-.webp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/image/Tonicas fruki/tonica_zero_garrafa-1-.webp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Tonicas fruki/tonica_zero_lata-1- (1).webp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/image/Tonicas fruki/tonica_zero_lata-1- (1).webp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/Tonicas fruki/tonica_zero_lata-1-.webp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/image/Tonicas fruki/tonica_zero_lata-1-.webp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/chat.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/chat.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -44,23 +152,23 @@
 }</component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.0280987641301413" />
-      <entry key="MS500" value="2.0300645480224793" />
-      <entry key="S2" value="7.675701338228179" />
-      <entry key="S5" value="15.902788933367802" />
-      <entry key="S10" value="22.978517943212925" />
-      <entry key="S30" value="31.596232845209084" />
-      <entry key="S60" value="35.68546733899867" />
-      <entry key="M2" value="38.94681407233108" />
-      <entry key="M5" value="41.68333846468411" />
-      <entry key="M10" value="42.78357089971656" />
-      <entry key="M15" value="43.17845685226255" />
-      <entry key="M30" value="43.92402004600342" />
-      <entry key="H1" value="47.40069288734752" />
-      <entry key="H2" value="55.62512584499407" />
-      <entry key="H4" value="67.2772877123269" />
-      <entry key="D1" value="219.64667267882362" />
-      <entry key="W1" value="369.2147638958773" />
+      <entry key="MS100" value="1.147624082807727" />
+      <entry key="MS500" value="1.701227415461569" />
+      <entry key="S2" value="2.9949972350262124" />
+      <entry key="S5" value="5.7130610486112126" />
+      <entry key="S10" value="9.206904916331151" />
+      <entry key="S30" value="17.22608740253262" />
+      <entry key="S60" value="22.40583101507665" />
+      <entry key="M2" value="30.062058689767955" />
+      <entry key="M5" value="55.94445235297641" />
+      <entry key="M10" value="83.36125947205805" />
+      <entry key="M15" value="98.37911584637054" />
+      <entry key="M30" value="122.00900697952945" />
+      <entry key="H1" value="144.5161314621079" />
+      <entry key="H2" value="166.60253396807425" />
+      <entry key="H4" value="188.06885397841927" />
+      <entry key="D1" value="348.69731646477914" />
+      <entry key="W1" value="505.0831705598816" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="0.0" />
@@ -70,35 +178,35 @@
       <entry key="S10" value="0.0" />
       <entry key="S30" value="0.0" />
       <entry key="S60" value="0.0" />
-      <entry key="M2" value="7.765396070206546E-258" />
-      <entry key="M5" value="2.282992891604944E-103" />
-      <entry key="M10" value="7.825181639188289E-52" />
-      <entry key="M15" value="1.2067984301903197E-34" />
-      <entry key="M30" value="1.887730540934738E-17" />
-      <entry key="H1" value="7.50983878476767E-9" />
-      <entry key="H2" value="1.5001902758794965E-4" />
-      <entry key="H4" value="0.02121171903929557" />
-      <entry key="D1" value="1.314283128934868" />
-      <entry key="W1" value="2.6663455912740845" />
+      <entry key="M2" value="4.675233159577798E-270" />
+      <entry key="M5" value="2.953659475211567E-108" />
+      <entry key="M10" value="2.814636788789112E-54" />
+      <entry key="M15" value="2.8330442524293838E-36" />
+      <entry key="M30" value="2.892339795440451E-18" />
+      <entry key="H1" value="2.939579902101632E-9" />
+      <entry key="H2" value="9.385851394695998E-5" />
+      <entry key="H4" value="0.016777974495293273" />
+      <entry key="D1" value="1.2639101756463664" />
+      <entry key="W1" value="2.65150080909152" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.05180307643714335" />
-      <entry key="MS500" value="1.491134871318593" />
-      <entry key="S2" value="7.469988809252313" />
-      <entry key="S5" value="15.794984498371583" />
-      <entry key="S10" value="22.913158294966106" />
-      <entry key="S30" value="31.56929487113707" />
-      <entry key="S60" value="35.67043419782876" />
-      <entry key="M2" value="38.93857700509055" />
-      <entry key="M5" value="41.67978422051343" />
-      <entry key="M10" value="42.78174002973996" />
-      <entry key="M15" value="43.17722332175844" />
-      <entry key="M30" value="43.92339272753634" />
-      <entry key="H1" value="47.40035893026586" />
-      <entry key="H2" value="55.625085292923096" />
-      <entry key="H4" value="67.29838395763721" />
-      <entry key="D1" value="220.9608587381177" />
-      <entry key="W1" value="371.8810840195477" />
+      <entry key="MS100" value="0.21055880460654514" />
+      <entry key="MS500" value="1.2685139713157194" />
+      <entry key="S2" value="2.7308850242468563" />
+      <entry key="S5" value="5.4895435219121005" />
+      <entry key="S10" value="9.0249443543393" />
+      <entry key="S30" value="17.11529169965173" />
+      <entry key="S60" value="22.335230655278636" />
+      <entry key="M2" value="30.01858266087464" />
+      <entry key="M5" value="55.92217196085067" />
+      <entry key="M10" value="83.34856624113766" />
+      <entry key="M15" value="98.37018389773539" />
+      <entry key="M30" value="122.00420305770832" />
+      <entry key="H1" value="144.51357542272754" />
+      <entry key="H2" value="166.601277063732" />
+      <entry key="H4" value="188.0849199962159" />
+      <entry key="D1" value="349.96102916878266" />
+      <entry key="W1" value="507.73463115157693" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -106,46 +214,57 @@
   &quot;fromUser&quot;: false
 }</component>
   <component name="ProjectId" id="3KQsJQcss3H5zi5gryxTZC7KT14" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.TodoApplication.executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;Spring Boot.TodoApplication.executor&quot;: &quot;Run&quot;,
-    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
-    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;prototipo-projeto-fruki&quot;,
-    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/karen/Downloads/Projeto-TesteFruki&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.jshint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.jshint&quot;: &quot;&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/karen/Downloads/Projeto-TesteFruki/src/main/java/org/example/Main.java&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.project.maven.repository.indices&quot;,
-    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.TodoApplication.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Spring Boot.TodoApplication.executor": "Run",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "prototipo-projeto-fruki",
+    "junie.onboarding.icon.badge.shown": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/karen/Downloads/Projeto-TesteFruki",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.jshint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.jshint": "",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "onboarding.tips.debug.path": "C:/Users/karen/Downloads/Projeto-TesteFruki/src/main/java/org/example/Main.java",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "project.propCompiler",
+    "to.speed.mode.migration.done": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="org.example" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\karen\Downloads\Projeto-TesteFruki\src\main\resources\staticc\image\Tonicas fruki" />
+      <recent name="C:\Users\karen\Downloads\Projeto-TesteFruki\src\main\resources\staticc\image" />
+      <recent name="C:\Users\karen\Downloads\Projeto-TesteFruki\src\main\resources\staticc" />
+      <recent name="C:\Users\karen\Downloads\Projeto-TesteFruki\src\main\resources\static\images" />
+      <recent name="C:\Users\karen\Downloads\Projeto-TesteFruki\src\main\resources\static\images\Foto perfil" />
     </key>
   </component>
   <component name="RunManager" selected="Spring Boot.TodoApplication">
@@ -190,6 +309,17 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/org/example/TabelaPreco.java</url>
+          <line>2</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
