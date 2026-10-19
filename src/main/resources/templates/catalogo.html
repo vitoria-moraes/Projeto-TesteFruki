@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Catálogo e pedido — Pede Fruki</title>
+<link rel="icon" type="image/svg+xml" href="/images/brand/logo-fruki.svg">
+<link rel="stylesheet" href="/css/catalogo.css">
+</head>
+<body>
+
+<header class="topbar">
+    <a class="brand" href="/">
+        <img src="/images/brand/logo-fruki.svg" alt="Pede Fruki">
+        <span>Pede <b>Fruki</b></span>
+    </a>
+    <div class="top-actions">
+        <button class="client-chip" id="clientChip" type="button">
+            <span class="dot"></span><span>Identifique seu cliente</span>
+        </button>
+        <a class="back-wa" href="/chat">‹ <span>Voltar ao WhatsApp</span></a>
+    </div>
+</header>
+
+<section class="wrap hero">
+    <div class="hero-grid">
+        <div>
+            <p class="eyebrow">Plataforma B2B · curadoria e pedido</p>
+            <h1>Monte sua <em>carga.</em></h1>
+            <p>O link do WhatsApp já trouxe o seu cliente e a curadoria. Aqui você compara, ajusta as caixas e finaliza o pedido em um ambiente feito para isso.</p>
+        </div>
+        <div class="hero-stats">
+            <div><strong>31</strong><span>SKUs</span></div>
+            <div><strong>6</strong><span>categorias</span></div>
+            <div><strong>1–2</strong><span>dias úteis</span></div>
+        </div>
+    </div>
+</section>
+
+<section class="wrap">
+    <div class="campaign-banner" id="campaignBox" hidden>
+        <div class="campaign-art" id="campaignArt" aria-hidden="true"></div>
+        <div class="campaign-copy">
+            <p class="campaign-eyebrow" id="campaignEyebrow"></p>
+            <h2 id="campaignTitle"></h2>
+            <p id="campaignDesc"></p>
+        </div>
+        <button class="campaign-apply" id="campaignApply" type="button">Aplicar cesta recomendada</button>
+    </div>
+
+    <div class="suggest" id="suggestBox" hidden>
+        <div class="suggest-head">
+            <div>
+                <h2 id="suggestTitle">✦ Sugestões da conversa</h2>
+                <small id="suggestSub">Baseadas no clima, na estação e no perfil do seu negócio.</small>
+            </div>
+            <button class="btn-suggest" id="addSuggestions" type="button">Adicionar todas</button>
+        </div>
+        <div class="suggest-list" id="suggestList"></div>
+    </div>
+
+    <div class="layout">
+        <main class="menu">
+            <div class="toolbar">
+                <div class="search-row">
+                    <label class="search">
+                        <span aria-hidden="true">⌕</span>
+                        <input id="search" type="search" placeholder="Buscar produto por nome..." autocomplete="off" aria-label="Buscar produto">
+                    </label>
+                </div>
+                <div class="chips" id="chips" role="tablist" aria-label="Categorias"></div>
+            </div>
+
+            <div class="grid" id="grid"></div>
+            <div class="cart-empty" id="empty" style="color:var(--muted);padding:40px 10px;text-align:center" hidden>
+                Nenhum produto encontrado para essa busca.
+            </div>
+        </main>
+
+        <aside class="cart" id="cart" aria-label="Carrinho">
+            <button class="cart-close" id="cartClose" type="button" aria-label="Fechar carrinho">×</button>
+            <div class="cart-head">
+                <h2>Seu pedido</h2>
+                <span id="cartCount">0 cx</span>
+            </div>
+
+            <div class="cart-items" id="cartItems"></div>
+
+            <div class="cart-summary">
+                <div><span>Subtotal</span><strong id="subtotal">R$ 0,00</strong></div>
+                <div class="pix off" id="pixRow"><span>Desconto PIX (5%)</span><strong id="pixValue">− R$ 0,00</strong></div>
+                <div class="total"><span>Total</span><strong id="total">R$ 0,00</strong></div>
+            </div>
+
+            <div class="pay" id="pay" role="group" aria-label="Forma de pagamento">
+                <button class="pay-opt active" data-pay="BOLETO" type="button">Boleto 30d</button>
+                <button class="pay-opt" data-pay="PIX" type="button">PIX · 5%</button>
+                <button class="pay-opt" data-pay="CARTAO" type="button">Cartão</button>
+            </div>
+
+            <button class="checkout" id="checkout" type="button">Finalizar pedido →</button>
+            <p class="fine">Pedido de demonstração: não persiste em banco. Entrega calculada em dias úteis.</p>
+        </aside>
+    </div>
+</section>
+
+<div class="cart-bar" id="cartBar">
+    <div class="info">
+        <span id="barCount">0 caixas</span>
+        <strong id="barTotal">R$ 0,00</strong>
+    </div>
+    <button id="cartBarBtn" type="button">Ver pedido →</button>
+</div>
+
+<div class="overlay" id="overlay">
+    <div class="modal" id="modalBody" role="dialog" aria-modal="true"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="/js/campanhas.js"></script>
+<script>
+    const STORAGE_CLIENTE = 'pedeFruki.cliente';
+    const STORAGE_SUGESTOES = 'pedeFruki.sugestoes';
+    const STORAGE_CARRINHO = 'pedeFruki.carrinho';
+    const STORAGE_CONTEXTO = 'pedeFruki.contexto';
+
+    const ORDEM_CATEGORIAS = ['AGUA', 'REFRIGERANTE', 'SUCO', 'ENERGETICO', 'CERVEJA', 'TONICA'];
+    const NOMES_CATEGORIAS = {
+        AGUA: 'Águas', REFRIGERANTE: 'Refrigerantes', SUCO: 'Sucos',
+        ENERGETICO: 'Energéticos', CERVEJA: 'Cervejas', TONICA: 'Tônicas'
+    };
+
+    let produtos = [];
+    let mapa = {};
+    let carrinho = {};
+    let sugestoes = [];
+    let cliente = null;
+    let categoriaAtiva = 'TODOS';
+    let busca = '';
+    let pagamento = 'BOLETO';
+    let checkoutPendente = false;
+    let campanhaAtiva = null;
+
+    const $ = (id) => document.getElementById(id);
+    const brl = (v) => Number(v || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[c]));
+
+    function ler(chave, padrao) {
+        try {
+            const raw = localStorage.getItem(chave);
+            return raw ? JSON.parse(raw) : padrao;
+        } catch (e) { return padrao; }
+    }
+    function salvar(chave, valor) {
+        try { localStorage.setItem(chave, JSON.stringify(valor)); } catch (e) { /* modo privado */ }
+    }
+
+    function toast(msg) {
+        const t = $('toast');
+        t.textContent = msg;
+        t.classList.add('show');
+        clearTimeout(toast._t);
+        toast._t = setTimeout(() => t.classList.remove('show'), 2600);
+    }
+
+    function precoDe(codigo) {
+        const p = mapa[codigo];
+        return p ? Number(p.preco) || 0 : 0;
+    }
+
+    function salvarCarrinho() { salvar(STORAGE_CARRINHO, carrinho); }
+
+    // ------------------------------------------------------------------ cliente
+    function carregarCliente() {
+        cliente = ler(STORAGE_CLIENTE, null);
+        if (cliente && cliente.codCliente == null) cliente = null;
+    }
+
+    function renderCliente() {
+        const el = $('clientChip');
+        if (cliente && cliente.codCliente != null) {
+            el.innerHTML = '<span class="dot"></span><span>' + esc(cliente.nomeCliente || ('Cliente #' + cliente.codCliente)) + ' · #' + esc(cliente.codCliente) + '</span>';
+            el.title = 'Trocar cliente';
+        } else {
+            el.innerHTML = '<span class="dot" style="background:#d39b00"></span><span>Identifique seu cliente</span>';
+            el.title = 'Informar código do cliente';
+        }
+    }
+
+    function abrirClienteModal(pendente) {
+        checkoutPendente = !!pendente;
+        const atualCod = cliente && cliente.codCliente != null ? esc(cliente.codCliente) : '';
+        const atualNome = cliente && cliente.nomeCliente ? esc(cliente.nomeCliente) : '';
+        $('modalBody').innerHTML = `
+            <h3>Quem está comprando?</h3>
+            <p>Informe o código do cliente — o mesmo usado no WhatsApp — para vincular o pedido.</p>
+            <div class="field">
+                <label for="cliCodigo">Código do cliente</label>
+                <input id="cliCodigo" inputmode="numeric" placeholder="Ex.: 239516" value="${atualCod}">
+            </div>
+            <div class="field">
+                <label for="cliNome">Nome (opcional)</label>
+                <input id="cliNome" placeholder="Ex.: Mercado do Bairro" value="${atualNome}">
+            </div>
+            <div class="modal-actions">
+                <button class="primary" type="button" onclick="salvarCliente()">Usar este cliente</button>
+                <button type="button" onclick="usarDemo()">Usar demo (239516)</button>
+            </div>`;
+        $('overlay').classList.add('open');
+        setTimeout(() => $('cliCodigo')?.focus(), 60);
+    }
+
+    function salvarCliente() {
+        const cod = ($('cliCodigo').value || '').replace(/\D/g, '');
+        const nome = ($('cliNome').value || '').trim();
+        if (!cod) { toast('Informe o código do cliente.'); return; }
+        cliente = { codCliente: Number(cod), nomeCliente: nome || ('Cliente #' + cod) };
+        salvar(STORAGE_CLIENTE, cliente);
+        renderCliente();
+        fecharModal();
+        toast('Cliente atualizado.');
+        if (checkoutPendente) { checkoutPendente = false; finalizar(); }
+    }
+
+    function usarDemo() {
+        cliente = { codCliente: 239516, nomeCliente: 'Cliente Demo — Erechim/RS', cnpj: '12345678000190', modo: 'demo' };
+        salvar(STORAGE_CLIENTE, cliente);
+        renderCliente();
+        fecharModal();
+        toast('Cliente demo selecionado.');
+        if (checkoutPendente) { checkoutPendente = false; finalizar(); }
+    }
+
+    function fecharModal() {
+        $('overlay').classList.remove('open');
+        $('modalBody').innerHTML = '';
+    }
+
+    // ------------------------------------------------------------------ catálogo
+    async function carregarCatalogo() {
+        const r = await fetch('/api/catalogo');
+        if (!r.ok) throw new Error('catálogo indisponível');
+        const data = await r.json();
+        produtos = Array.isArray(data.itens) ? data.itens : [];
+        mapa = {};
+        produtos.forEach((p) => { mapa[p.codigo] = p; });
+    }
+
+    function renderChips() {
+        const categorias = ['TODOS'].concat(ORDEM_CATEGORIAS.filter((c) => produtos.some((p) => p.categoria === c)));
+        $('chips').innerHTML = categorias.map((c) => {
+            const nome = c === 'TODOS' ? 'Tudo' : (NOMES_CATEGORIAS[c] || c);
+            return `<button class="chip ${c === categoriaAtiva ? 'active' : ''}" type="button" data-cat="${c}" role="tab">${esc(nome)}</button>`;
+        }).join('');
+        $('chips').querySelectorAll('.chip').forEach((btn) => {
+            btn.addEventListener('click', () => {
+                categoriaAtiva = btn.getAttribute('data-cat');
+                renderChips();
+                renderGrid();
+            });
+        });
+    }
+
+    function cardProduto(p) {
+        const qtd = carrinho[p.codigo] || 0;
+        const cat = NOMES_CATEGORIAS[p.categoria] || p.categoria || '';
+        const un = p.precoUnitario != null ? brl(p.precoUnitario) + '/un' : '';
+        return `
+            <article class="prod ${qtd > 0 ? 'in-cart' : ''}">
+                <div class="prod-media">
+                    <img src="${esc(p.imagemUrl)}" alt="${esc(p.descricao)}" loading="lazy"
+                         onerror="this.onerror=null;this.src='/images/brand/produto-placeholder.svg'">
+                </div>
+                <span class="cat">${esc(cat)}</span>
+                <h3>${esc(p.descricao)}</h3>
+                <p class="pack">${esc(p.embalagem || 'Caixa fechada')}${un ? ' · ' + un : ''}</p>
+                <div class="prod-foot">
+                    <div class="price">
+                        <small>Caixa</small>
+                        <strong>${brl(p.preco)} <span>/cx</span></strong>
+                    </div>
+                    <div class="step">
+                        <button class="ghost" type="button" onclick="mudarQtd('${esc(p.codigo)}', -1)" aria-label="Remover uma caixa">−</button>
+                        <span class="qty ${qtd ? '' : 'zero'}">${qtd}</span>
+                        <button type="button" onclick="mudarQtd('${esc(p.codigo)}', 1)" aria-label="Adicionar uma caixa">+</button>
+                    </div>
+                </div>
+            </article>`;
+    }
+
+    function renderGrid() {
+        const termo = busca.trim().toLowerCase();
+        const lista = produtos.filter((p) => {
+            const okCat = categoriaAtiva === 'TODOS' || p.categoria === categoriaAtiva;
+            const okBusca = !termo || String(p.descricao || '').toLowerCase().includes(termo)
+                || String(NOMES_CATEGORIAS[p.categoria] || '').toLowerCase().includes(termo);
+            return okCat && okBusca;
+        });
+        $('grid').innerHTML = lista.map(cardProduto).join('');
+        $('empty').hidden = lista.length > 0;
+    }
+
+    // ------------------------------------------------------------------ carrinho
+    function mudarQtd(codigo, delta) {
+        if (!mapa[codigo]) return;
+        const atual = carrinho[codigo] || 0;
+        const novo = Math.max(0, Math.min(999, atual + delta));
+        if (novo === 0) delete carrinho[codigo]; else carrinho[codigo] = novo;
+        salvarCarrinho();
+        renderGrid();
+        renderCarrinho();
+    }
+
+    function itensCarrinho() {
+        return Object.keys(carrinho)
+            .filter((c) => mapa[c] && carrinho[c] > 0)
+            .map((c) => ({ produto: mapa[c], qtd: carrinho[c], subtotal: precoDe(c) * carrinho[c] }));
+    }
+
+    function totais() {
+        const itens = itensCarrinho();
+        const caixas = itens.reduce((s, i) => s + i.qtd, 0);
+        const subtotal = Math.round(itens.reduce((s, i) => s + i.subtotal, 0) * 100) / 100;
+        const desconto = pagamento === 'PIX' ? Math.round(subtotal * 0.05 * 100) / 100 : 0;
+        const total = Math.round((subtotal - desconto) * 100) / 100;
+        return { itens, caixas, subtotal, desconto, total };
+    }
+
+    function renderCarrinho() {
+        const t = totais();
+
+        $('cartItems').innerHTML = t.itens.length
+            ? t.itens.map((i) => `
+                <div class="cart-item">
+                    <img src="${esc(i.produto.imagemUrl)}" alt="" onerror="this.onerror=null;this.src='/images/brand/produto-placeholder.svg'">
+                    <div class="cart-item-main">
+                        <div class="cart-item-name">${esc(i.produto.descricao)}</div>
+                        <div class="cart-item-meta">${i.qtd} cx × ${brl(i.produto.preco)}</div>
+                    </div>
+                    <div class="cart-item-side">
+                        <strong>${brl(i.subtotal)}</strong>
+                        <div class="mini">
+                            <button type="button" onclick="mudarQtd('${esc(i.produto.codigo)}', -1)" aria-label="Menos">−</button>
+                            <span>${i.qtd}</span>
+                            <button type="button" onclick="mudarQtd('${esc(i.produto.codigo)}', 1)" aria-label="Mais">+</button>
+                        </div>
+                    </div>
+                </div>`).join('')
+            : `<div class="cart-empty"><b>Seu carrinho está vazio.</b>Escolha produtos no menu ao lado para montar o pedido.</div>`;
+
+        $('cartCount').textContent = t.caixas + ' cx';
+        $('subtotal').textContent = brl(t.subtotal);
+        $('pixRow').classList.toggle('off', pagamento !== 'PIX');
+        $('pixValue').textContent = '− ' + brl(t.desconto);
+        $('total').textContent = brl(t.total);
+        $('checkout').disabled = t.itens.length === 0;
+
+        $('barCount').textContent = t.caixas + (t.caixas === 1 ? ' caixa' : ' caixas');
+        $('barTotal').textContent = brl(t.total);
+    }
+
+    function renderSugestoes() {
+        const validas = (sugestoes || []).filter((s) => mapa[s.codigo]);
+        $('suggestBox').hidden = validas.length === 0;
+        if (!validas.length) return;
+        $('suggestList').innerHTML = validas.map((s) => {
+            const p = mapa[s.codigo];
+            const q = Number(s.quantidade) || 1;
+            return `<div class="suggest-item">
+                <img src="${esc(p.imagemUrl)}" alt="" onerror="this.onerror=null;this.src='/images/brand/produto-placeholder.svg'">
+                <span>${esc(p.descricao)} <b>${q} cx</b></span>
+            </div>`;
+        }).join('');
+    }
+
+    // ------------------------------------------------------------------ campanha / disparo
+    function contextoSalvo() {
+        return ler(STORAGE_CONTEXTO, null) || {};
+    }
+
+    function cidadeCampanha() {
+        const ctx = contextoSalvo();
+        return ctx.cidade && ctx.cidade !== '—' ? ctx.cidade : 'Porto Alegre';
+    }
+
+    function prepararCampanha(camp) {
+        campanhaAtiva = camp;
+
+        // A campanha chega com o cliente autenticado no WhatsApp; se o link for
+        // aberto direto, usa o perfil demo que combina com o gatilho.
+        if (!cliente || cliente.codCliente == null) {
+            const demo = camp.clienteDemo || {
+                codCliente: 173621,
+                nomeCliente: 'Cliente Demo — Porto Alegre/RS',
+                cnpj: '98765432000110'
+            };
+            cliente = Object.assign({ modo: 'demo' }, demo);
+            salvar(STORAGE_CLIENTE, cliente);
+            renderCliente();
+        }
+
+        sugestoes = camp.itens
+            .filter((i) => mapa[i.codigo])
+            .map((i) => ({
+                codigo: i.codigo,
+                quantidade: Math.max(1, Number(i.quantidade) || 1),
+                motivo: i.motivo || '',
+                campanha: camp.id
+            }));
+        salvar(STORAGE_SUGESTOES, sugestoes);
+        renderCampanha();
+    }
+
+    function renderCampanha() {
+        if (!campanhaAtiva) return;
+        const camp = campanhaAtiva;
+        $('campaignBox').hidden = false;
+        $('campaignBox').className = 'campaign-banner campaign-banner--' + camp.tema;
+        $('campaignEyebrow').textContent = 'Disparo WhatsApp · ' + camp.gatilho;
+        $('campaignTitle').textContent = window.PF.tituloCampanha(camp, cidadeCampanha());
+        $('campaignDesc').textContent = camp.descricao;
+        $('campaignArt').className = 'campaign-art campaign-art--' + camp.tema;
+        $('campaignArt').innerHTML = arteCampanha(camp);
+        $('campaignApply').onclick = () => adicionarCestaCampanha(false);
+
+        $('suggestTitle').textContent = '✦ Cesta do disparo · ' + camp.titulo;
+        $('suggestSub').textContent = 'Quantidades sugeridas pelo gatilho de ' + camp.titulo.toLowerCase() + '. Ajuste antes de finalizar.';
+    }
+
+    function arteCampanha(camp) {
+        if (camp.tema === 'clima') {
+            return '<span class="campaign-art__sun"></span><span class="campaign-art__label">Onda<br>de calor</span>';
+        }
+        if (camp.tema === 'grenal') {
+            return '<span class="campaign-art__pitch"></span><span class="campaign-art__label">Gre<br>Nal</span>';
+        }
+        if (camp.tema === 'feriado') {
+            return '<span class="campaign-art__label">Feria<br>dão</span><span class="campaign-art__confetti"></span>';
+        }
+        if (camp.tema === 'esporte') {
+            return '<span class="campaign-art__pitch"></span><span class="campaign-art__label">Jogo<br>do Brasil</span>';
+        }
+        if (camp.tema === 'infantil') {
+            return '<span class="campaign-art__confetti"></span><span class="campaign-art__label">Dia das<br>Crianças</span>';
+        }
+        if (camp.tema === 'frio') {
+            return '<span class="campaign-art__label">Frente<br>fria</span>';
+        }
+        return '<span class="campaign-art__confetti"></span><span class="campaign-art__label">Festa<br>da Uva</span>';
+    }
+
+    function adicionarCestaCampanha(silencioso) {
+        if (!campanhaAtiva) return 0;
+        let caixas = 0;
+        let itens = 0;
+        campanhaAtiva.itens.forEach((i) => {
+            if (!mapa[i.codigo]) return;
+            const q = Math.max(1, Number(i.quantidade) || 1);
+            carrinho[i.codigo] = Math.max(carrinho[i.codigo] || 0, q);
+            caixas += q;
+            itens += 1;
+        });
+        if (!itens) return 0;
+        salvarCarrinho();
+        renderGrid();
+        renderCarrinho();
+        if (!silencioso) {
+            toast(itens + ' itens da cesta adicionados (' + caixas + ' caixas).');
+        }
+        return caixas;
+    }
+
+    function aplicarCampanhaDaUrl() {
+        if (!campanhaAtiva) return;
+        const params = new URLSearchParams(location.search);
+        if (params.get('carrinho') !== '1') return;
+        const caixas = adicionarCestaCampanha(true);
+        if (caixas) {
+            toast('Cesta recomendada adicionada: ' + caixas + ' caixas.');
+            if (window.matchMedia('(max-width: 860px)').matches) {
+                $('cart').classList.add('open');
+            }
+        }
+    }
+
+    function adicionarSugestoes() {
+        let n = 0;
+        (sugestoes || []).forEach((s) => {
+            if (!mapa[s.codigo]) return;
+            const q = Math.max(1, Number(s.quantidade) || 1);
+            carrinho[s.codigo] = Math.max(carrinho[s.codigo] || 0, q);
+            n += 1;
+        });
+        if (!n) { toast('Nenhuma sugestão disponível.'); return; }
+        salvarCarrinho();
+        renderGrid();
+        renderCarrinho();
+        toast(n + ' sugestões adicionadas ao carrinho.');
+    }
+
+    // ------------------------------------------------------------------ pagamento e finalização
+    function ligarPagamento() {
+        $('pay').querySelectorAll('.pay-opt').forEach((btn) => {
+            btn.addEventListener('click', () => {
+                pagamento = btn.getAttribute('data-pay');
+                $('pay').querySelectorAll('.pay-opt').forEach((b) => b.classList.toggle('active', b === btn));
+                renderCarrinho();
+            });
+        });
+    }
+
+    async function finalizar() {
+        const t = totais();
+        if (!t.itens.length) { toast('Adicione produtos ao pedido.'); return; }
+        if (!cliente || cliente.codCliente == null) { abrirClienteModal(true); return; }
+
+        const btn = $('checkout');
+        const label = btn.textContent;
+        btn.disabled = true;
+        btn.textContent = 'Enviando pedido...';
+        try {
+            const itens = t.itens.map((i) => ({ codigo: i.produto.codigo, quantidade: i.qtd }));
+            const r = await fetch('/api/pedidos', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ codCliente: Number(cliente.codCliente), pagamento: pagamento, itens: itens })
+            });
+            const data = await r.json().catch(() => ({}));
+            if (!r.ok) throw new Error(data.erro || 'Não foi possível finalizar o pedido.');
+
+            carrinho = {};
+            salvarCarrinho();
+            renderGrid();
+            renderCarrinho();
+            $('cart').classList.remove('open');
+            mostrarSucesso(data);
+        } catch (e) {
+            toast(e.message || 'Falha ao finalizar o pedido.');
+        } finally {
+            btn.disabled = false;
+            btn.textContent = label;
+        }
+    }
+
+    function mostrarSucesso(p) {
+        const linhas = (p.itens || []).map((i) => `
+            <div><span>${esc(i.descricao)} × ${i.quantidade} cx</span><strong>${brl(i.subtotal)}</strong></div>`).join('');
+        const desconto = Number(p.desconto) > 0
+            ? `<div class="row"><span>Desconto PIX (5%)</span><strong>− ${brl(p.desconto)}</strong></div>` : '';
+        $('modalBody').innerHTML = `
+            <div class="success-icon">✓</div>
+            <h3>Pedido confirmado!</h3>
+            <p>O pedido foi transmitido para a central Pede Fruki. Guarde o número abaixo.</p>
+            <div class="order-box">
+                <div class="num">${esc(p.numeroPedido)}</div>
+                <div class="row"><span>Pagamento</span><strong>${esc(p.condicaoPagamento)}</strong></div>
+                <div class="row"><span>Entrega prevista</span><strong>${esc(p.previsaoEntrega)}</strong></div>
+                <div class="row"><span>Subtotal</span><strong>${brl(p.subtotal)}</strong></div>
+                ${desconto}
+                <div class="row"><span>Total</span><strong>${brl(p.total)}</strong></div>
+                <div class="order-lines">${linhas}</div>
+            </div>
+            <div class="modal-actions">
+                <button class="primary" type="button" onclick="location.href='/chat'">Voltar ao WhatsApp</button>
+                <button type="button" onclick="fecharModal()">Continuar no catálogo</button>
+            </div>`;
+        $('overlay').classList.add('open');
+    }
+
+    // ------------------------------------------------------------------ eventos
+    function ligarEventos() {
+        $('clientChip').addEventListener('click', () => abrirClienteModal(false));
+        $('addSuggestions').addEventListener('click', adicionarSugestoes);
+        $('checkout').addEventListener('click', finalizar);
+        $('cartClose').addEventListener('click', () => $('cart').classList.remove('open'));
+        $('cartBarBtn').addEventListener('click', () => $('cart').classList.add('open'));
+        $('overlay').addEventListener('click', (e) => { if (e.target === $('overlay')) fecharModal(); });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { fecharModal(); $('cart').classList.remove('open'); } });
+
+        $('search').addEventListener('input', (e) => {
+            busca = e.target.value || '';
+            renderGrid();
+        });
+        ligarPagamento();
+    }
+
+    async function init() {
+        carregarCliente();
+        renderCliente();
+        carrinho = ler(STORAGE_CARRINHO, {}) || {};
+        sugestoes = ler(STORAGE_SUGESTOES, []) || [];
+        campanhaAtiva = window.PF ? window.PF.campanhaDaUrl() : null;
+        ligarEventos();
+        try {
+            await carregarCatalogo();
+        } catch (e) {
+            toast('Não foi possível carregar o catálogo.');
+        }
+        // Descarta itens que não existem mais no catálogo.
+        Object.keys(carrinho).forEach((c) => { if (!mapa[c]) delete carrinho[c]; });
+        if (campanhaAtiva) prepararCampanha(campanhaAtiva);
+        renderChips();
+        renderGrid();
+        renderSugestoes();
+        renderCarrinho();
+        aplicarCampanhaDaUrl();
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>

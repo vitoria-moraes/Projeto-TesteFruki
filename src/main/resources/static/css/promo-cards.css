@@ -1,0 +1,287 @@
+/* =====================================================================
+   Pede Fruki — cartões de template promocional (WhatsApp)
+   Usado pela tela de templates e pelo chat /chat.
+   ===================================================================== */
+
+.pf-promo {
+  --pf-forest: #04352a;
+  --pf-deep: #04583f;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #fff;
+  color: #1c2b24;
+  box-shadow: 0 1px 1px rgba(15, 35, 27, .12);
+  font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* ------------------------------------------------------------------ banner base */
+.pf-banner {
+  position: relative;
+  height: 128px;
+  overflow: hidden;
+  isolation: isolate;
+}
+.pf-banner__tag {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 8px;
+  border-radius: 5px;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+.pf-pack {
+  position: absolute;
+  bottom: -5px;
+  z-index: 3;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 9px rgba(69, 31, 6, .28));
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ------------------------------------------------------------------ clima */
+.pf-banner--clima {
+  background:
+    radial-gradient(96px 80px at 84% 13%, rgba(255, 250, 213, .95) 0%, rgba(255, 218, 124, .65) 48%, rgba(255, 202, 100, 0) 72%),
+    linear-gradient(155deg, #ffdb88 0%, #f9b968 48%, #ef8a4e 100%);
+}
+.pf-banner--clima::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  height: 32px;
+  background: linear-gradient(180deg, rgba(125, 52, 8, 0) 0%, rgba(125, 52, 8, .16) 100%);
+}
+.pf-sun {
+  position: absolute;
+  top: -20px;
+  right: 8px;
+  z-index: 1;
+  width: 82px;
+  height: 82px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 34%, #fffdf0 0%, #fff1b8 43%, #ffd36e 72%, rgba(255, 196, 73, 0) 76%);
+  box-shadow: 0 0 34px rgba(255, 221, 133, .85);
+}
+.pf-sun::before {
+  content: "";
+  position: absolute;
+  inset: -15px;
+  border-radius: 50%;
+  background: repeating-conic-gradient(from 0deg, rgba(255, 255, 255, .45) 0deg 2.4deg, transparent 2.4deg 30deg);
+  -webkit-mask: radial-gradient(circle, transparent 56%, #000 58%);
+  mask: radial-gradient(circle, transparent 56%, #000 58%);
+  opacity: .75;
+}
+.pf-banner--clima .pf-banner__tag {
+  background: rgba(255, 253, 244, .9);
+  color: #8b3c0c;
+  box-shadow: 0 2px 6px rgba(139, 60, 12, .14);
+}
+.pf-clima-pack--1 { left: 5%; height: 101px; z-index: 3; transform: rotate(-3deg); mix-blend-mode: multiply; }
+.pf-clima-pack--2 { left: 31%; height: 92px; z-index: 4; transform: rotate(2deg); mix-blend-mode: multiply; }
+.pf-clima-pack--3 { right: 5%; height: 91px; z-index: 3; transform: rotate(4deg); mix-blend-mode: multiply; }
+.pf-heatline {
+  position: absolute;
+  z-index: 1;
+  width: 34px;
+  height: 12px;
+  border-top: 2px solid rgba(255, 255, 255, .55);
+  border-radius: 50%;
+  transform: rotate(-8deg);
+}
+.pf-heatline--a { left: 18%; top: 30%; }
+.pf-heatline--b { left: 24%; top: 40%; width: 26px; opacity: .7; }
+
+/* ------------------------------------------------------------------ gre-nal */
+.pf-banner--grenal {
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, .045) 0 30px, rgba(255, 255, 255, 0) 30px 60px),
+    radial-gradient(260px 130px at 50% 115%, rgba(30, 133, 86, .55) 0%, rgba(8, 61, 44, 0) 72%),
+    linear-gradient(150deg, #0e6041 0%, #08402f 62%, #062d22 100%);
+}
+.pf-banner--grenal::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(90deg, rgba(3, 25, 18, .32) 0%, rgba(3, 25, 18, 0) 30%, rgba(3, 25, 18, 0) 70%, rgba(3, 25, 18, .32) 100%);
+  pointer-events: none;
+}
+.pf-pitch {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+}
+.pf-tactic {
+  position: absolute;
+  z-index: 2;
+  color: rgba(246, 241, 219, .78);
+  font-family: "Segoe UI", Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, .35);
+}
+.pf-tactic--o {
+  width: 9px;
+  height: 9px;
+  border: 1.5px solid rgba(246, 241, 219, .75);
+  border-radius: 50%;
+  font-size: 0;
+}
+.pf-grenal-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 6;
+  padding: 4px 7px;
+  border: 1px solid rgba(217, 245, 107, .5);
+  border-radius: 4px;
+  background: rgba(4, 53, 42, .42);
+  color: #eaf9b4;
+  font-size: 7.5px;
+  font-weight: 900;
+  letter-spacing: .16em;
+  line-height: 1;
+}
+.pf-grenal-title {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 6;
+  transform: translate(-50%, -44%);
+  color: #fff8e8;
+  font-size: 30px;
+  font-weight: 900;
+  letter-spacing: .1em;
+  line-height: 1;
+  text-shadow: 0 2px 0 rgba(0, 0, 0, .18), 0 8px 20px rgba(0, 0, 0, .35);
+  white-space: nowrap;
+}
+.pf-grenal-title span {
+  color: #d9f56b;
+  margin: 0 2px;
+}
+.pf-grenal-sub {
+  position: absolute;
+  top: calc(50% + 21px);
+  left: 50%;
+  z-index: 6;
+  transform: translateX(-50%);
+  color: rgba(255, 255, 255, .66);
+  font-size: 7.5px;
+  font-weight: 800;
+  letter-spacing: .24em;
+  white-space: nowrap;
+}
+
+/* ------------------------------------------------------------------ feriadão */
+.pf-banner--feriado {
+  background:
+    radial-gradient(110px 82px at 82% 8%, rgba(255, 249, 221, .85) 0%, rgba(255, 232, 174, .3) 58%, rgba(255, 232, 174, 0) 74%),
+    linear-gradient(158deg, #f8e5bd 0%, #f3d09b 52%, #eab77d 100%);
+}
+.pf-banner--feriado::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  height: 30px;
+  background: linear-gradient(180deg, rgba(106, 54, 16, 0) 0%, rgba(106, 54, 16, .14) 100%);
+}
+.pf-feriado-tag {
+  position: absolute;
+  top: 12px;
+  left: 11px;
+  z-index: 7;
+  padding: 5px 9px 4px;
+  border-radius: 3px;
+  background: #b6422a;
+  color: #fff7e4;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .13em;
+  line-height: 1;
+  transform: rotate(-3deg);
+  box-shadow: 0 5px 10px -4px rgba(105, 35, 17, .55);
+}
+.pf-feriado-pack--1 { left: 5%; height: 103px; z-index: 3; transform: rotate(-3deg); mix-blend-mode: multiply; }
+.pf-feriado-pack--2 { left: 32%; height: 94px; z-index: 4; transform: rotate(2deg); mix-blend-mode: multiply; }
+.pf-feriado-pack--3 { right: 5%; height: 92px; z-index: 3; transform: rotate(4deg); mix-blend-mode: multiply; }
+.pf-confetti {
+  position: absolute;
+  z-index: 2;
+  top: var(--y);
+  left: var(--x);
+  width: 6px;
+  height: 10px;
+  border-radius: 1px;
+  background: var(--c);
+  opacity: .9;
+  transform: rotate(var(--r));
+}
+.pf-confetti.round {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+}
+
+/* ------------------------------------------------------------------ corpo + CTA */
+.pf-promo__body {
+  padding: 10px 12px 1px;
+}
+.pf-promo__text {
+  margin: 0;
+  color: #1c2b24;
+  font-size: 11.8px;
+  line-height: 1.45;
+  letter-spacing: -.005em;
+  white-space: pre-line;
+}
+.pf-promo__cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: calc(100% - 20px);
+  margin: 8px 10px 10px;
+  padding: 9px 10px;
+  border: 0;
+  border-radius: 7px;
+  background: var(--pf-deep);
+  color: #fff;
+  font-family: inherit;
+  font-size: 11.4px;
+  font-weight: 800;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background .18s ease, transform .18s ease;
+}
+.pf-promo__cta:hover { background: var(--pf-forest); transform: translateY(-1px); }
+.pf-promo__cta svg { flex-shrink: 0; width: 11px; height: 11px; }
+
+/* ------------------------------------------------------------------ ajustes */
+@media (prefers-reduced-motion: reduce) {
+  .pf-promo__cta { transition: none; }
+}

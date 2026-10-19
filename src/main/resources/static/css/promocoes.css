@@ -1,0 +1,482 @@
+/* =====================================================================
+   Pede Fruki — slide "Templates de promoção"
+   ===================================================================== */
+
+:root {
+  --cream: #f4f1ea;
+  --forest: #0b3f2e;
+  --forest-deep: #04352a;
+  --green: #0a7d5a;
+  --green-soft: #c9f7dd;
+  --ink: #10271f;
+  --muted: #6d7b72;
+  --line: rgba(11, 61, 46, .13);
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  color: var(--ink);
+  font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  background:
+    radial-gradient(1000px 620px at 50% -12%, #fdfaf1 0%, rgba(253, 250, 241, 0) 62%),
+    radial-gradient(720px 520px at -4% 104%, #e9f5e0 0%, rgba(233, 245, 224, 0) 60%),
+    radial-gradient(620px 440px at 104% 94%, #f7e8d0 0%, rgba(247, 232, 208, 0) 58%),
+    var(--cream);
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; }
+
+/* ------------------------------------------------------------------ navegação */
+.back {
+  position: fixed;
+  top: 22px;
+  left: 24px;
+  z-index: 20;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 13px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 253, 247, .82);
+  color: var(--forest);
+  font-size: 10.5px;
+  font-weight: 800;
+  text-decoration: none;
+  backdrop-filter: blur(10px);
+  transition: background .2s, transform .2s;
+}
+.back:hover { background: #fff; transform: translateY(-1px); }
+
+/* ------------------------------------------------------------------ slide */
+.slide {
+  width: min(1180px, 100%);
+  min-height: 100dvh;
+  margin: 0 auto;
+  padding: clamp(34px, 5vh, 58px) clamp(20px, 4vw, 54px) 26px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.slide-head {
+  margin-bottom: clamp(26px, 4.4vh, 44px);
+  text-align: center;
+}
+
+.eyebrow {
+  margin: 0 0 12px;
+  color: #0a6b4b;
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: .285em;
+  text-transform: uppercase;
+}
+
+.slide-head h1 {
+  margin: 0;
+  color: var(--forest);
+  font-size: clamp(32px, 3.7vw, 46px);
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -.045em;
+}
+
+/* ------------------------------------------------------------------ colunas de gatilho */
+.triggers {
+  width: 100%;
+  max-width: 1080px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(18px, 3vw, 38px);
+  align-items: start;
+  justify-items: center;
+}
+
+.trigger {
+  width: 100%;
+  max-width: 316px;
+  display: flex;
+  flex-direction: column;
+}
+
+.trigger-head {
+  margin: 0 0 13px;
+  padding-left: 2px;
+}
+
+.trigger-kicker {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0;
+  color: var(--green);
+  font-size: 8.5px;
+  font-weight: 900;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+}
+.trigger-kicker span {
+  width: 16px;
+  height: 1px;
+  background: var(--green);
+  opacity: .55;
+}
+
+.trigger h2 {
+  margin: 5px 0 0;
+  color: var(--forest);
+  font-size: 17px;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -.03em;
+}
+
+/* ------------------------------------------------------------------ aparelho */
+.phone {
+  position: relative;
+  width: 100%;
+  padding: 7px;
+  border-radius: 45px;
+  background: linear-gradient(155deg, #0c4a37 0%, #07392b 42%, #021e16 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .2),
+    0 38px 60px -30px rgba(4, 53, 42, .6),
+    0 12px 24px -14px rgba(4, 53, 42, .38);
+}
+.phone::before {
+  content: "";
+  position: absolute;
+  top: 92px;
+  left: -2px;
+  width: 3px;
+  height: 31px;
+  border-radius: 3px;
+  background: #0a3a2c;
+  box-shadow: 0 46px 0 #0a3a2c;
+}
+.phone::after {
+  content: "";
+  position: absolute;
+  top: 124px;
+  right: -2px;
+  width: 3px;
+  height: 58px;
+  border-radius: 3px;
+  background: #0a3a2c;
+}
+
+.phone-screen {
+  position: relative;
+  height: 600px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 38px;
+  background: #efeae2;
+}
+
+/* ------------------------------------------------------------------ status bar */
+.status {
+  position: relative;
+  flex-shrink: 0;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  background: #063a2d;
+  color: #fff;
+}
+.status-time {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .01em;
+}
+.island {
+  position: absolute;
+  top: 7px;
+  left: 50%;
+  width: 66px;
+  height: 15px;
+  border-radius: 999px;
+  background: #000;
+  transform: translateX(-50%);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .06);
+}
+.status-right {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.status-5g { font-size: 7px; font-weight: 800; letter-spacing: .02em; }
+.status-bars { display: flex; align-items: flex-end; gap: 1.4px; height: 8px; }
+.status-bars i { display: block; width: 2px; border-radius: 1px; background: currentColor; }
+.status-bars i:nth-child(1) { height: 3px; }
+.status-bars i:nth-child(2) { height: 4.4px; }
+.status-bars i:nth-child(3) { height: 5.8px; }
+.status-bars i:nth-child(4) { height: 7.2px; }
+.status-wifi { width: 10px; height: 8px; }
+.status-battery {
+  position: relative;
+  width: 14px;
+  height: 7px;
+  padding: 1px;
+  border: 1px solid rgba(255, 255, 255, .68);
+  border-radius: 2px;
+}
+.status-battery::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: -2.5px;
+  width: 1.5px;
+  height: 3px;
+  border-radius: 0 1px 1px 0;
+  background: rgba(255, 255, 255, .6);
+  transform: translateY(-50%);
+}
+.status-battery i {
+  display: block;
+  width: 76%;
+  height: 100%;
+  border-radius: .5px;
+  background: #fff;
+}
+
+/* ------------------------------------------------------------------ cabeçalho WhatsApp */
+.wa-head {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 10px 10px;
+  background: linear-gradient(180deg, #064232 0%, #053a2b 100%);
+  color: #fff;
+  border-bottom: 1px solid rgba(0, 0, 0, .2);
+}
+.wa-back {
+  display: grid;
+  place-items: center;
+  width: 11px;
+  flex-shrink: 0;
+  opacity: .9;
+}
+.wa-back svg { width: 11px; height: 11px; }
+.wa-avatar {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 30% 22%, rgba(255, 255, 255, .32) 0%, rgba(255, 255, 255, 0) 46%),
+    linear-gradient(150deg, #14a874 0%, #087a56 58%, #045c43 100%);
+  color: #fff;
+  font-size: 9.5px;
+  font-weight: 900;
+  letter-spacing: .02em;
+  box-shadow: 0 0 0 1.5px rgba(255, 255, 255, .22);
+}
+.wa-contact { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.wa-contact b {
+  overflow: hidden;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: -.01em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.wa-contact small {
+  color: var(--green-soft);
+  font-size: 7.4px;
+  font-weight: 600;
+  opacity: .92;
+}
+.wa-actions { display: flex; align-items: center; gap: 8px; opacity: .92; }
+.wa-actions svg { width: 13px; height: 13px; }
+
+/* ------------------------------------------------------------------ conversa */
+.wa-chat {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 10px 9px 9px;
+  background-color: #efeae2;
+  background-image:
+    radial-gradient(rgba(6, 104, 71, .08) .9px, transparent .9px),
+    linear-gradient(180deg, #f4efe6, #efeae2);
+  background-size: 15px 15px, 100% 100%;
+}
+.wa-day {
+  align-self: center;
+  padding: 3px 7px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, .82);
+  color: #718178;
+  font-size: 6.4px;
+  font-weight: 700;
+  letter-spacing: .09em;
+  line-height: 1;
+  text-transform: uppercase;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, .08);
+}
+.wa-msg {
+  position: relative;
+  margin-top: auto;
+  width: 100%;
+}
+.wa-msg::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -5px;
+  width: 10px;
+  height: 10px;
+  background: #fff;
+  clip-path: polygon(100% 0, 100% 100%, 0 0);
+}
+.wa-msg .pf-promo {
+  border-radius: 11px;
+  box-shadow: 0 1px .5px rgba(0, 0, 0, .1);
+}
+
+/* ------------------------------------------------------------------ campo de mensagem */
+.wa-input {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 8px 11px;
+  border-top: 1px solid rgba(6, 53, 42, .08);
+  background: #f7f4ee;
+}
+.wa-plus {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #e8e3d8;
+  color: #58695f;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1;
+}
+.wa-placeholder {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  height: 29px;
+  display: flex;
+  align-items: center;
+  padding: 0 9px;
+  border: 1px solid rgba(6, 53, 42, .07);
+  border-radius: 999px;
+  background: #fff;
+  color: #93a198;
+  font-size: 7.4px;
+  font-weight: 500;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.wa-send {
+  display: grid;
+  place-items: center;
+  width: 29px;
+  height: 29px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--green);
+  color: #fff;
+  box-shadow: 0 5px 10px -5px rgba(4, 53, 42, .75);
+}
+.wa-send svg { width: 12px; height: 12px; }
+
+/* ------------------------------------------------------------------ rodapé */
+.slide-foot {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-top: clamp(28px, 4.6vh, 44px);
+  color: #7d8a81;
+  font-size: 8.5px;
+  font-weight: 800;
+  letter-spacing: .17em;
+  text-transform: uppercase;
+}
+.slide-foot i {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--green);
+  opacity: .55;
+}
+
+/* ------------------------------------------------------------------ responsivo */
+@media (max-width: 1020px) {
+  .triggers { gap: 18px; }
+  .phone-screen { height: 580px; }
+}
+
+@media (max-height: 940px) and (min-width: 881px) {
+  .slide { padding-top: 28px; }
+  .slide-head { margin-bottom: 24px; }
+  .slide-head h1 { font-size: clamp(30px, 3.2vw, 40px); }
+  .phone-screen { height: 540px; }
+  .slide-foot { margin-top: 22px; }
+}
+
+@media (max-height: 820px) and (min-width: 881px) {
+  .slide { padding-top: 18px; padding-bottom: 16px; }
+  .eyebrow { margin-bottom: 8px; }
+  .slide-head { margin-bottom: 18px; }
+  .slide-head h1 { font-size: 32px; }
+  .trigger-head { margin-bottom: 9px; }
+  .trigger h2 { font-size: 15.5px; }
+  .phone-screen { height: 490px; }
+  .phone { border-radius: 38px; }
+  .phone-screen { border-radius: 32px; }
+  .slide-foot { display: none; }
+}
+
+@media (max-width: 880px) {
+  .slide { padding-top: 58px; }
+  .triggers {
+    grid-template-columns: 1fr;
+    width: min(330px, 100%);
+    gap: 34px;
+  }
+  .trigger { max-width: 330px; }
+  .phone-screen { height: 620px; }
+  .trigger-head { text-align: left; }
+  .slide-foot { flex-wrap: wrap; justify-content: center; row-gap: 8px; }
+}
+
+@media (max-width: 420px) {
+  .back { top: 14px; left: 14px; }
+  .slide { padding-left: 16px; padding-right: 16px; }
+  .slide-head h1 { font-size: 29px; }
+  .phone-screen { height: 590px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .back { transition: none; }
+}
+
+@media print {
+  body { background: #f4f1ea; }
+  .back { display: none; }
+  .slide { min-height: auto; }
+}

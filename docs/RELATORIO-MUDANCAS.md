@@ -11,6 +11,35 @@ que foi entregue para o pitch e no que ainda é mock.
 
 ---
 
+## 0. Atualização — novo fluxo WhatsApp + plataforma
+
+Esta entrega evolui o fluxo depois da reavaliação estratégica: o WhatsApp deixa
+de ser 100% transacional e passa a **validar o acesso e disparar ofertas
+contextuais**; a plataforma Web concentra a vitrine, o carrinho e o pedido.
+
+O que foi implementado nesta iteração:
+
+- **`/chat` reconstruído:** “Oi” → CNPJ → validação → **link personalizado da
+  vitrine**; o chat não lista mais o catálogo nem monta carrinho. Depois da
+  validação, demonstra os três disparos contextuais (clima, evento regional e
+  feriado) com cartões no padrão WhatsApp.
+- **`/promocoes` (novo):** slide com os três templates de promoção lado a lado,
+  cada um com banner, copy e CTA para a cesta recomendada.
+- **`/catalogo` com campanhas:** aceita `?campanha=clima|grenal|feriado` e
+  `?carrinho=1`, exibe o banner do disparo e pré-monta a cesta recomendada no
+  carrinho.
+- **Home (`/`) atualizada:** apresenta o novo fluxo e mantém `/whatsapp` como
+  fluxo anterior para comparação.
+- **Dados dos gatilhos centralizados** em `static/js/campanhas.js`; os cartões
+  promocionais compartilham `static/css/promo-cards.css`.
+- **Backend:** apenas a rota `GET /promocoes` foi adicionada ao `WebController`;
+  as APIs de recomendação, catálogo e pedidos continuam as mesmas.
+
+A seção 2 abaixo preserva o histórico da entrega anterior (fluxo completo dentro
+do WhatsApp), que permanece acessível em `/whatsapp`.
+
+---
+
 ## 1. Resumo executivo
 
 O protótipo saiu de um chat que só funcionava com código numérico e um catálogo

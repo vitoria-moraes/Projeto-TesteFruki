@@ -8,17 +8,37 @@ public class WebController {
 
     @GetMapping("/")
     public String raiz() {
-        // Quem abrir http://localhost:8081/ cai direto no chat
-        return "redirect:/chat";
+        // Página de escolha entre os dois fluxos da demonstração.
+        return "fluxos";
+    }
+
+    @GetMapping("/whatsapp")
+    public String abrirWhatsappCompleto() {
+        return "chat-whats"; // fluxo 1: recomendação + catálogo + carrinho dentro do chat
     }
 
     @GetMapping("/chat")
     public String abrirChat() {
-        return "chat"; // Procura por chat.html em resources/templates/
+        return "chat"; // fluxo 2: WhatsApp como recomendador + link para a tela de catálogo
+    }
+
+    @GetMapping("/catalogo")
+    public String abrirCatalogo() {
+        return "catalogo"; // tela de menu, carrinho e fechamento do pedido
+    }
+
+    @GetMapping("/promocoes")
+    public String abrirPromocoes() {
+        return "promocoes"; // os três templates de disparo contextual do WhatsApp
+    }
+
+    @GetMapping("/agenda")
+    public String abrirAgenda() {
+        return "agenda"; // um evento contextual para cada dia dos próximos sete dias
     }
 
     @GetMapping("/chat-remoto")
     public String abrirChatRemoto() {
-        return "chat-remoto"; // UI nova (login/cadastro/pedidos) integrada no merge
+        return "chat-remoto"; // UI alternativa mantida do merge
     }
 }

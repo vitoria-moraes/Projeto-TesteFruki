@@ -6,6 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="f552ecb8-9138-4385-a59b-86c5bce519f3" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/GUIA-PO.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/GUIA-PO.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/RELATORIO-MUDANCAS.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/RELATORIO-MUDANCAS.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/WebController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/WebController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/chat.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/chat.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -13,7 +18,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="155" />
+    <option name="cachedIndexableFilesCount" value="172" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -40,6 +45,13 @@
   <component name="HttpClientOnboardingState">{
   &quot;isOnboardingCommentShown&quot;: true
 }</component>
+  <component name="KubernetesSettings">
+    <specSources>
+      <SpecSource>
+        <option name="pathOrUrl" value="C:\Users\Riordan Lucas\IdeaProjects\Projeto-TesteFruki\sk-&#9;84b78390-b869-438f-b492-c0701675e342" />
+      </SpecSource>
+    </specSources>
+  </component>
   <component name="McpProjectServerCommands">
     <commands />
     <urls />
@@ -108,6 +120,10 @@
   &quot;fromUser&quot;: false
 }</component>
   <component name="ProjectId" id="3KQsJQcss3H5zi5gryxTZC7KT14" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+    <ConfirmationsSetting value="2" id="Remove" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -145,7 +161,7 @@
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "configurable.group.appearance",
+    "settings.editor.selected.configurable": "project.propVCSSupport.Confirmation",
     "to.speed.mode.migration.done": "true",
     "vue.rearranger.settings.migration": "true"
   }
@@ -212,6 +228,11 @@
       <workItem from="1792287277944" duration="9805000" />
       <workItem from="1792344908810" duration="304000" />
       <workItem from="1792361133566" duration="315000" />
+      <workItem from="1792372773719" duration="4211000" />
+      <workItem from="1792382772021" duration="741000" />
+      <workItem from="1792383549239" duration="110000" />
+      <workItem from="1792383714967" duration="172000" />
+      <workItem from="1792383909986" duration="1477000" />
     </task>
     <servers />
   </component>
@@ -228,6 +249,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

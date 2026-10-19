@@ -4,6 +4,11 @@ Protótipo Spring Boot do canal de pedidos e recomendação B2B da Fruki.
 A entrega atual é focada no **pitch**: a API responde uma requisição válida com
 recomendações mockadas e um catálogo comercial de 31 SKUs, sem depender de banco.
 
+O fluxo principal agora separa os papéis: **o WhatsApp engaja e autentica; a
+plataforma Web concentra a curadoria, o carrinho e o fechamento do pedido**. Os
+disparos contextuais (clima, evento regional e feriado) levam o lojista direto
+para uma cesta recomendada na plataforma.
+
 ## Documentação
 
 - [Relatório de mudanças](docs/RELATORIO-MUDANCAS.md) — o que mudou do estado inicial até aqui.
@@ -17,33 +22,47 @@ Pré-requisitos: **JDK 21** e Maven (ou o Maven embutido no IntelliJ).
 mvn spring-boot:run
 ```
 
-Aplicação: <http://localhost:8081/chat>
+Aplicação: <http://localhost:8081/> (página de escolha do fluxo)
 
 > No terminal desta máquina o `java` do PATH é o Java 8. No IntelliJ, aponte o
 > projeto para `C:\Users\Riordan Lucas\.jdks\ms-21.0.12.1` (ou outro JDK 21).
+>
+> Se a porta 8081 já estiver ocupada por uma instância antiga, use
+> `mvn spring-boot:run -Dspring-boot.run.arguments=--server.port=8082`.
 
-## Duas interfaces
+## Fluxos de demonstração
 
-Depois da integração com o commit de sazonalidades/pedidos, o projeto tem duas
-telas servidas pelo mesmo backend:
+A raiz `/` apresenta o novo fluxo e mantém o fluxo anterior para comparação.
 
-- `/chat` — interface do pitch: 3 grupos × 3 opções, catálogo de 31 SKUs,
-  atalho de CNPJ demo e clima real.
-- `/chat-remoto` — interface nova (login por ID/CNPJ, cadastro expresso,
-  carrinho, cenários de clima e fechamento de pedido via `POST /api/pedidos`).
+1. **`/chat` — WhatsApp + vitrine (novo).** O cliente manda “Oi”, escolhe um
+   CNPJ demo (Caxias do Sul, Porto Alegre ou Erechim), o assistente valida o
+   cadastro e envia o **link personalizado** da vitrine. Em seguida demonstra os
+   disparos contextuais: clima, Gre-Nal e feriado. O CTA de cada template abre
+   `/catalogo?campanha=...&carrinho=1` com a cesta já montada.
+2. **`/promocoes` — templates de promoção.** Apresentação lado a lado dos três
+   templates de WhatsApp (clima, evento regional e feriado), com banner, copy e
+   CTA. Cada botão leva à campanha correspondente no catálogo.
+3. **`/catalogo` — vitrine, carrinho e checkout.** Recebe o cliente e as
+   sugestões salvos pelo chat. Parâmetros de campanha:
+   - `campanha=clima|grenal|feriado` → banner contextual e cesta recomendada;
+   - `carrinho=1` → aplica a cesta automaticamente ao carrinho.
+4. **`/whatsapp` — fluxo anterior completo.** Recomendação, catálogo, carrinho e
+   pagamento dentro do chat; mantido para comparação.
 
-As duas usam o mesmo catálogo e os mesmos endpoints; a diferença é a
-apresentação.
+A interface alternativa do merge continua em `/chat-remoto`.
 
-## Fluxo do chat
+## Roteiro do novo fluxo (recomendado para o pitch)
 
-1. Informe um **CNPJ de 14 dígitos** (ex.: `12345678000190`) ou clique no botão
-   **Usar CNPJ demo** que aparece no início do chat.
-2. **Opção 1 — Recomendações:** mostra 3 grupos com 3 opções cada, com o motivo
-   (clima + eventos simulados) e a quantidade sugerida (3 caixas).
-3. **Opção 2 — Catálogo completo:** mostra os 31 SKUs agrupados por categoria,
-   independentemente de a opção 1 ter sido usada antes. Itens recomendados
-   aparecem com o selo **IA** e a quantidade sugerida.
+1. Abra `/chat`. Clique em **Demo · Caxias do Sul** (o perfil tem jogo
+   Internacional x Grêmio, então o disparo automático é o de **Gre-Nal**).
+2. Veja a validação do CNPJ, o cartão com a **vitrine personalizada** e o CTA
+   “Abrir minha vitrine”.
+3. Clique em **Ver ofertas do dia** (ou abra o link do template) para cair no
+   catálogo com o banner do disparo e a **cesta recomendada já no carrinho**.
+4. Volte ao chat e use os atalhos **Clima** e **Feriado** para mostrar os outros
+   dois templates. A tela `/promocoes` mostra os três lado a lado.
+5. Em `/catalogo`, ajuste caixas, escolha a forma de pagamento e finalize em
+   `POST /api/pedidos`.
 
 ## API
 
@@ -169,10 +188,20 @@ src/main/java/org/example/
   Cliente.java                    -> mapeamento de dim_cliente (sem JPA ainda)
   ExcelReaderService.java         -> leitura dos CSVs
   RecomendacaoService.java        -> scoring + sazonalidade (rota legada)
+  WebController.java              -> rotas /, /chat, /promocoes, /catalogo...
 src/main/resources/
   dim_*.csv                       -> bases originais
-  templates/chat.html             -> interface do pitch (3 grupos x 3)
-  templates/chat-remoto.html      -> interface com login/cadastro/pedidos
+  templates/chat.html             -> WhatsApp valida + link + disparos contextuais
+  templates/promocoes.html        -> slide com os 3 templates de WhatsApp
+  templates/catalogo.html         -> vitrine, cesta recomendada e checkout
+  templates/fluxos.html           -> home do novo fluxo
+  templates/chat-whats.html       -> fluxo anterior completo (comparação)
+  templates/chat-remoto.html      -> interface alternativa mantida do merge
+  static/js/campanhas.js          -> dados dos 3 gatilhos (clima, Gre-Nal, feriado)
+  static/css/whatsapp.css         -> chat / WhatsApp
+  static/css/promo-cards.css      -> cartões promocionais compartilhados
+  static/css/promocoes.css        -> slide dos templates
+  static/css/catalogo.css         -> catálogo + banner da campanha
   static/images/                  -> fotos de produto e marca
 ```
 
